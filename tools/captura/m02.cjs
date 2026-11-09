@@ -96,7 +96,7 @@ const ACESSOS = ['HTTPS', 'SSH', 'HTTP', 'PING', 'FMG-Access', 'SNMP', 'Security
     await sel.waitFor();
     // Seletor de escolha única fecha no clique: a foto vem antes. No de várias escolhas, depois.
     const unica = itens.length === 1;
-    const recSel = () => [sel.locator('.sel-item').first(), ...itens.map((i) => itemSel(sel, i))];
+    const recSel = () => (itens.length === 1 ? [sel.locator('.sel-item').first(), itemSel(sel, itens[0])] : itens.map((i) => itemSel(sel, i)));
     if (foto && unica) await s.foto(foto.nome, { recorte: recSel(), margem: 40, destaque: itens.map((i) => itemSel(sel, i)), descricao: foto.descricao });
     for (const i of itens) { await itemSel(sel, i).click(); await s.espera(200); }
     if (foto && !unica) await s.foto(foto.nome, { recorte: recSel(), margem: 40, destaque: itens.map((i) => itemSel(sel, i)), descricao: foto.descricao });

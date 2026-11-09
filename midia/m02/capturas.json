@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-11-09T17:01:26.213Z",
+  "geradoEm": "2026-11-09T17:21:42.626Z",
   "arquivos": [
     {
       "arquivo": "02-0-topologia-fisica.png",
@@ -250,7 +250,7 @@
     {
       "arquivo": "02-3-zone-sel.png",
       "largura": 1920,
-      "altura": 3840,
+      "altura": 584,
       "descricao": "Seletor de interfaces com vlan10 e vlan20 escolhidas"
     },
     {
@@ -544,7 +544,7 @@
     {
       "arquivo": "02-6-ntp-sel.png",
       "largura": 1920,
-      "altura": 3965,
+      "altura": 584,
       "descricao": "Seletor de interfaces do servidor NTP com vlan10 e vlan20"
     },
     {

@@ -1308,10 +1308,10 @@ execute dhcp lease-list
 FGT-MTZ # execute dhcp lease-list
 vlan10
   IP                 MAC-Address        Hostname            VCI              SSID   AP   Expiry
-  10.10.10.100       00:09:0f:9c:e3:43  PC-USUARIO          Windows          -      -    Mon, 16 Nov 2026 17:00:31
+  10.10.10.100       00:09:0f:4f:05:8c  PC-USUARIO          Windows          -      -    Mon, 16 Nov 2026 17:20:48
 vlan30
   IP                 MAC-Address        Hostname            VCI              SSID   AP   Expiry
-  10.10.30.100       00:09:0f:2b:ef:14  NOTEBOOK-VISITA     Windows          -      -    Mon, 16 Nov 2026 17:00:31
+  10.10.30.100       00:09:0f:03:13:8d  NOTEBOOK-VISITA     Windows          -      -    Mon, 16 Nov 2026 17:20:48
 ```
 
 Por interface: o endereço, o MAC, o nome que o computador informou, o identificador do fabricante (VCI) e a validade. Para liberar uma concessão: `execute dhcp lease-clear <ip>`.

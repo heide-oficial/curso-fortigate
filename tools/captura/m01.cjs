@@ -101,7 +101,9 @@ const LISTA = 1250;
   const guardarCli = async (comando, chave = comando) => {
     const antes = (await s.cli([])).length;
     const tela = await s.cli(comando);
-    saidas[chave] = `${'FGT-MTZ # '}${tela.slice(antes).trim()}`.replace(/\n?\S+ # $/, '').replace(/^FGT-MTZ # \S?/, `FGT-MTZ # ${comando.charAt(0)}`);
+    // A primeira linha é o eco (incompleto) do comando: troca pelo prompt e pelo comando inteiros.
+    const resto = tela.slice(antes).split('\n').slice(1).join('\n').replace(/\n?\S+ # *$/, '');
+    saidas[chave] = `FGT-MTZ # ${comando}\n${resto}`.trimEnd();
   };
   const cliFrame = () => p.locator('.cli-modal .cli-frame').first();
   const diagrama = async () => { await s.voltar(); await s.limpo(false); await s.tela(2400, 1500); await s.enquadrar(); };

@@ -1,0 +1,53 @@
+{
+  "imagem": "01-4-system-settings.png",
+  "largura": 1920,
+  "altura": 1080,
+  "descricao": "System > Settings, aba General: hostname, fuso horário e NTP",
+  "pontos": [
+    {
+      "titulo": "System Settings",
+      "texto": "Em **System > Settings** ficam a identidade do equipamento e as opções gerais, em quatro abas: **General**, **Access**, **Device** e **Preference**.",
+      "principal": true,
+      "x": 260,
+      "y": 42,
+      "w": 1660,
+      "h": 1038
+    },
+    {
+      "titulo": "Hostname",
+      "texto": "O **hostname** já é FGT-MTZ. Com vários FortiGates, um bom padrão de nomes evita alterar o equipamento errado.",
+      "principal": false,
+      "x": 274,
+      "y": 97,
+      "w": 1060,
+      "h": 45
+    },
+    {
+      "titulo": "Time zone",
+      "texto": "O fuso horário da matriz: **America/Sao_Paulo**.",
+      "principal": false,
+      "x": 274,
+      "y": 319,
+      "w": 1060,
+      "h": 38
+    },
+    {
+      "titulo": "Set time",
+      "texto": "A hora vem de **NTP**. Hora errada causa erros de certificado, recusa de tokens de MFA, falhas de FSSO e logs impossíveis de correlacionar.",
+      "principal": false,
+      "x": 274,
+      "y": 357,
+      "w": 1060,
+      "h": 38
+    },
+    {
+      "titulo": "Select server",
+      "texto": "Na GUI, o servidor NTP é o do FortiGuard. **Servidores próprios só pela CLI**: um dos casos em que a CLI é necessária.",
+      "principal": false,
+      "x": 274,
+      "y": 395,
+      "w": 1060,
+      "h": 38
+    }
+  ]
+}

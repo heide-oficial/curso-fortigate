@@ -85,8 +85,8 @@ A GUI (*Graphical User Interface*) é a interface web de administração, acessa
 | **Security Fabric** | Integração com outros produtos | Topologia, Security Rating, automação, conectores |
 | **Log & Report** | Registros | Logs de tráfego, eventos e segurança; configuração de logs |
 
-:::figura midia/m01/01-1-tour-gui.mp4 "Vídeo curto percorrendo o menu lateral da GUI do FGT-MTZ, abrindo cada menu principal e usando a busca do menu"
-Um passeio pelo menu lateral. Repare que cada menu agrupa uma função e que a **busca** no topo do menu leva direto à página procurada.
+:::interativo midia/m01/01-1-menu-gui.json
+O menu lateral da GUI do FGT-MTZ. Passe o mouse (ou toque) em cada destaque para ver a função do menu.
 :::
 
 Repare na separação entre **Policy & Objects** e **Security Profiles**. A firewall policy decide se a conexão é **permitida**. O Security Profile decide o que acontece **com o conteúdo** da conexão permitida. Um perfil nunca libera algo que a policy bloqueou.
@@ -95,14 +95,14 @@ Algumas funções são **nativas** do FortiGate (firewall, VPN, filtros). Outras
 
 #### Elementos que aparecem em todas as telas
 
-:::figura midia/m01/01-1-elementos-gui.png "Tela da GUI com destaques numerados: (1) busca do menu, (2) ícone da console CLI, (3) notificações, (4) menu do administrador, (5) coluna Ref. em uma lista"
-Os elementos que você vai usar o tempo todo: (1) **busca do menu**, (2) **console CLI** dentro da GUI, (3) **notificações**, (4) **menu do administrador**, onde ficam backup, restauração e logout, e (5) a coluna **Ref.**, que mostra quantos objetos usam um item.
+:::interativo midia/m01/01-1-elementos-gui.json
+A barra superior: **busca**, **FortiAI**, **CLI**, **notificações** e o **menu do administrador**, onde ficam backup, restauração e logout.
 :::
 
 - **Dashboards:** painéis com widgets (System Information, Licenses, CPU, Memory, Sessions, Interfaces, Administrators). Você pode criar dashboards próprios e escolher os widgets.
 - **Busca do menu:** digite parte do nome ("dns", "admin", "firmware") para ir direto à página. Ajuda muito quando o menu muda entre versões.
-- **Console CLI:** abre um terminal da CLI dentro do navegador, sem precisar de SSH.
-- **Menu do administrador** (canto superior direito): **Configuration** (backup, restauração e revisões), troca de senha e logout.
+- **CLI:** abre a **CLI Console**, um terminal da CLI dentro do navegador, sem precisar de SSH.
+- **Menu do administrador** (canto superior direito): **Configuration** (backup, restauração e reset de fábrica), troca de senha e logout.
 - **Listas:** a maioria das páginas tem busca, filtros por coluna e a coluna **Ref.** (referências), essencial para saber se um objeto pode ser apagado (seção 01.3).
 
 ### 01.1.2. Modelos, plataformas e recursos disponíveis
@@ -125,8 +125,8 @@ Os processadores de aceleração são explicados no módulo 17. Por enquanto, gu
 
 O widget **System Information**, no dashboard **Status**, resume a identidade do equipamento:
 
-:::figura midia/m01/01-1-system-information.png "Dashboard Status com o widget System Information do FGT-MTZ: hostname, número de série, firmware, modo de operação, uptime e horário do sistema"
-O widget **System Information** mostra hostname, número de série, versão de firmware, modo de operação e horário. Ao lado, o widget **Licenses** mostra o estado de cada serviço FortiGuard (seção 01.6).
+:::interativo midia/m01/01-1-system-information.json
+O widget **System Information** do FGT-MTZ. Passe o mouse em cada linha para ver o que ela indica. Ao lado, o widget **Licenses** mostra o estado de cada serviço FortiGuard (seção 01.6).
 :::
 
 | Campo | O que indica |
@@ -152,10 +152,9 @@ A mesma informação, com mais detalhes, aparece no comando `get system status`.
 #### Na GUI: habilitando um recurso em Feature Visibility
 
 :::slides
-midia/m01/01-1-feature-visibility-1.png "Menu System com o item Feature Visibility destacado" | Acesse **System > Feature Visibility**.
-midia/m01/01-1-feature-visibility-2.png "Página Feature Visibility com a lista de recursos e a chave DNS Database destacada" | A página lista os recursos em grupos (*Core Features*, *Additional Features*). Localize **DNS Database** e ative a chave.
-midia/m01/01-1-feature-visibility-3.png "Botão Apply no rodapé da página Feature Visibility" | Clique em **Apply**. A alteração vale na hora.
-midia/m01/01-1-feature-visibility-4.png "Menu Network mostrando o novo item DNS Servers" | O item **Network > DNS Servers** passa a aparecer no menu. Ele será usado no módulo 02.
+midia/m01/01-1-feature-visibility-1.png "Página System > Feature Visibility com os recursos agrupados por área" | Em **System > Feature Visibility**, os recursos aparecem agrupados por área (*Network*, *Policy & objects* e outras). A chave de cada um indica se ele aparece no menu.
+midia/m01/01-1-feature-visibility-2.png "Chave DNS Database ativada em Feature Visibility" | Localize **DNS Database**, ative a chave e clique em **Apply**. A alteração vale na hora.
+midia/m01/01-1-feature-visibility-3.png "Menu Network com o novo item DNS Servers" | O item **Network > DNS Servers** passa a aparecer no menu. Ele será usado no módulo 02.
 :::
 
 Feature Visibility só altera a **interface**. Desabilitar a visibilidade de um recurso **não desliga** uma configuração que já está em uso. Ela continua funcionando, apenas fica fora da vista na GUI.
@@ -247,8 +246,8 @@ A console é o acesso "de último recurso". Funciona mesmo sem nenhuma configura
 - **Software:** qualquer emulador de terminal (PuTTY, SecureCRT, Tera Term, `screen` no Linux/macOS).
 - **Parâmetros:** 9600 bps, 8 bits de dados, sem paridade, 1 bit de parada, sem controle de fluxo (o famoso **9600 8N1**).
 
-:::figura midia/m01/01-2-putty-serial.png "Janela de configuração do PuTTY com Connection type Serial, porta COM3 e velocidade 9600"
-Configuração do emulador de terminal para a console: tipo **Serial**, porta COM do adaptador e velocidade **9600**.
+:::interativo midia/m01/01-2-putty-serial.json
+Configuração do PuTTY para a console: tipo **Serial**, porta **COM3** e velocidade **9600**. Passe o mouse em cada campo para ver a explicação.
 :::
 
 > **Na prática:** em uma VM, a "console" é a janela de console do hipervisor (VMware, Hyper-V, KVM) ou da nuvem. Ela tem o mesmo papel do cabo console.
@@ -268,13 +267,13 @@ Consulte o *Quick Start Guide* do seu modelo. Com o endereço em mãos, acesse `
 - **Usuário:** `admin`
 - **Senha:** em branco (apenas Enter)
 
-No primeiro login, o FortiOS **obriga a troca da senha** do `admin`. Escolha uma senha forte e guarde-a em um cofre de senhas. Essa conta é o seu acesso total ao equipamento.
+Num FortiGate de fábrica, o primeiro login do `admin` **obriga a troca da senha** antes de liberar qualquer outra ação. Na console, o FortiOS mostra *You are forced to change your password* e pede a nova senha duas vezes: **New Password** e **Confirm Password**. A senha não aparece enquanto é digitada. Escolha uma senha forte e guarde-a em um cofre de senhas: essa conta é o seu acesso total ao equipamento.
 
-:::figura midia/m01/01-2-primeiro-login.gif "Animação: tela de login da GUI, login como admin com senha em branco, tela obrigatória de troca de senha e entrada no assistente inicial"
-O primeiro login pela GUI: depois de entrar com `admin` e senha em branco, o FortiOS exige uma nova senha antes de qualquer outra ação.
+:::figura midia/m01/01-2-console-troca-senha.mp4 "Primeiro login pela console: admin com senha em branco, troca obrigatória de senha e prompt FGT-MTZ #"
+O primeiro login pela console do FGT-MTZ: usuário `admin`, senha em branco, troca obrigatória de senha e o prompt **`FGT-MTZ #`**.
 :::
 
-Na GUI, o primeiro login abre um **assistente de configuração inicial**. Ele ajuda com hostname, registro no FortiCare, verificação de firmware e escolha do dashboard. Você pode usá-lo, mas neste módulo faremos cada passo separadamente, para entender o que cada um faz.
+Na GUI, o primeiro login abre o **assistente de configuração inicial** (*FortiGate Setup*), com três passos: **Automatic Patch Upgrades** (atualização automática de patches), **Change Your Password** e **Initial Policy Configuration** (criar ou não uma policy de saída inicial). Se a senha já foi definida na console, o passo de troca de senha aparece como concluído.
 
 Outra opção é o **FortiExplorer**, aplicativo da Fortinet (computador e celular) que se conecta ao FortiGate por USB nos modelos compatíveis e facilita a configuração inicial em campo.
 
@@ -294,7 +293,15 @@ end
 
 Em palavras: "na tabela de interfaces, edite a interface `mgmt`, use endereço fixo 10.10.99.1/24, aceite PING, HTTPS e SSH de gerência e salve". Se o seu equipamento não tiver uma porta `mgmt`, use uma porta livre, como `port8`. A estrutura desses comandos é explicada na seção 01.3.
 
+:::figura midia/m01/01-2-console-mgmt.png "Configuração do endereço 10.10.99.1/24 na interface mgmt pela console, no PuTTY do notebook"
+A configuração da interface `mgmt` digitada na console, logo depois do primeiro login.
+:::
+
 Da estação 10.10.99.10, acesse `https://10.10.99.1`. A partir daqui, o trabalho segue pela GUI.
+
+:::figura midia/m01/01-2-login-gui.png "Página de login da GUI do FGT-MTZ aberta no navegador do ADMIN-PC em https://10.10.99.1"
+A página de login da GUI, aberta no navegador do ADMIN-PC. Num FortiGate real, o navegador ainda alerta que o certificado não é confiável.
+:::
 
 ### 01.2.2. Reset de fábrica e recuperação de senha
 
@@ -314,7 +321,7 @@ O FortiGate pede confirmação e reinicia. Depois disso:
 - a senha do `admin` volta a ser em branco;
 - o firmware **não** muda.
 
-As variantes do comando (preservar parte da configuração ou, em VMs, a licença) estão no Guia de comandos CLI desta seção.
+Pela GUI, o mesmo reset fica no **menu do administrador > Configuration > Reset to factory defaults**. As variantes do comando (preservar parte da configuração ou, em VMs, a licença) estão no Guia de comandos CLI desta seção.
 
 > **Atenção:** o reset de fábrica é irreversível. **Faça backup antes** (seção 01.7). Em equipamentos remotos, o reset também apaga a configuração que permite acessá-los: você vai precisar de alguém no local.
 
@@ -431,11 +438,8 @@ Por isso, mesmo focando na GUI, você precisa entender como a CLI está organiza
 
 Quase toda página de configuração da GUI segue o mesmo padrão: uma **lista** de objetos com botões **Create New**, **Edit**, **Clone** e **Delete**, uma busca e colunas que podem ser filtradas e reorganizadas.
 
-:::slides
-midia/m01/01-3-lista-objetos-1.png "Página Policy & Objects > Addresses com a barra de botões Create New, Edit, Clone e Delete destacada" | Em qualquer lista, a barra superior traz **Create New**, **Edit**, **Clone** e **Delete**. Os botões que dependem de seleção ficam ativos quando você seleciona um item.
-midia/m01/01-3-lista-objetos-2.png "Busca da lista filtrando objetos pelo texto digitado" | A **busca** filtra a lista pelo texto digitado em qualquer coluna.
-midia/m01/01-3-lista-objetos-3.png "Menu de configuração de colunas aberto, com a opção de exibir a coluna Ref." | Clique com o botão direito no cabeçalho para **escolher colunas**. A coluna **Ref.** mostra quantos objetos usam cada item.
-midia/m01/01-3-lista-objetos-4.png "Janela de referências aberta ao clicar no número da coluna Ref., listando as policies que usam o objeto" | Clicar no número da coluna **Ref.** mostra **quem usa** o objeto. Antes de apagar ou alterar algo, confira aqui.
+:::interativo midia/m01/01-3-lista-objetos.json
+A lista **Policy & Objects > Addresses**, com o padrão que se repete em quase toda a GUI. Passe o mouse nos destaques.
 :::
 
 #### Abrindo a CLI
@@ -444,10 +448,10 @@ Você pode acessar a CLI por três caminhos:
 
 - **Console** (cabo serial), seção 01.2;
 - **SSH** para um endereço com `ssh` habilitado em *Administrative Access*;
-- **CLI Console da GUI**, pelo ícone `>_` na barra superior.
+- **CLI Console da GUI**, pelo botão **CLI** (`>_`) da barra superior, opção **CLI Console**.
 
 :::figura midia/m01/01-3-cli-console-gui.png "CLI Console aberta dentro da GUI, mostrando o prompt FGT-MTZ # e a saída de um comando"
-A **CLI Console** abre um terminal dentro do navegador. Ela usa a sessão e as permissões do administrador logado na GUI.
+A **CLI Console** abre um terminal dentro do navegador, com abas para várias sessões (botão **+**). Ela usa a sessão e as permissões do administrador logado na GUI.
 :::
 
 #### Comandos de consulta
@@ -640,23 +644,39 @@ No modo `revert`, se você não salvar explicitamente com `execute cfg save` den
 
 #### Na GUI: hostname e hora
 
-:::slides
-midia/m01/01-4-system-settings-1.png "Página System > Settings com o campo Host name preenchido com FGT-MTZ" | Em **System > Settings**, preencha **Host name** com `FGT-MTZ`.
-midia/m01/01-4-system-settings-2.png "Seção System Time da página System > Settings com o seletor de Time Zone aberto" | Na seção **System Time**, escolha o **Time Zone** da sua localidade.
-midia/m01/01-4-system-settings-3.png "Seção System Time com Set Time em NTP, opção Custom e servidor a.ntp.br preenchido, e campo Sync interval" | Em **Set Time**, escolha **NTP**. Use os servidores do FortiGuard ou selecione **Custom** e informe servidores próprios (na Atlas, `a.ntp.br`). Ajuste o **Sync interval** se necessário.
-midia/m01/01-4-system-settings-4.png "Botão Apply e o prompt da CLI Console mostrando FGT-MTZ # após a alteração" | Clique em **Apply**. O novo hostname aparece no topo da GUI e no prompt da CLI.
+:::interativo midia/m01/01-4-system-settings.json
+**System > Settings**, aba **General**: hostname, fuso horário e NTP. Passe o mouse nos destaques.
 :::
 
-Neste módulo, o FortiGate é **cliente** NTP. No módulo 02 ele passa a ser também **servidor** NTP para os clientes da rede (a opção que permite isso também fica nesta página).
+A página tem quatro abas: **General** (hora, e-mail, modo de operação), **Access** (portas, timeout e política de senha dos administradores, seção 01.4.2), **Device** e **Preference**.
+
+Neste módulo, o FortiGate é **cliente** NTP. No módulo 02 ele também passa a ser **servidor** NTP para os clientes da rede (a opção **Setup device as local NTP server** fica nesta mesma página).
+
+#### Servidor NTP próprio: só pela CLI
+
+Na GUI do FortiOS 8.0, o campo **Select server** usa o servidor do FortiGuard. Para usar servidores próprios, como o **NTP.br** usado pela Atlas, a configuração é feita **pela CLI**. É um dos casos em que a CLI é necessária:
+
+```
+config system ntp
+    set type custom
+    config ntpserver
+        edit 1
+            set server "a.ntp.br"
+        next
+    end
+end
+```
+
+:::figura midia/m01/01-4-ntp-cli.png "CLI Console com a configuração do servidor NTP a.ntp.br"
+O servidor NTP da Atlas configurado pela CLI Console da GUI.
+:::
 
 > **Na prática:** se o FortiGate ainda não tem acesso à Internet, a sincronização NTP só vai funcionar depois que houver rota e conectividade (módulo 02). Em redes isoladas, aponte para um servidor NTP interno.
 
 #### Na GUI: DNS do sistema
 
-:::slides
-midia/m01/01-4-dns-1.png "Página Network > DNS com a opção Use FortiGuard Servers selecionada" | Em **Network > DNS**, a opção padrão é **Use FortiGuard Servers**, que usa os servidores DNS da Fortinet.
-midia/m01/01-4-dns-2.png "Página Network > DNS com a opção Specify selecionada e campos Primary DNS Server e Secondary DNS Server" | Para usar servidores próprios, escolha **Specify** e preencha **Primary** e **Secondary DNS Server**. Em ambientes com Active Directory, é comum apontar para o DNS interno, para que o FortiGate resolva nomes da rede local.
-midia/m01/01-4-dns-3.png "Opções de protocolo do DNS do sistema, com DNS over TLS destacado" | O DNS do sistema pode usar transporte cifrado (**DNS over TLS** ou **HTTPS**) quando o servidor suporta. Clique em **Apply**.
+:::interativo midia/m01/01-4-dns.json
+**Network > DNS**: os servidores DNS do próprio FortiGate e os protocolos de consulta. Passe o mouse nos destaques.
 :::
 
 #### Verificação
@@ -696,10 +716,8 @@ Cada interface tem a lista de serviços administrativos que aceita:
 | **RADIUS Accounting** | Receber accounting RADIUS (RSSO, módulo 08). |
 | **Speed Test / Probe Response** | Testes de banda e probes de SLA (módulo 14). |
 
-:::slides
-midia/m01/01-4-admin-access-1.png "Lista Network > Interfaces com a interface mgmt selecionada e o botão Edit destacado" | Em **Network > Interfaces**, selecione a interface e clique em **Edit**.
-midia/m01/01-4-admin-access-2.png "Tela de edição da interface mgmt com a seção Administrative Access e as caixas PING, HTTPS e SSH marcadas" | Na seção **Administrative Access**, marque somente o necessário. Na interface de gerência da Atlas: **PING**, **HTTPS** e **SSH**.
-midia/m01/01-4-admin-access-3.png "Tela de edição da interface WAN com todas as caixas de Administrative Access desmarcadas" | Em interfaces voltadas para a Internet (módulo 02), deixe as opções de gerência **desmarcadas**.
+:::interativo midia/m01/01-4-admin-access.json
+Edição da interface **mgmt** em **Network > Interfaces**: em **Administrative Access**, só **HTTPS**, **SSH** e **PING**. Passe o mouse nos destaques.
 :::
 
 Regra de ouro: **habilite somente o necessário, somente nas interfaces necessárias**. A interface WAN, especialmente, não deveria aceitar HTTPS e SSH de gerência vindos de qualquer lugar da Internet. Se a gerência remota for necessária, prefira acessar por VPN (módulo 13) ou restrinja com trusted hosts e local-in policies.
@@ -708,10 +726,10 @@ Regra de ouro: **habilite somente o necessário, somente nas interfaces necessá
 
 #### 2. Configurações de administração
 
-Ficam em **System > Settings**, seção **Administration Settings**:
+Ficam em **System > Settings**, aba **Access**, seção **Administration settings**:
 
-:::figura midia/m01/01-4-administration-settings.png "Seção Administration Settings de System > Settings com os campos HTTP port, HTTPS port, Redirect to HTTPS, SSH port e Idle timeout"
-Em **Administration Settings**, você define as portas da GUI e do SSH, o redirecionamento de HTTP para HTTPS e o **Idle timeout**.
+:::interativo midia/m01/01-4-administration-settings.json
+Aba **Access** de **System > Settings**: portas da GUI e do SSH e **Idle timeout**, aqui alterado para 15 minutos.
 :::
 
 | Opção | Efeito |
@@ -729,10 +747,8 @@ Mudar a porta **não é** uma proteção real: um varredor de portas encontra o 
 
 Trusted hosts são as **redes de origem permitidas para cada administrador**. São configurados na conta do administrador, com até dez entradas:
 
-:::slides
-midia/m01/01-4-trusted-hosts-1.png "Lista System > Administrators com a conta admin selecionada e o botão Edit destacado" | Em **System > Administrators**, edite o administrador.
-midia/m01/01-4-trusted-hosts-2.png "Tela de edição do administrador com a opção Restrict login to trusted hosts ativada e Trusted Host 1 igual a 10.10.99.0/24" | Ative **Restrict login to trusted hosts** e informe a rede em **Trusted Host 1** (na Atlas, `10.10.99.0/24`). Use o **+** para adicionar mais redes.
-midia/m01/01-4-trusted-hosts-3.png "Mensagem de falha de login ao tentar acessar a partir de uma origem fora dos trusted hosts" | Um login a partir de uma origem fora da lista é recusado, e o evento fica registrado nos logs de sistema.
+:::figura midia/m01/01-5-admin-conta.png "Criação de um administrador com a opção Restrict login to trusted hosts"
+Em **System > Administrators**, cada conta tem a opção **Restrict login to trusted hosts**. Ao ativá-la, você informa as redes de origem permitidas (na Atlas, `10.10.99.0/24`).
 :::
 
 Como funciona na prática:
@@ -753,7 +769,7 @@ Muitas políticas de segurança exigem um aviso legal antes do login. O FortiOS 
 
 1. Da estação 10.10.99.10, acesse a GUI e o SSH: devem funcionar.
 2. De outra origem, ou por uma interface sem HTTPS em Administrative Access, tente acessar: não deve funcionar.
-3. Consulte os eventos de login em **Log & Report > System Events** (em algumas versões, **Log & Report > Events**, filtro *System Events*). Logins bem-sucedidos e recusados aparecem com usuário, origem e método.
+3. Consulte os eventos de login em **Log & Report > System Events**. Logins bem-sucedidos e recusados aparecem com usuário, origem e método: na console, `console`; pela GUI, `https(IP de origem)`.
 
 :::figura midia/m01/01-4-log-login.png "Log & Report > System Events filtrado por logins administrativos, com uma linha de login bem-sucedido e outra de login recusado"
 Os eventos de login administrativo mostram o usuário, o endereço de origem, a interface e o resultado. É a primeira evidência a consultar quando alguém não consegue entrar.
@@ -929,19 +945,18 @@ As áreas são: Security Fabric, FortiView, User & Device, Firewall, Log & Repor
 
 #### Na GUI: criando um perfil somente leitura
 
-:::slides
-midia/m01/01-5-admin-profile-1.png "Lista System > Admin Profiles com os perfis super_admin e prof_admin e o botão Create New destacado" | Em **System > Admin Profiles**, clique em **Create New**.
-midia/m01/01-5-admin-profile-2.png "Formulário New Admin Profile com Name Atlas-Leitura e a tabela Access Permissions com a coluna Read marcada em todas as áreas" | Dê o nome `Atlas-Leitura`. Na tabela **Access Permissions**, use o atalho do cabeçalho para marcar **Read** em todas as áreas.
-midia/m01/01-5-admin-profile-3.png "Formulário de perfil Atlas-Operador-Firewall com Firewall em Custom, Policy em Read/Write e os demais objetos em Read" | Para um operador que só altera policies, crie `Atlas-Operador-Firewall` com **Firewall** em **Custom**: *Policy* em **Read/Write**, os demais itens em **Read**. As outras áreas ficam em **Read** ou **None**.
-midia/m01/01-5-admin-profile-4.png "Opção Override Idle Timeout no rodapé do formulário de perfil" | Opcionalmente, **Override Idle Timeout** define um tempo de inatividade diferente para as contas desse perfil. Clique em **OK**.
+:::figura midia/m01/01-5-admin-profiles.png "Lista System > Admin Profiles com os perfis padrão super_admin e prof_admin"
+Num FortiGate de fábrica, **System > Admin Profiles** traz só os perfis padrão: **super_admin** e **prof_admin**.
+:::
+
+:::interativo midia/m01/01-5-admin-profile.json
+Criação do perfil **Atlas-Leitura**: em **Create new**, o atalho **Set All > Read** marca somente leitura em todas as áreas. Passe o mouse nos destaques.
 :::
 
 #### Na GUI: criando a conta
 
-:::slides
-midia/m01/01-5-admin-conta-1.png "Lista System > Administrators com o menu Create New aberto e a opção Administrator destacada" | Em **System > Administrators**, clique em **Create New > Administrator**.
-midia/m01/01-5-admin-conta-2.png "Formulário New Administrator com Username carla.suporte, Type Local User e campos de senha" | Informe o **Username** (`carla.suporte`), escolha o tipo **Local User** e defina a senha.
-midia/m01/01-5-admin-conta-3.png "Campo Administrator profile com Atlas-Leitura selecionado e Restrict login to trusted hosts ativado com 10.10.99.0/24" | Selecione o perfil **Atlas-Leitura** e restrinja os trusted hosts a `10.10.99.0/24`. Clique em **OK**.
+:::interativo midia/m01/01-5-admin-conta.json
+Criação do administrador **carla.suporte** em **System > Administrators > Create new > Administrator**. Passe o mouse nos destaques.
 :::
 
 Os outros tipos de conta (autenticadas em LDAP, RADIUS ou por certificado) são configurados no módulo 07, depois que você aprender os servidores de autenticação.
@@ -955,10 +970,6 @@ Os outros tipos de conta (autenticadas em LDAP, RADIUS ou por certificado) são 
 
 #### Verificação
 
-:::figura midia/m01/01-5-teste-leitura.png "GUI aberta com a conta carla.suporte em janela anônima, mostrando a lista de interfaces sem os botões de criar e editar"
-Com a conta `carla.suporte` (perfil somente leitura), a GUI mostra a configuração, mas os botões de criação e edição ficam indisponíveis.
-:::
-
 - Faça login com `carla.suporte` em uma janela anônima: ela vê a configuração, mas não consegue alterar.
 - O widget **Administrators** do dashboard mostra quem está conectado e por qual método (HTTPS, SSH, console).
 - Toda alteração gera um log com o administrador, a origem e o que foi alterado, em **Log & Report > System Events**.
@@ -967,10 +978,10 @@ Com a conta `carla.suporte` (perfil somente leitura), a GUI mostra a configuraç
 
 #### Política de senha
 
-Por padrão, o FortiOS não impõe complexidade nas senhas de administradores. Defina uma política em **System > Settings**, seção **Password Policy**:
+A política de senha dos administradores fica em **System > Settings**, aba **Access**, seção **Security**:
 
-:::figura midia/m01/01-5-password-policy.png "Seção Password Policy de System > Settings com Minimum length 12, exigência de maiúsculas, minúsculas, números e caracteres especiais e expiração em 90 dias"
-Na **Password Policy**, defina tamanho mínimo, tipos de caracteres exigidos e expiração. Ela pode valer para senhas de administradores e para chaves pré-compartilhadas de VPN.
+:::figura midia/m01/01-5-password-policy.png "Seção Security da aba Access com a política de senha dos administradores"
+Na seção **Security**, você define o tamanho mínimo, os tipos de caracteres exigidos, o histórico de senhas e a expiração. A política pode valer para senhas de administradores e para chaves pré-compartilhadas de VPN (**Password scope**).
 :::
 
 A política vale para as **próximas** definições de senha. Senhas existentes que não atendem à regra serão exigidas na próxima troca.
@@ -1129,10 +1140,12 @@ O equipamento é registrado no portal **FortiCare** (support.fortinet.com) pelo 
 
 #### Na GUI: verificando licenças
 
-:::slides
-midia/m01/01-6-licencas-1.png "Widget Licenses no dashboard Status mostrando FortiCare Support, Firmware & General Updates, IPS, AntiVirus e Web Filtering com ícones de status" | No dashboard **Status**, o widget **Licenses** mostra cada serviço com um ícone de status: licenciado, expirando, expirado ou não licenciado.
-midia/m01/01-6-licencas-2.png "Página System > FortiGuard com a tabela License Information listando cada serviço, versão da base e data de expiração" | Em **System > FortiGuard**, a tabela **License Information** detalha cada serviço, a versão da base e a **data de expiração** do contrato.
-midia/m01/01-6-licencas-3.png "Linha de um serviço expandida em License Information, mostrando versões de engine e base e data da última atualização" | Expanda um serviço para ver as versões de engine e de base e quando foi a última atualização.
+:::figura midia/m01/01-6-licencas-widget.png "Widget Licenses do dashboard Status com Support e Updates licenciados e os serviços de segurança não licenciados"
+No dashboard **Status**, o widget **Licenses** mostra cada serviço: em verde, licenciado; em cinza, não licenciado. O FGT-MTZ de fábrica tem só o suporte FortiCare (**Support** e **Updates**).
+:::
+
+:::figura midia/m01/01-6-fortiguard.png "Página System > FortiGuard com as assinaturas do equipamento"
+Em **System > FortiGuard**, a aba **Subscriptions** detalha as assinaturas, com status e data de expiração.
 :::
 
 ### 01.6.2. Atualização de bases e consulta de rating
@@ -1144,18 +1157,12 @@ O FortiGate fala com o FortiGuard de duas formas diferentes, e é importante dis
 1. **Download de atualizações:** bases de AV, IPS, aplicações e ISDB são **baixadas** e ficam no equipamento. Os perfis consultam essa cópia local. Se o FortiGuard ficar inacessível por um tempo, o AV e o IPS continuam funcionando com a última base baixada, só que ficam desatualizados.
 2. **Consulta em tempo real (rating):** o Web Filter e o DNS Filter **perguntam** ao FortiGuard, a cada novo site ou domínio, em qual categoria ele está. Existe cache, mas sem a consulta não há categoria para sites novos. O perfil então aplica a ação configurada para **erro de rating** (permitir ou bloquear, módulo 10).
 
-:::figura midia/m01/01-6-diagrama-fortiguard.png "Diagrama comparando download periódico de bases (AV, IPS, aplicações, ISDB) do FortiGuard para o FortiGate com consultas de rating em tempo real feitas pelo Web Filter e DNS Filter"
-À esquerda, as bases baixadas periodicamente e usadas localmente. À direita, as consultas feitas em tempo real a cada novo site ou domínio.
-:::
-
 Essa diferença explica sintomas diferentes: sem comunicação com o FortiGuard, o AV continua bloqueando vírus conhecidos, mas o Web Filter pode deixar passar (ou bloquear) todos os sites sem classificação.
 
-#### Na GUI: configurando as atualizações
+#### Na GUI: atualizações
 
-:::slides
-midia/m01/01-6-updates-1.png "Seção FortiGuard Updates de System > FortiGuard com Scheduled updates ativado e frequência Automatic" | Em **System > FortiGuard**, seção **FortiGuard Updates**, mantenha **Scheduled updates** ativado e escolha a frequência (automática, a cada X horas, diária ou semanal).
-midia/m01/01-6-updates-2.png "Botão Update Licenses & Definitions Now destacado" | Para forçar uma atualização na hora, use **Update Licenses & Definitions Now**.
-midia/m01/01-6-updates-3.png "Tabela License Information após a atualização, com a data da última atualização recente em AntiVirus e IPS" | Depois da atualização, confira em **License Information** se as versões e a data da última atualização mudaram.
+:::figura midia/m01/01-6-updates.png "Aba FortiGuard settings com o agendamento das atualizações e as opções de filtragem e servidores"
+Na aba **FortiGuard settings** ficam o agendamento das atualizações (**Scheduled updates**), as opções de consulta de rating e os servidores FortiGuard usados.
 :::
 
 Nas versões atuais, o FortiGate usa por padrão os servidores **anycast** do FortiGuard, com comunicação por HTTPS. Em redes que restringem a saída, essas informações definem o que precisa ser liberado no firewall de borda (detalhes no Guia de comandos CLI).
@@ -1282,19 +1289,13 @@ Por isso existe o **backup criptografado**: ao gerar o backup, você define uma 
 
 #### Na GUI: fazendo o backup
 
-:::slides
-midia/m01/01-7-backup-1.png "Menu do administrador aberto no canto superior direito, com Configuration expandido e a opção Backup destacada" | Abra o **menu do administrador** (canto superior direito) e escolha **Configuration > Backup**.
-midia/m01/01-7-backup-2.png "Janela Backup System Configuration com destino Local PC e a opção Encryption ativada com campos de senha" | Escolha o destino (**Local PC** ou **USB**), ative **Encryption** e defina a senha.
-midia/m01/01-7-backup-3.png "Navegador mostrando o download do arquivo de backup .conf concluído" | Clique em **OK**. O arquivo `.conf` é baixado. Guarde-o fora do equipamento e a senha em outro lugar.
+:::interativo midia/m01/01-7-backup.json
+**Menu do administrador > Configuration > Backup**: destino e criptografia do arquivo. Passe o mouse nos destaques.
 :::
 
 #### Revisões de configuração
 
 Além do backup manual, o FortiGate pode guardar **revisões** internas da configuração, quando há armazenamento disponível. Em **Configuration > Revisions** (menu do administrador), você vê as revisões, compara duas delas e restaura uma revisão.
-
-:::figura midia/m01/01-7-revisions-diff.png "Tela Configuration > Revisions com duas revisões selecionadas e a comparação (diff) mostrando a linha do hostname alterada"
-A comparação entre revisões mostra exatamente o que mudou de uma para outra. É uma forma rápida de descobrir "o que alguém alterou ontem".
-:::
 
 O FortiGate também pode criar revisões automaticamente quando um administrador sai e antes de uma atualização de firmware. Essas opções são ativadas pela CLI (Guia de comandos CLI).
 
@@ -1302,10 +1303,7 @@ O FortiGate também pode criar revisões automaticamente quando um administrador
 
 #### Na GUI: restauração
 
-:::slides
-midia/m01/01-7-restore-1.png "Menu do administrador com Configuration > Restore destacado" | No **menu do administrador**, escolha **Configuration > Restore**.
-midia/m01/01-7-restore-2.png "Janela Restore System Configuration com o arquivo selecionado e o campo de senha preenchido" | Selecione o arquivo e informe a senha, se for criptografado. Clique em **OK**. O FortiGate **reinicia** ao final.
-:::
+No **menu do administrador > Configuration > Restore**, selecione o arquivo (**Upload**) e informe a senha, se o backup for criptografado. Clique em **OK**: o FortiGate substitui a configuração atual.
 
 Regras de restauração:
 
@@ -1342,10 +1340,6 @@ Antes de qualquer atualização, leia o **release notes** da versão de destino.
 
 Não se deve "pular" livremente de uma versão antiga para uma muito nova. Cada salto converte a configuração, e algumas conversões só funcionam a partir de versões intermediárias. A Fortinet oferece a ferramenta **Upgrade Path** no portal de suporte: você informa o modelo, a versão atual e a de destino, e ela mostra a sequência de versões intermediárias recomendada.
 
-:::figura midia/m01/01-7-upgrade-path-tool.png "Ferramenta Upgrade Path do portal de suporte Fortinet com modelo, versão atual e versão de destino preenchidos e a sequência recomendada exibida"
-A ferramenta **Upgrade Path** mostra os saltos intermediários recomendados entre a versão atual e a de destino.
-:::
-
 > **Dica para a prova:** atualizar fora do caminho recomendado pode causar perda ou corrupção de configuração. Siga o upgrade path e faça backup antes.
 
 #### Procedimento de atualização
@@ -1357,12 +1351,16 @@ A ferramenta **Upgrade Path** mostra os saltos intermediários recomendados entr
 5. **Atualize pela GUI** (passo a passo abaixo).
 6. **Valide:** confira a versão no widget System Information, repita os testes de referência, verifique os logs de eventos e compare a configuração com o backup.
 
-:::slides
-midia/m01/01-7-firmware-1.png "Página System > Firmware & Registration com o FGT-MTZ listado, versão atual e botão Upgrade" | Acesse **System > Firmware & Registration** (o nome do menu pode variar entre versões), selecione o equipamento e clique em **Upgrade**.
-midia/m01/01-7-firmware-2.png "Janela de upgrade com as abas Latest, All Upgrades e File Upload e uma versão Mature selecionada" | Escolha a versão. As imagens oficiais vêm do FortiGuard (**Latest** ou **All Upgrades**), ou você pode enviar um arquivo baixado do portal de suporte (**File Upload**).
-midia/m01/01-7-firmware-3.png "Tela de confirmação do upgrade mostrando o caminho de atualização com versões intermediárias e a opção de backup da configuração" | A GUI mostra o caminho de atualização, inclusive versões intermediárias, e oferece fazer o **backup** antes. Confirme.
-midia/m01/01-7-firmware-4.png "Widget System Information após o reboot mostrando a nova versão de firmware" | Após o reinício, confirme a nova versão no widget **System Information** e execute os testes de validação.
+:::figura midia/m01/01-7-firmware.png "Página System > Firmware & Registration com o FGT-MTZ, sua versão e o status de atualização"
+**System > Firmware & Registration** mostra a versão de cada equipamento, o registro e o status de atualização.
 :::
+
+Para atualizar pela GUI:
+
+1. Selecione o equipamento e clique em **Upgrade**.
+2. Escolha a versão. As imagens oficiais vêm do FortiGuard, ou você pode enviar um arquivo baixado do portal de suporte.
+3. A GUI mostra o caminho de atualização, inclusive versões intermediárias, e oferece fazer o **backup** antes. Confirme.
+4. Após o reinício, confirme a nova versão no widget **System Information** e execute os testes de validação.
 
 O FortiOS verifica a **assinatura digital** da imagem e alerta se ela não for oficial da Fortinet. Baixe imagens somente do FortiGuard ou do portal de suporte.
 
@@ -1384,10 +1382,6 @@ Se o firmware estiver corrompido e o equipamento não inicializar, ainda é poss
 2. Conectado à console, reinicie o equipamento e **interrompa o boot** pressionando uma tecla quando a mensagem aparecer.
 3. No menu, configure os parâmetros TFTP (IP do servidor, IP local temporário, máscara, nome do arquivo) e inicie a transferência. As letras e opções do menu variam entre modelos e versões de BIOS; a opção de ajuda do menu lista todas.
 4. Ao final, o equipamento grava a imagem e reinicia.
-
-:::figura midia/m01/01-7-menu-boot.png "Console serial exibindo o menu de boot do FortiGate com as opções de configurar TFTP, iniciar transferência, formatar e sair"
-O menu de boot, acessado pela console ao interromper a inicialização. As opções variam conforme o modelo e a versão da BIOS.
-:::
 
 O menu de boot também tem a opção de **formatar** o dispositivo de boot, que apaga firmware e configuração. Use somente quando for essa a recomendação, e com o backup em mãos.
 
@@ -1481,15 +1475,16 @@ Em VMs, a saída e o comportamento podem ser diferentes.
 
 ### Parte 3 — Hostname, hora e DNS
 
-1. Em **System > Settings**, defina o hostname `FGT-MTZ`, o fuso horário e o NTP com o servidor `a.ntp.br`.
-2. Confirme o novo hostname no topo da GUI e no prompt da CLI Console.
-3. Em **Network > DNS**, mantenha os servidores FortiGuard ou especifique os servidores da Atlas.
+1. Em **System > Settings**, aba **General**, confira o hostname `FGT-MTZ` e o fuso horário.
+2. Pela **CLI Console**, configure o servidor NTP `a.ntp.br` (seção 01.4.1).
+3. Confirme o hostname no topo da GUI e no prompt da CLI Console.
+4. Em **Network > DNS**, mantenha os servidores FortiGuard ou especifique os servidores da Atlas.
 
 ### Parte 4 — Acesso administrativo seguro
 
-1. Em **System > Settings > Administration Settings**, defina o **Idle timeout** em 15 minutos e confirme o redirecionamento para HTTPS.
+1. Em **System > Settings**, aba **Access**, defina o **Idle timeout** em 15 minutos e confirme o redirecionamento para HTTPS.
 2. Na interface `mgmt`, confirme que apenas **PING**, **HTTPS** e **SSH** estão marcados em **Administrative Access**.
-3. Ative a **Password Policy** (mínimo de 12 caracteres, com maiúsculas, minúsculas, números e caracteres especiais).
+3. Na mesma aba, seção **Security**, confira a política de senha (mínimo de 12 caracteres, com maiúsculas, minúsculas, números e caracteres especiais).
 4. Pelo Guia de comandos CLI da seção 01.5, ajuste o bloqueio por tentativas para 300 segundos.
 
 ### Parte 5 — Administradores e perfis
@@ -1509,10 +1504,9 @@ Em VMs, a saída e o comportamento podem ser diferentes.
 
 ### Parte 7 — Backup e plano de firmware
 
-1. Gere um **backup criptografado** pela GUI e guarde a senha separadamente.
+1. Gere um **backup criptografado** pela GUI (**Configuration > Backup**, opção **Encryption**) e guarde a senha separadamente.
 2. Gere também um backup **não** criptografado e abra em um editor de texto: identifique a linha `#config-version`, o bloco de administradores e o formato das senhas (`ENC`). Depois, apague esse arquivo.
-3. Em **Configuration > Revisions**, compare duas revisões e localize a alteração de hostname.
-4. Escreva um **plano de atualização** para a próxima versão disponível do seu FortiOS: versão de destino, upgrade path, itens do release notes que afetam a Atlas, testes de validação e procedimento de retorno. (A execução do upgrade é opcional neste módulo.)
+3. Escreva um **plano de atualização** para a próxima versão disponível do seu FortiOS: versão de destino, upgrade path, itens do release notes que afetam a Atlas, testes de validação e procedimento de retorno. (A execução do upgrade é opcional neste módulo.)
 
 ---
 
@@ -1636,70 +1630,41 @@ Você concluiu o módulo 01 se consegue:
 
 ---
 
-## Lista de capturas do módulo
+## Mídias do módulo
 
-Capturas a produzir no laboratório para este módulo. Enquanto o arquivo não existir, o visualizador mostra um quadro de captura pendente com esta descrição.
+Todas as mídias deste módulo são geradas a partir do roteiro do modo aula do laboratório (`tools/captura/capturar.cjs`). As telas interativas usam um arquivo `.json` com a posição e a explicação de cada destaque.
 
-| Seção | Arquivo | Tipo | O que mostrar |
-|---|---|---|---|
-| Abertura | `midia/m01/00-topologia-gerencia.png` | Imagem | Diagrama: estação do administrador (10.10.99.10) ligada à porta mgmt do FGT-MTZ (10.10.99.1) e notebook ligado à porta CONSOLE |
-| 01.1 | `midia/m01/01-1-tour-gui.mp4` | Vídeo | Vídeo curto percorrendo o menu lateral da GUI do FGT-MTZ, abrindo cada menu principal e usando a busca do menu |
-| 01.1 | `midia/m01/01-1-elementos-gui.png` | Imagem | Tela da GUI com destaques numerados: (1) busca do menu, (2) ícone da console CLI, (3) notificações, (4) menu do administrador, (5) coluna Ref. em uma lista |
-| 01.1 | `midia/m01/01-1-system-information.png` | Imagem | Dashboard Status com o widget System Information do FGT-MTZ: hostname, número de série, firmware, modo de operação, uptime e horário do sistema |
-| 01.1 | `midia/m01/01-1-feature-visibility-1.png` | Imagem | Menu System com o item Feature Visibility destacado |
-| 01.1 | `midia/m01/01-1-feature-visibility-2.png` | Imagem | Página Feature Visibility com a lista de recursos e a chave DNS Database destacada |
-| 01.1 | `midia/m01/01-1-feature-visibility-3.png` | Imagem | Botão Apply no rodapé da página Feature Visibility |
-| 01.1 | `midia/m01/01-1-feature-visibility-4.png` | Imagem | Menu Network mostrando o novo item DNS Servers |
-| 01.2 | `midia/m01/01-2-putty-serial.png` | Imagem | Janela de configuração do PuTTY com Connection type Serial, porta COM3 e velocidade 9600 |
-| 01.2 | `midia/m01/01-2-primeiro-login.gif` | GIF | Animação: tela de login da GUI, login como admin com senha em branco, tela obrigatória de troca de senha e entrada no assistente inicial |
-| 01.3 | `midia/m01/01-3-lista-objetos-1.png` | Imagem | Página Policy & Objects > Addresses com a barra de botões Create New, Edit, Clone e Delete destacada |
-| 01.3 | `midia/m01/01-3-lista-objetos-2.png` | Imagem | Busca da lista filtrando objetos pelo texto digitado |
-| 01.3 | `midia/m01/01-3-lista-objetos-3.png` | Imagem | Menu de configuração de colunas aberto, com a opção de exibir a coluna Ref. |
-| 01.3 | `midia/m01/01-3-lista-objetos-4.png` | Imagem | Janela de referências aberta ao clicar no número da coluna Ref., listando as policies que usam o objeto |
-| 01.3 | `midia/m01/01-3-cli-console-gui.png` | Imagem | CLI Console aberta dentro da GUI, mostrando o prompt FGT-MTZ # e a saída de um comando |
-| 01.4 | `midia/m01/01-4-system-settings-1.png` | Imagem | Página System > Settings com o campo Host name preenchido com FGT-MTZ |
-| 01.4 | `midia/m01/01-4-system-settings-2.png` | Imagem | Seção System Time da página System > Settings com o seletor de Time Zone aberto |
-| 01.4 | `midia/m01/01-4-system-settings-3.png` | Imagem | Seção System Time com Set Time em NTP, opção Custom e servidor a.ntp.br preenchido, e campo Sync interval |
-| 01.4 | `midia/m01/01-4-system-settings-4.png` | Imagem | Botão Apply e o prompt da CLI Console mostrando FGT-MTZ # após a alteração |
-| 01.4 | `midia/m01/01-4-dns-1.png` | Imagem | Página Network > DNS com a opção Use FortiGuard Servers selecionada |
-| 01.4 | `midia/m01/01-4-dns-2.png` | Imagem | Página Network > DNS com a opção Specify selecionada e campos Primary DNS Server e Secondary DNS Server |
-| 01.4 | `midia/m01/01-4-dns-3.png` | Imagem | Opções de protocolo do DNS do sistema, com DNS over TLS destacado |
-| 01.4 | `midia/m01/01-4-admin-access-1.png` | Imagem | Lista Network > Interfaces com a interface mgmt selecionada e o botão Edit destacado |
-| 01.4 | `midia/m01/01-4-admin-access-2.png` | Imagem | Tela de edição da interface mgmt com a seção Administrative Access e as caixas PING, HTTPS e SSH marcadas |
-| 01.4 | `midia/m01/01-4-admin-access-3.png` | Imagem | Tela de edição da interface WAN com todas as caixas de Administrative Access desmarcadas |
-| 01.4 | `midia/m01/01-4-administration-settings.png` | Imagem | Seção Administration Settings de System > Settings com os campos HTTP port, HTTPS port, Redirect to HTTPS, SSH port e Idle timeout |
-| 01.4 | `midia/m01/01-4-trusted-hosts-1.png` | Imagem | Lista System > Administrators com a conta admin selecionada e o botão Edit destacado |
-| 01.4 | `midia/m01/01-4-trusted-hosts-2.png` | Imagem | Tela de edição do administrador com a opção Restrict login to trusted hosts ativada e Trusted Host 1 igual a 10.10.99.0/24 |
-| 01.4 | `midia/m01/01-4-trusted-hosts-3.png` | Imagem | Mensagem de falha de login ao tentar acessar a partir de uma origem fora dos trusted hosts |
-| 01.4 | `midia/m01/01-4-log-login.png` | Imagem | Log & Report > System Events filtrado por logins administrativos, com uma linha de login bem-sucedido e outra de login recusado |
-| 01.5 | `midia/m01/01-5-admin-profile-1.png` | Imagem | Lista System > Admin Profiles com os perfis super_admin e prof_admin e o botão Create New destacado |
-| 01.5 | `midia/m01/01-5-admin-profile-2.png` | Imagem | Formulário New Admin Profile com Name Atlas-Leitura e a tabela Access Permissions com a coluna Read marcada em todas as áreas |
-| 01.5 | `midia/m01/01-5-admin-profile-3.png` | Imagem | Formulário de perfil Atlas-Operador-Firewall com Firewall em Custom, Policy em Read/Write e os demais objetos em Read |
-| 01.5 | `midia/m01/01-5-admin-profile-4.png` | Imagem | Opção Override Idle Timeout no rodapé do formulário de perfil |
-| 01.5 | `midia/m01/01-5-admin-conta-1.png` | Imagem | Lista System > Administrators com o menu Create New aberto e a opção Administrator destacada |
-| 01.5 | `midia/m01/01-5-admin-conta-2.png` | Imagem | Formulário New Administrator com Username carla.suporte, Type Local User e campos de senha |
-| 01.5 | `midia/m01/01-5-admin-conta-3.png` | Imagem | Campo Administrator profile com Atlas-Leitura selecionado e Restrict login to trusted hosts ativado com 10.10.99.0/24 |
-| 01.5 | `midia/m01/01-5-teste-leitura.png` | Imagem | GUI aberta com a conta carla.suporte em janela anônima, mostrando a lista de interfaces sem os botões de criar e editar |
-| 01.5 | `midia/m01/01-5-password-policy.png` | Imagem | Seção Password Policy de System > Settings com Minimum length 12, exigência de maiúsculas, minúsculas, números e caracteres especiais e expiração em 90 dias |
-| 01.6 | `midia/m01/01-6-licencas-1.png` | Imagem | Widget Licenses no dashboard Status mostrando FortiCare Support, Firmware & General Updates, IPS, AntiVirus e Web Filtering com ícones de status |
-| 01.6 | `midia/m01/01-6-licencas-2.png` | Imagem | Página System > FortiGuard com a tabela License Information listando cada serviço, versão da base e data de expiração |
-| 01.6 | `midia/m01/01-6-licencas-3.png` | Imagem | Linha de um serviço expandida em License Information, mostrando versões de engine e base e data da última atualização |
-| 01.6 | `midia/m01/01-6-diagrama-fortiguard.png` | Imagem | Diagrama comparando download periódico de bases (AV, IPS, aplicações, ISDB) do FortiGuard para o FortiGate com consultas de rating em tempo real feitas pelo Web Filter e DNS Filter |
-| 01.6 | `midia/m01/01-6-updates-1.png` | Imagem | Seção FortiGuard Updates de System > FortiGuard com Scheduled updates ativado e frequência Automatic |
-| 01.6 | `midia/m01/01-6-updates-2.png` | Imagem | Botão Update Licenses & Definitions Now destacado |
-| 01.6 | `midia/m01/01-6-updates-3.png` | Imagem | Tabela License Information após a atualização, com a data da última atualização recente em AntiVirus e IPS |
-| 01.7 | `midia/m01/01-7-backup-1.png` | Imagem | Menu do administrador aberto no canto superior direito, com Configuration expandido e a opção Backup destacada |
-| 01.7 | `midia/m01/01-7-backup-2.png` | Imagem | Janela Backup System Configuration com destino Local PC e a opção Encryption ativada com campos de senha |
-| 01.7 | `midia/m01/01-7-backup-3.png` | Imagem | Navegador mostrando o download do arquivo de backup .conf concluído |
-| 01.7 | `midia/m01/01-7-revisions-diff.png` | Imagem | Tela Configuration > Revisions com duas revisões selecionadas e a comparação (diff) mostrando a linha do hostname alterada |
-| 01.7 | `midia/m01/01-7-restore-1.png` | Imagem | Menu do administrador com Configuration > Restore destacado |
-| 01.7 | `midia/m01/01-7-restore-2.png` | Imagem | Janela Restore System Configuration com o arquivo selecionado e o campo de senha preenchido |
-| 01.7 | `midia/m01/01-7-upgrade-path-tool.png` | Imagem | Ferramenta Upgrade Path do portal de suporte Fortinet com modelo, versão atual e versão de destino preenchidos e a sequência recomendada exibida |
-| 01.7 | `midia/m01/01-7-firmware-1.png` | Imagem | Página System > Firmware & Registration com o FGT-MTZ listado, versão atual e botão Upgrade |
-| 01.7 | `midia/m01/01-7-firmware-2.png` | Imagem | Janela de upgrade com as abas Latest, All Upgrades e File Upload e uma versão Mature selecionada |
-| 01.7 | `midia/m01/01-7-firmware-3.png` | Imagem | Tela de confirmação do upgrade mostrando o caminho de atualização com versões intermediárias e a opção de backup da configuração |
-| 01.7 | `midia/m01/01-7-firmware-4.png` | Imagem | Widget System Information após o reboot mostrando a nova versão de firmware |
-| 01.7 | `midia/m01/01-7-menu-boot.png` | Imagem | Console serial exibindo o menu de boot do FortiGate com as opções de configurar TFTP, iniciar transferência, formatar e sair |
+| Seção | Arquivo | Tipo |
+|---|---|---|
+| Abertura | `midia/m01/00-topologia-gerencia.png` | Imagem |
+| 01.1 | `midia/m01/01-1-menu-gui.json` | Tela interativa |
+| 01.1 | `midia/m01/01-1-elementos-gui.json` | Tela interativa |
+| 01.1 | `midia/m01/01-1-system-information.json` | Tela interativa |
+| 01.1 | `midia/m01/01-1-feature-visibility-1.png` | Imagem (slides) |
+| 01.1 | `midia/m01/01-1-feature-visibility-2.png` | Imagem (slides) |
+| 01.1 | `midia/m01/01-1-feature-visibility-3.png` | Imagem (slides) |
+| 01.2 | `midia/m01/01-2-putty-serial.json` | Tela interativa |
+| 01.2 | `midia/m01/01-2-console-troca-senha.mp4` | Vídeo |
+| 01.2 | `midia/m01/01-2-console-mgmt.png` | Imagem |
+| 01.2 | `midia/m01/01-2-login-gui.png` | Imagem |
+| 01.3 | `midia/m01/01-3-lista-objetos.json` | Tela interativa |
+| 01.3 | `midia/m01/01-3-cli-console-gui.png` | Imagem |
+| 01.4 | `midia/m01/01-4-system-settings.json` | Tela interativa |
+| 01.4 | `midia/m01/01-4-ntp-cli.png` | Imagem |
+| 01.4 | `midia/m01/01-4-dns.json` | Tela interativa |
+| 01.4 | `midia/m01/01-4-admin-access.json` | Tela interativa |
+| 01.4 | `midia/m01/01-4-administration-settings.json` | Tela interativa |
+| 01.4 | `midia/m01/01-5-admin-conta.png` | Imagem |
+| 01.4 | `midia/m01/01-4-log-login.png` | Imagem |
+| 01.5 | `midia/m01/01-5-admin-profiles.png` | Imagem |
+| 01.5 | `midia/m01/01-5-admin-profile.json` | Tela interativa |
+| 01.5 | `midia/m01/01-5-admin-conta.json` | Tela interativa |
+| 01.5 | `midia/m01/01-5-password-policy.png` | Imagem |
+| 01.6 | `midia/m01/01-6-licencas-widget.png` | Imagem |
+| 01.6 | `midia/m01/01-6-fortiguard.png` | Imagem |
+| 01.6 | `midia/m01/01-6-updates.png` | Imagem |
+| 01.7 | `midia/m01/01-7-backup.json` | Tela interativa |
+| 01.7 | `midia/m01/01-7-firmware.png` | Imagem |
 
 ---
 

@@ -1,0 +1,26 @@
+{
+  "imagem": "01-5-admin-profile.png",
+  "largura": 1920,
+  "altura": 1080,
+  "descricao": "Novo perfil administrativo Atlas-Leitura com Read em todas as áreas",
+  "pontos": [
+    {
+      "titulo": "Permissões por área",
+      "texto": "O perfil define, por **área** da GUI, o nível de acesso: **None** (a área nem aparece), **Read** ou **Read/Write**. Algumas áreas aceitam **Custom**, com permissões mais finas.",
+      "principal": true,
+      "x": 188,
+      "y": 206,
+      "w": 523,
+      "h": 514
+    },
+    {
+      "titulo": "Atlas-Leitura",
+      "texto": "Com o atalho **Set All > Read**, criamos o perfil **Atlas-Leitura**, somente leitura em todas as áreas, para a equipe de suporte.",
+      "principal": true,
+      "x": 188,
+      "y": 206,
+      "w": 523,
+      "h": 514
+    }
+  ]
+}

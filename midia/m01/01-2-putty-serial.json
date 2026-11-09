@@ -1,0 +1,44 @@
+{
+  "imagem": "01-2-putty-serial.png",
+  "largura": 1920,
+  "altura": 1080,
+  "descricao": "Janela do PuTTY configurada para conexão serial na COM3 a 9600 bps",
+  "pontos": [
+    {
+      "titulo": "Conexão serial",
+      "texto": "A console é uma conexão **serial**. Ela funciona mesmo sem nenhuma configuração de rede, por isso é o acesso de primeiro uso e de emergência.",
+      "principal": true,
+      "x": 646,
+      "y": 225,
+      "w": 760,
+      "h": 438
+    },
+    {
+      "titulo": "Serial line",
+      "texto": "A porta serial do computador. No Windows, o adaptador USB-serial aparece como uma porta **COM** (aqui, COM3).",
+      "principal": false,
+      "x": 671,
+      "y": 291,
+      "w": 498,
+      "h": 39
+    },
+    {
+      "titulo": "Speed",
+      "texto": "A velocidade da console do FortiGate é **9600 bps**, com 8 bits de dados, sem paridade e 1 bit de parada: o famoso **9600 8N1**. Com outra velocidade, aparecem caracteres sem sentido.",
+      "principal": false,
+      "x": 1181,
+      "y": 291,
+      "w": 200,
+      "h": 39
+    },
+    {
+      "titulo": "Connection type",
+      "texto": "Tipo **Serial**. O mesmo PuTTY também abre conexões SSH, que vamos usar quando o FortiGate tiver endereço de gerência.",
+      "principal": false,
+      "x": 671,
+      "y": 340,
+      "w": 710,
+      "h": 17
+    }
+  ]
+}

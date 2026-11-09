@@ -1,0 +1,62 @@
+{
+  "imagem": "01-1-system-information.png",
+  "largura": 1920,
+  "altura": 1080,
+  "descricao": "Widget System Information do dashboard Status do FGT-MTZ",
+  "pontos": [
+    {
+      "titulo": "System Information",
+      "texto": "O widget **System Information**, no dashboard Status, resume a identidade do equipamento.",
+      "principal": true,
+      "x": 268,
+      "y": 88,
+      "w": 321,
+      "h": 298
+    },
+    {
+      "titulo": "Hostname",
+      "texto": "Nome do equipamento. Ele aparece no prompt da CLI, nos logs e no Security Fabric.",
+      "principal": false,
+      "x": 282,
+      "y": 129,
+      "w": 295,
+      "h": 27
+    },
+    {
+      "titulo": "Serial number",
+      "texto": "Número de série, usado no **registro** no FortiCare e no suporte.",
+      "principal": false,
+      "x": 282,
+      "y": 158,
+      "w": 295,
+      "h": 27
+    },
+    {
+      "titulo": "Firmware",
+      "texto": "Versão do FortiOS e **build**. O destaque em vermelho indica que há uma versão mais nova disponível (seção 01.7).",
+      "principal": false,
+      "x": 282,
+      "y": 187,
+      "w": 295,
+      "h": 34
+    },
+    {
+      "titulo": "Mode",
+      "texto": "**NAT** é o modo roteado, o padrão e o usado neste curso. O outro modo é o **Transparent**, em que o FortiGate funciona como uma ponte entre segmentos.",
+      "principal": false,
+      "x": 282,
+      "y": 223,
+      "w": 295,
+      "h": 27
+    },
+    {
+      "titulo": "System time e Uptime",
+      "texto": "Hora do equipamento e há quanto tempo ele está ligado. Na seção 01.4 veremos por que a hora correta é tão importante.",
+      "principal": false,
+      "x": 282,
+      "y": 252,
+      "w": 295,
+      "h": 27
+    }
+  ]
+}

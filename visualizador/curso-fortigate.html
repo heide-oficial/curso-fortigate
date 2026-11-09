@@ -384,6 +384,46 @@ a { color: inherit; }
 .slides-dots button::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--line-strong); }
 .slides-dots button[aria-current="true"]::before { background: var(--accent); }
 
+/* Telas interativas */
+.interativo { margin: 4px 0 28px; display: flex; flex-direction: column; gap: 10px; }
+.ia-stage { position: relative; }
+.ia-stage img { cursor: default; }
+.ia-spot {
+  position: absolute; padding: 0; margin: 0; cursor: pointer;
+  border: 2px solid rgba(226, 166, 84, 0.85); border-radius: 6px;
+  background: rgba(226, 166, 84, 0.08);
+  transition: background 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.ia-spot:hover, .ia-spot.on { background: rgba(226, 166, 84, 0.2); border-color: var(--accent); box-shadow: 0 0 0 3px rgba(226, 166, 84, 0.35); }
+.ia-spot:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.ia-badge {
+  position: absolute; left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--accent); color: #1a1408;
+  font: 600 12px/1 var(--font-body); box-shadow: 0 1px 3px rgba(0,0,0,.45); pointer-events: none;
+}
+.ia-zoom {
+  position: absolute; right: 10px; top: 10px; z-index: 2;
+  font: 500 0.75rem var(--font-body); color: var(--text);
+  background: rgba(12, 14, 17, 0.82); border: 1px solid var(--line-strong); border-radius: 6px; padding: 4px 10px; cursor: pointer;
+}
+.ia-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; min-height: 64px; }
+.ia-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.ia-num { width: 22px; height: 22px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #1a1408; font: 600 12px/1 var(--font-body); }
+.ia-head b { font-size: 0.98rem; color: var(--text); }
+.ia-text { font-size: 0.93rem; color: var(--muted); line-height: 1.6; }
+.ia-text p, .ia-text ul { margin: 0 0 6px; }
+.ia-text p:last-child, .ia-text ul:last-child { margin-bottom: 0; }
+.ia-text strong { color: var(--text); }
+.ia-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.ia-chip {
+  display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 4px; border-radius: 999px;
+  border: 1px solid var(--line); background: transparent; color: var(--muted); font: 0.8rem var(--font-body); cursor: pointer;
+}
+.ia-chip span { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; background: var(--raise); color: var(--text); font-size: 0.7rem; }
+.ia-chip:hover, .ia-chip.on { border-color: rgba(226,166,84,.5); color: var(--text); }
+.ia-chip.on span { background: var(--accent); color: #1a1408; }
+.ia-hint { font-size: 0.78rem; color: var(--faint); }
+
 /* Botão do guia CLI */
 .cli-trigger {
   display: flex; align-items: center; gap: 14px;
@@ -718,7 +758,7 @@ dialog.lightbox[open] { display: grid; place-items: center; }
       const line = lines[i];
       const f = line.match(/^\s*(`{3,}|~{3,})/);
       if (!fence) {
-        const c = line.match(/^:::(figura|slides|cli)\b\s*(.*)$/);
+        const c = line.match(/^:::(figura|slides|cli|interativo)\b\s*(.*)$/);
         if (c) {
           const body = [];
           let inner = null, j = i + 1;
@@ -923,11 +963,95 @@ dialog.lightbox[open] { display: grid; place-items: center; }
     return btn;
   }
 
+  /* ---------- Telas interativas ---------- */
+  function buildInterativo(block) {
+    const fig = document.createElement("figure");
+    fig.className = "interativo";
+    const path = block.args.split(/\s+/)[0] || "";
+    const dir = path.includes("/") ? path.slice(0, path.lastIndexOf("/") + 1) : "";
+    const capHtml = block.body.trim() ? marked.parse(block.body.trim()) : "";
+    const frame = document.createElement("div");
+    frame.className = "media-frame ia-stage";
+    fig.appendChild(frame);
+    getText(path).then((text) => {
+      const data = JSON.parse(text);
+      const W = data.largura || 1920, H = data.altura || 1080;
+      const img = document.createElement("img");
+      img.alt = data.descricao || "";
+      img.src = dir + data.imagem;
+      img.addEventListener("error", () => placeholder(frame, { src: dir + data.imagem, alt: data.descricao }, "image"));
+      frame.appendChild(img);
+      const zoom = document.createElement("button");
+      zoom.type = "button"; zoom.className = "ia-zoom"; zoom.textContent = "Ampliar";
+      zoom.addEventListener("click", () => openLightbox(dir + data.imagem, data.descricao || "", capHtml));
+      frame.appendChild(zoom);
+
+      const pontos = data.pontos || [];
+      const intro = pontos[0] && pontos[0].principal ? pontos[0] : null;
+      const marcados = pontos.filter((p, i) => !(i === 0 && intro) && p.w > 0);
+      const panel = document.createElement("div");
+      panel.className = "ia-panel";
+      panel.setAttribute("aria-live", "polite");
+      const list = document.createElement("div");
+      list.className = "ia-list";
+      const spots = [], chips = [];
+      const show = (k) => {
+        const p = k < 0 ? intro : marcados[k];
+        spots.forEach((el, i) => el.classList.toggle("on", i === k));
+        chips.forEach((el, i) => el.classList.toggle("on", i === k));
+        panel.innerHTML = "";
+        if (!p) return;
+        const head = document.createElement("div");
+        head.className = "ia-head";
+        if (k >= 0) { const n = document.createElement("span"); n.className = "ia-num"; n.textContent = String(k + 1); head.appendChild(n); }
+        const b = document.createElement("b"); b.textContent = p.titulo; head.appendChild(b);
+        const t = document.createElement("div"); t.className = "ia-text"; t.innerHTML = marked.parse(p.texto || "");
+        panel.append(head, t);
+      };
+      marcados.forEach((p, k) => {
+        const spot = document.createElement("button");
+        spot.type = "button";
+        spot.className = "ia-spot";
+        spot.style.left = (p.x / W * 100) + "%";
+        spot.style.top = (p.y / H * 100) + "%";
+        spot.style.width = (p.w / W * 100) + "%";
+        spot.style.height = (p.h / H * 100) + "%";
+        spot.setAttribute("aria-label", (k + 1) + ". " + p.titulo);
+        const badge = document.createElement("span"); badge.className = "ia-badge"; badge.textContent = String(k + 1);
+        spot.appendChild(badge);
+        ["mouseenter", "focus", "click"].forEach((ev) => spot.addEventListener(ev, () => show(k)));
+        frame.appendChild(spot);
+        spots.push(spot);
+        const chip = document.createElement("button");
+        chip.type = "button"; chip.className = "ia-chip";
+        chip.innerHTML = "<span></span>";
+        chip.querySelector("span").textContent = String(k + 1);
+        chip.appendChild(document.createTextNode(p.titulo));
+        chip.addEventListener("click", () => show(k));
+        chip.addEventListener("mouseenter", () => show(k));
+        list.appendChild(chip);
+        chips.push(chip);
+      });
+      if (marcados.length) {
+        const hint = document.createElement("div");
+        hint.className = "ia-hint";
+        hint.textContent = "Passe o mouse ou toque nos destaques numerados para ver a explicação de cada elemento.";
+        fig.append(hint, panel, list);
+      } else fig.append(panel);
+      show(intro ? -1 : 0);
+      if (capHtml) { const fc = document.createElement("figcaption"); fc.className = "caption"; fc.innerHTML = capHtml; fig.appendChild(fc); }
+    }).catch(() => {
+      placeholder(frame, { src: path, alt: "Tela interativa ainda não gerada." }, "image");
+      if (capHtml) { const fc = document.createElement("figcaption"); fc.className = "caption"; fc.innerHTML = capHtml; fig.appendChild(fc); }
+    });
+    return fig;
+  }
+
   function mountBlocks(container, blocks) {
     container.querySelectorAll("div[data-block]").forEach((el) => {
       const b = blocks[Number(el.dataset.block)];
       if (!b) return;
-      const node = b.type === "figura" ? buildFigure(b) : b.type === "slides" ? buildSlides(b) : buildCli(b);
+      const node = b.type === "figura" ? buildFigure(b) : b.type === "slides" ? buildSlides(b) : b.type === "interativo" ? buildInterativo(b) : buildCli(b);
       el.replaceWith(node);
     });
   }

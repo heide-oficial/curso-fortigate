@@ -1,0 +1,44 @@
+{
+  "imagem": "01-3-lista-objetos.png",
+  "largura": 1920,
+  "altura": 1080,
+  "descricao": "Lista Policy & Objects > Addresses com botões de ação, busca e coluna Ref.",
+  "pontos": [
+    {
+      "titulo": "O padrão das listas",
+      "texto": "Quase toda página de configuração da GUI segue o mesmo padrão: uma **lista** de objetos com botões de ação, busca e colunas que podem ser filtradas.",
+      "principal": true,
+      "x": 260,
+      "y": 42,
+      "w": 1660,
+      "h": 1038
+    },
+    {
+      "titulo": "Create new",
+      "texto": "Cria um objeto novo. Os botões **Edit**, **Clone** e **Delete** ficam ativos quando um item é selecionado.",
+      "principal": false,
+      "x": 270,
+      "y": 129,
+      "w": 115,
+      "h": 30
+    },
+    {
+      "titulo": "Busca",
+      "texto": "Filtra a lista pelo texto digitado em qualquer coluna.",
+      "principal": false,
+      "x": 441,
+      "y": 130,
+      "w": 1324,
+      "h": 28
+    },
+    {
+      "titulo": "Ref.",
+      "texto": "A coluna **Ref.** mostra quantos objetos **usam** cada item. O FortiOS não deixa apagar um objeto em uso: clique no número para ver quem o referencia.",
+      "principal": false,
+      "x": 1807,
+      "y": 168,
+      "w": 102,
+      "h": 36
+    }
+  ]
+}

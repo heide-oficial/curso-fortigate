@@ -1,0 +1,44 @@
+{
+  "imagem": "01-7-backup.png",
+  "largura": 1920,
+  "altura": 1080,
+  "descricao": "Tela Backup System Configuration com destino Local PC e criptografia ativada",
+  "pontos": [
+    {
+      "titulo": "Backup",
+      "texto": "O backup é a cópia do arquivo de configuração. A primeira linha identifica **modelo**, **versão** e **build**, o que importa na hora de restaurar: o FortiGate recusa backups de outro modelo.",
+      "principal": true,
+      "x": 680,
+      "y": 403,
+      "w": 560,
+      "h": 275
+    },
+    {
+      "titulo": "Backup to",
+      "texto": "O destino: o computador do administrador (**Local PC**) ou um pendrive ligado ao FortiGate (**USB Disk**).",
+      "principal": false,
+      "x": 696,
+      "y": 461,
+      "w": 528,
+      "h": 38
+    },
+    {
+      "titulo": "Encryption",
+      "texto": "O arquivo tem hashes de senhas, segredos de VPN e chaves privadas. Com **Encryption**, o arquivo inteiro é cifrado com uma senha: sem ela, o backup não pode ser restaurado.",
+      "principal": false,
+      "x": 696,
+      "y": 499,
+      "w": 528,
+      "h": 36
+    },
+    {
+      "titulo": "A senha do backup",
+      "texto": "Guarde a senha **separada** do arquivo. E mantenha cópias **fora do equipamento**, feitas antes de toda mudança relevante.",
+      "principal": false,
+      "x": 696,
+      "y": 535,
+      "w": 528,
+      "h": 38
+    }
+  ]
+}

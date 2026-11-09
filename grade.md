@@ -84,6 +84,16 @@ Explicação.
 :::
 ````
 
+**Tela interativa** (imagem com destaques numerados; ao passar o mouse, aparece a explicação de cada elemento). O `.json` é gerado pelo script de captura a partir dos slides do passo no roteiro do modo aula:
+
+```
+:::interativo midia/m01/01-1-system-information.json
+Legenda opcional em markdown.
+:::
+```
+
+As mídias são geradas pelo roteiro do modo aula do laboratório (`fortigate-clone`, `src/lab/guide/roteiros/`), com `node tools/captura/capturar.cjs --roteiro mNN --saida midia/mNN`. O passo do roteiro define o arquivo, o tipo (`imagem`, `video` ou `interativo`) e a descrição.
+
 O texto entre aspas descreve a captura. Ele serve como texto alternativo e, enquanto o arquivo não existir, aparece no quadro de captura pendente do visualizador.
 
 ### Atenção à versão

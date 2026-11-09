@@ -1,0 +1,221 @@
+{
+  "roteiro": "m01",
+  "geradoEm": "2026-11-09T09:03:43.482Z",
+  "arquivos": [
+    {
+      "arquivo": "01-1-fortigate-121g.png",
+      "tipo": "imagem",
+      "passo": 3,
+      "titulo": "FortiGate FGT-MTZ",
+      "descricao": "FortiGate 121G FGT-MTZ no diagrama 2D do laboratório"
+    },
+    {
+      "arquivo": "00-topologia-gerencia.png",
+      "tipo": "imagem",
+      "passo": 9,
+      "titulo": "Topologia completa",
+      "descricao": "Topologia do módulo 01: ADMIN-PC na porta mgmt e NOTEBOOK-TI na porta de console do FGT-MTZ"
+    },
+    {
+      "arquivo": "01-2-putty-serial.png",
+      "tipo": "interativo",
+      "passo": 11,
+      "titulo": "PuTTY: conexão serial",
+      "descricao": "Janela do PuTTY configurada para conexão serial na COM3 a 9600 bps",
+      "pontos": 4
+    },
+    {
+      "arquivo": "01-2-console-troca-senha.mp4",
+      "tipo": "video",
+      "passo": 13,
+      "titulo": "Troca obrigatória de senha",
+      "descricao": "Primeiro login pela console: admin com senha em branco e troca obrigatória de senha"
+    },
+    {
+      "arquivo": "01-2-console-mgmt.png",
+      "tipo": "imagem",
+      "passo": 15,
+      "titulo": "Endereço de gerência pela CLI",
+      "descricao": "Configuração do endereço 10.10.99.1/24 na interface mgmt pela console"
+    },
+    {
+      "arquivo": "01-2-login-gui.png",
+      "tipo": "imagem",
+      "passo": 17,
+      "titulo": "Navegador do ADMIN-PC",
+      "descricao": "Página de login da GUI do FGT-MTZ aberta no navegador do ADMIN-PC"
+    },
+    {
+      "arquivo": "01-1-menu-gui.png",
+      "tipo": "interativo",
+      "passo": 21,
+      "titulo": "GUI em tela cheia",
+      "descricao": "Menu lateral da GUI do FortiGate com os menus principais",
+      "pontos": 8
+    },
+    {
+      "arquivo": "01-1-elementos-gui.png",
+      "tipo": "interativo",
+      "passo": 22,
+      "titulo": "Barra superior",
+      "descricao": "Barra superior da GUI: busca, FortiAI, CLI, notificações e menu do administrador",
+      "pontos": 6
+    },
+    {
+      "arquivo": "01-1-system-information.png",
+      "tipo": "interativo",
+      "passo": 23,
+      "titulo": "System Information",
+      "descricao": "Widget System Information do dashboard Status do FGT-MTZ",
+      "pontos": 6
+    },
+    {
+      "arquivo": "01-1-feature-visibility-1.png",
+      "tipo": "imagem",
+      "passo": 24,
+      "titulo": "Feature Visibility",
+      "descricao": "Página System > Feature Visibility com a lista de recursos por grupo"
+    },
+    {
+      "arquivo": "01-1-feature-visibility-2.png",
+      "tipo": "imagem",
+      "passo": 25,
+      "titulo": "Ativando DNS Database",
+      "descricao": "Chave DNS Database ativada em Feature Visibility"
+    },
+    {
+      "arquivo": "01-1-feature-visibility-3.png",
+      "tipo": "imagem",
+      "passo": 26,
+      "titulo": "Novo item no menu",
+      "descricao": "Menu Network mostrando o novo item DNS Servers"
+    },
+    {
+      "arquivo": "01-3-lista-objetos.png",
+      "tipo": "interativo",
+      "passo": 27,
+      "titulo": "Listas de objetos",
+      "descricao": "Lista Policy & Objects > Addresses com botões de ação, busca e coluna Ref.",
+      "pontos": 4
+    },
+    {
+      "arquivo": "01-3-cli-console-gui.png",
+      "tipo": "imagem",
+      "passo": 28,
+      "titulo": "CLI Console",
+      "descricao": "CLI Console aberta na GUI com a saída de show system interface mgmt"
+    },
+    {
+      "arquivo": "01-4-system-settings.png",
+      "tipo": "interativo",
+      "passo": 30,
+      "titulo": "System > Settings",
+      "descricao": "System > Settings, aba General: hostname, fuso horário e NTP",
+      "pontos": 5
+    },
+    {
+      "arquivo": "01-4-ntp-cli.png",
+      "tipo": "imagem",
+      "passo": 31,
+      "titulo": "NTP próprio pela CLI",
+      "descricao": "Configuração do servidor NTP a.ntp.br pela CLI Console"
+    },
+    {
+      "arquivo": "01-4-dns.png",
+      "tipo": "interativo",
+      "passo": 32,
+      "titulo": "DNS do sistema",
+      "descricao": "Network > DNS com os servidores FortiGuard e os protocolos de DNS",
+      "pontos": 3
+    },
+    {
+      "arquivo": "01-4-administration-settings.png",
+      "tipo": "interativo",
+      "passo": 33,
+      "titulo": "Administration settings",
+      "descricao": "Aba Access de System > Settings com portas administrativas e Idle timeout",
+      "pontos": 3
+    },
+    {
+      "arquivo": "01-4-admin-access.png",
+      "tipo": "interativo",
+      "passo": 35,
+      "titulo": "Administrative Access",
+      "descricao": "Edição da interface mgmt com Administrative Access HTTPS, SSH e PING",
+      "pontos": 3
+    },
+    {
+      "arquivo": "01-4-log-login.png",
+      "tipo": "imagem",
+      "passo": 36,
+      "titulo": "Eventos de login",
+      "descricao": "Log & Report > System Events com os eventos administrativos"
+    },
+    {
+      "arquivo": "01-5-admin-profiles.png",
+      "tipo": "imagem",
+      "passo": 37,
+      "titulo": "Admin Profiles",
+      "descricao": "Lista de perfis administrativos padrão: super_admin e prof_admin"
+    },
+    {
+      "arquivo": "01-5-admin-profile.png",
+      "tipo": "interativo",
+      "passo": 38,
+      "titulo": "Perfil somente leitura",
+      "descricao": "Novo perfil administrativo Atlas-Leitura com Read em todas as áreas",
+      "pontos": 2
+    },
+    {
+      "arquivo": "01-5-admin-conta.png",
+      "tipo": "interativo",
+      "passo": 39,
+      "titulo": "Novo administrador",
+      "descricao": "Criação do administrador carla.suporte com perfil e trusted hosts",
+      "pontos": 3
+    },
+    {
+      "arquivo": "01-5-password-policy.png",
+      "tipo": "imagem",
+      "passo": 41,
+      "titulo": "Política de senha",
+      "descricao": "Política de senha dos administradores na aba Access"
+    },
+    {
+      "arquivo": "01-6-licencas-widget.png",
+      "tipo": "imagem",
+      "passo": 42,
+      "titulo": "Widget Licenses",
+      "descricao": "Widget Licenses com os serviços FortiGuard do FGT-MTZ"
+    },
+    {
+      "arquivo": "01-6-fortiguard.png",
+      "tipo": "imagem",
+      "passo": 43,
+      "titulo": "System > FortiGuard",
+      "descricao": "System > FortiGuard com as assinaturas do equipamento"
+    },
+    {
+      "arquivo": "01-6-updates.png",
+      "tipo": "imagem",
+      "passo": 44,
+      "titulo": "Atualizações",
+      "descricao": "Aba FortiGuard settings com o agendamento das atualizações"
+    },
+    {
+      "arquivo": "01-7-backup.png",
+      "tipo": "interativo",
+      "passo": 46,
+      "titulo": "Backup criptografado",
+      "descricao": "Tela Backup System Configuration com destino Local PC e criptografia ativada",
+      "pontos": 4
+    },
+    {
+      "arquivo": "01-7-firmware.png",
+      "tipo": "imagem",
+      "passo": 47,
+      "titulo": "Firmware & Registration",
+      "descricao": "System > Firmware & Registration com a versão do FGT-MTZ"
+    }
+  ]
+}

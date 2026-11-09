@@ -1,0 +1,80 @@
+{
+  "imagem": "01-1-menu-gui.png",
+  "largura": 1920,
+  "altura": 1080,
+  "descricao": "Menu lateral da GUI do FortiGate com os menus principais",
+  "pontos": [
+    {
+      "titulo": "O menu lateral",
+      "texto": "Esta é a mesma GUI, agora em tela cheia. O **menu lateral** organiza o FortiGate por função. Vamos percorrer os menus principais.",
+      "principal": true,
+      "x": 0,
+      "y": 0,
+      "w": 260,
+      "h": 1080
+    },
+    {
+      "titulo": "Dashboard",
+      "texto": "Visão do estado do equipamento: CPU, memória, sessões, licenças e as visões do **FortiView**.",
+      "principal": false,
+      "x": 0,
+      "y": 42,
+      "w": 260,
+      "h": 33
+    },
+    {
+      "titulo": "Network",
+      "texto": "Conectividade: **interfaces**, DNS, rotas estáticas, policy routes e SD-WAN.",
+      "principal": false,
+      "x": 0,
+      "y": 262,
+      "w": 260,
+      "h": 33
+    },
+    {
+      "titulo": "Policy & Objects",
+      "texto": "Quem pode falar com quem: **firewall policies** e os objetos que elas usam (endereços, serviços, schedules, Virtual IPs, IP pools).",
+      "principal": false,
+      "x": 0,
+      "y": 295,
+      "w": 260,
+      "h": 33
+    },
+    {
+      "titulo": "Security Profiles",
+      "texto": "O que é inspecionado no tráfego **já permitido** pela policy: Antivirus, Web Filter, DNS Filter, Application Control, IPS e inspeção SSL. Um perfil nunca libera o que a policy bloqueou.",
+      "principal": false,
+      "x": 0,
+      "y": 328,
+      "w": 260,
+      "h": 33
+    },
+    {
+      "titulo": "VPN e User & Authentication",
+      "texto": "**VPN**: túneis IPsec e acesso remoto. Logo abaixo, **User & Authentication**: usuários, grupos, servidores LDAP/RADIUS e FortiTokens.",
+      "principal": false,
+      "x": 0,
+      "y": 361,
+      "w": 260,
+      "h": 33
+    },
+    {
+      "titulo": "System",
+      "texto": "O próprio equipamento: **administradores**, perfis administrativos, firmware, configurações gerais, HA, FortiGuard e Feature Visibility.",
+      "principal": false,
+      "x": 0,
+      "y": 460,
+      "w": 260,
+      "h": 33
+    },
+    {
+      "titulo": "Security Fabric e Log & Report",
+      "texto": "**Security Fabric**: integração com outros produtos Fortinet (topologia, Security Rating, automação, conectores). **Log & Report**: os registros de tráfego, eventos e segurança.",
+      "principal": false,
+      "x": 0,
+      "y": 493,
+      "w": 260,
+      "h": 33
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "imagem": "01-4-administration-settings.png",
+  "largura": 1920,
+  "altura": 1080,
+  "descricao": "Aba Access de System > Settings com portas administrativas e Idle timeout",
+  "pontos": [
+    {
+      "titulo": "Administration settings",
+      "texto": "Na aba **Access** ficam as portas da GUI e do SSH e o tempo de inatividade da sessão administrativa.",
+      "principal": false,
+      "x": 274,
+      "y": 209,
+      "w": 1060,
+      "h": 30
+    },
+    {
+      "titulo": "Portas",
+      "texto": "Mudar a porta **não é** proteção real: um varredor encontra o serviço em qualquer porta. Muda-se para liberar a 443 para outro serviço, como um portal VPN.",
+      "principal": false,
+      "x": 274,
+      "y": 319,
+      "w": 1060,
+      "h": 38
+    },
+    {
+      "titulo": "Idle timeout",
+      "texto": "Mudamos o **Idle timeout** de 5 para **15 minutos**: depois disso, a sessão inativa é encerrada.",
+      "principal": true,
+      "x": 274,
+      "y": 507,
+      "w": 1060,
+      "h": 38
+    }
+  ]
+}

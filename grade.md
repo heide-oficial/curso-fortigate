@@ -43,9 +43,11 @@ Todo o resto vai para o **Guia de comandos CLI** do capítulo: o equivalente em 
 1. **Antes de começar:** "O que você vai aprender", pré-requisitos e **Topologia atual** (o estado da rede da Atlas neste módulo, com o diagrama).
 2. **Capítulos** (`## NN.N.`) com **seções** (`### NN.N.N.`). Cada seção segue: **conceito** (o que é e como o FortiGate processa), **na GUI** (passo a passo com imagens), **verificação** (onde ver o resultado e o que esperar) e, só nos três casos acima, **CLI no texto**.
 3. Cada capítulo termina com **Erros comuns** e o bloco **Guia de comandos CLI**.
-4. O módulo termina com **Questões de revisão** interativas (`:::quiz`).
+4. Os módulos **não têm questões de revisão**.
 
-Não entram no material do aluno: laboratório do módulo, critério de conclusão, lista de mídias e campos de produção. Os campos **Laboratório** e **Critério de conclusão** desta grade orientam o roteiro do modo aula e as questões de revisão.
+Não entram no material do aluno: laboratório do módulo, critério de conclusão, questões, lista de mídias e campos de produção. Os campos **Laboratório** e **Critério de conclusão** desta grade orientam o roteiro do modo aula.
+
+Use títulos `####` numerados (como "1. ...") só quando não puderem ser confundidos com a numeração de capítulos e seções; prefira "Camada 1: ...", "Passo 1: ...".
 
 ### Mídias: quanto mais visual, melhor
 
@@ -59,6 +61,18 @@ Não entram no material do aluno: laboratório do módulo, critério de conclus�
 - **Ordem dos assuntos:** apresente um conceito antes de usá-lo (por exemplo, o FortiGuard antes dos serviços FortiGuard que são licenciados).
 - Todas as mídias saem do laboratório (`fortigate-clone`), pelo roteiro do modo aula, com `node tools/captura/capturar.cjs --roteiro mNN --saida midia/mNN`. O passo do roteiro define o arquivo, o tipo (`imagem` ou `slides`), o recorte (`recorte`) e o destaque (`destaque`). Para estados que o laboratório precisa simular (licença vencida, por exemplo), use a `LabApi` do roteiro.
 - Imagens no mínimo 1920x1080, ou 1920 px de largura quando recortadas.
+- **Todo passo descrito tem imagem**, inclusive a navegação até a tela (menu → submenu → diálogo) e as etapas de assistentes. As imagens também servem de apoio visual para explicar conceitos.
+- **Tema da GUI:** Jade em todo o curso.
+
+### PDF dos módulos
+
+Os alunos também recebem cada módulo em PDF, gerado direto do `.md`, sem edição manual:
+
+```
+node tools/pdf/gerar-pdf.cjs --modulo conteudo/modulo-NN-*.md --saida pdf/modulo-NN.pdf
+```
+
+O PDF tem capa, sumário, títulos em cards, cada carrossel como passo a passo numerado (**uma imagem por linha**, nunca lado a lado) e cada Guia de comandos CLI como um quadro com as saídas. Gere de novo sempre que o conteúdo ou as mídias mudarem.
 
 ### Blocos especiais
 
@@ -96,24 +110,6 @@ Version: ...
 Explicação.
 :::
 ````
-
-**Questão de revisão** (enunciado em markdown, imagem opcional, alternativas com `- [ ]` e `- [x]` e justificativa em linhas `>`). Com mais de uma alternativa correta, o enunciado termina com "(Escolha duas.)":
-
-```
-:::quiz
-Enunciado da questão.
-
-![Descrição](midia/m01/01-6-licencas-expiradas.png)
-
-- [ ] Alternativa errada
-- [x] Alternativa correta
-- [ ] Alternativa errada
-- [ ] Alternativa errada
-> Por que a alternativa correta está certa e as outras não.
-:::
-```
-
-As questões seguem o estilo da prova NSE 4 (cenário, uma ou duas respostas, imagens de tela ou saídas de comando), mas são **originais**. Não copie questões de exames reais ou de sites de "dumps": o conteúdo da prova é confidencial pelo acordo de certificação da Fortinet e protegido por direitos autorais.
 
 ### Quadros
 
@@ -182,10 +178,9 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 - **01.1.1. Por que os firewalls evoluíram:** limites dos firewalls tradicionais (só interno x externo, só portas e IPs, sem ameaças internas, antivírus só por assinatura, superfície de ataque maior, falsa sensação de segurança das PMEs) e o surgimento do NGFW.
 - **01.1.2. O que é o FortiGate e quais são seus diferenciais:** NGFW com recursos de infraestrutura e segurança; cenários (borda, segmentação, multi-cloud); formatos (appliance, VM, FGaaS); UTM; hardware dedicado (SPUs); integração com o ecossistema Fortinet e compatibilidade com outros fabricantes; funções do FortiGate.
-- **01.1.3. Como a GUI está organizada:** percorrer os menus e a barra superior, relacionando cada menu à tarefa que ele resolve.
-- **01.1.4. Modelos, plataformas e recursos disponíveis:** comparar famílias e VM, consultar modelo, versão e build no System Information e usar Feature Visibility. Entender que memória, hardware e licença determinam o que está disponível.
+- **01.1.3. Modelos e plataformas:** comparar famílias de appliances e VM; o FortiGate 121G da Atlas.
 
-**Erros comuns:** concluir que um recurso não existe porque o menu não aparece, quando ele só está oculto em Feature Visibility.
+**Erros comuns:** esperar que uma VM tenha o desempenho de um appliance com aceleração em hardware.
 
 ### 01.2. Primeiro acesso e recuperação
 
@@ -200,10 +195,11 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Aprendizado:** consultar e alterar a configuração pelas duas interfaces, entendendo que ambas operam a mesma configuração.
 
-- **01.3.1. Navegação, consulta e console da GUI:** usar dashboards, widgets, busca e a console CLI embutida na GUI. Comparar `show`, `show full-configuration`, `get` e `diagnose` e distinguir valor configurado de valor padrão.
-- **01.3.2. Estrutura de comandos:** usar `config`, `edit`, `set`, `unset`, `append`, `select`, `next`, `end` e `abort`, além da ajuda com `?` e Tab. Entender quando a alteração passa a valer e por que um objeto referenciado não pode ser apagado (contagem de referências).
+- **01.3.1. A GUI:** organização do menu e da barra superior, temas (System > Settings > Preference e Personalize; o curso usa o Jade), System Information, por que um recurso pode não aparecer e Feature Visibility, listas e objetos.
+- **01.3.2. A CLI:** console, SSH e CLI Console da GUI; comparar `show`, `show full-configuration`, `get` e `diagnose` e distinguir valor configurado de valor padrão.
+- **01.3.3. Estrutura de comandos:** usar `config`, `edit`, `set`, `unset`, `append`, `select`, `next`, `end` e `abort`, além da ajuda com `?` e Tab. Entender quando a alteração passa a valer e por que um objeto referenciado não pode ser apagado (contagem de referências).
 
-**Erros comuns:** sair com `end` quando a intenção era descartar a alteração (`abort`); tentar apagar um objeto em uso sem consultar suas referências.
+**Erros comuns:** concluir que um recurso não existe quando ele só está oculto em Feature Visibility; sair com `end` quando a intenção era descartar a alteração (`abort`); tentar apagar um objeto em uso sem consultar suas referências.
 
 ### 01.4. Configurações do sistema
 
@@ -246,7 +242,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno acessa um FortiGate novo, altera a configuração pela GUI e pela CLI, comprova o efeito, restringe a gerência sem perder o acesso e produz um backup restaurável.
 
-**Questões de revisão:** estrutura de comandos da CLI; acesso administrativo por interface e trusted hosts; perfis administrativos; dependência entre perfis e licenças FortiGuard; backup criptografado; upgrade path.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** estrutura de comandos da CLI; acesso administrativo por interface e trusted hosts; perfis administrativos; dependência entre perfis e licenças FortiGuard; backup criptografado; upgrade path.
 
 ---
 
@@ -316,7 +312,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno identifica entrada, saída e endereçamento de cada rede e comprova que os clientes recebem endereço e DNS, sem confundir interface ativa ou rota existente com tráfego autorizado.
 
-**Questões de revisão:** interface roles; rota obtida por DHCP/PPPoE e sua distância; VLAN e interface pai; zone × software switch × hardware switch; LACP × redundante; modos do DNS server; DHCP relay.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** interface roles; rota obtida por DHCP/PPPoE e sua distância; VLAN e interface pai; zone × software switch × hardware switch; LACP × redundante; modos do DNS server; DHCP relay.
 
 ---
 
@@ -384,7 +380,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno prevê qual regra e qual ação atendem uma conexão e comprova a previsão no equipamento.
 
-**Questões de revisão:** stateful e sessão; ordem e implicit deny; tipos de objeto (FQDN, geo, ISDB); schedules; policy lookup; sombreamento; reavaliação de sessões após mudanças; local-in × trânsito.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** stateful e sessão; ordem e implicit deny; tipos de objeto (FQDN, geo, ISDB); schedules; policy lookup; sombreamento; reavaliação de sessões após mudanças; local-in × trânsito.
 
 ---
 
@@ -452,7 +448,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno comprova o resultado de uma conexão por log, sessão, captura e debug flow e escolhe a ferramenta adequada a cada pergunta.
 
-**Questões de revisão:** tipos e subtipos de log; log no implicit deny; destinos de log; campos da sessão; níveis do sniffer; leitura do debug flow; offload e captura.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** tipos e subtipos de log; log no implicit deny; destinos de log; campos da sessão; níveis do sniffer; leitura do debug flow; offload e captura.
 
 ---
 
@@ -509,7 +505,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno explica o papel de policy, SNAT e VIP e comprova a tradução nos dois sentidos.
 
-**Questões de revisão:** tipos de IP pool; VIP e policy; ARP do VIP; hairpin; Central NAT; session helpers.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** tipos de IP pool; VIP e policy; ARP do VIP; hairpin; Central NAT; session helpers.
 
 ---
 
@@ -580,7 +576,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno prevê o caminho de um destino, comprova a troca em falha e distingue seleção de rota, RPF e autorização por policy.
 
-**Questões de revisão:** distância × prioridade; floating route; link monitor; ordem PBR × tabela de rotas; métodos de ECMP; RPF; roteamento assimétrico.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** distância × prioridade; floating route; link monitor; ordem PBR × tabela de rotas; métodos de ECMP; RPF; roteamento assimétrico.
 
 ---
 
@@ -655,7 +651,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno mostra a identidade recebida, o grupo reconhecido e a policy aplicada e separa falha de autenticação de negação de acesso.
 
-**Questões de revisão:** tipos de bind LDAP; testes de servidor pela CLI; grupos remotos; protocolos que disparam autenticação; captive portal; tipos de timeout; administrador wildcard.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** tipos de bind LDAP; testes de servidor pela CLI; grupos remotos; protocolos que disparam autenticação; captive portal; tipos de timeout; administrador wildcard.
 
 ---
 
@@ -721,7 +717,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno mostra a origem do mapeamento, o grupo recebido e a policy que o usou e localiza a etapa de uma falha.
 
-**Questões de revisão:** modos do FSSO; standard × advanced; workstation check; TS Agent; comandos de verificação; RSSO × RADIUS; SAML como SP.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** modos do FSSO; standard × advanced; workstation check; TS Agent; comandos de verificação; RSSO × RADIUS; SAML como SP.
 
 ---
 
@@ -787,7 +783,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno identifica a CA e o certificado usados, explica o que fica visível em cada modo e separa erro de confiança de bloqueio.
 
-**Questões de revisão:** certificate × deep inspection; CA de reassinatura; certificados não confiáveis; exceções; CSR e cadeia; inspeção de servidor.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** certificate × deep inspection; CA de reassinatura; certificados não confiáveis; exceções; CSR e cadeia; inspeção de servidor.
 
 ---
 
@@ -857,7 +853,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno identifica a classificação, a regra e a ação de cada acesso e explica onde cada filtro atuou.
 
-**Questões de revisão:** flow × proxy; protocol options; ações do Web Filter; ordem URL estática × categorias; exempt; rating override; web profile override; DNS Filter × Web Filter; erros de rating.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** flow × proxy; protocol options; ações do Web Filter; ordem URL estática × categorias; exempt; rating override; web profile override; DNS Filter × Web Filter; erros de rating.
 
 ---
 
@@ -923,7 +919,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno explica por que uma porta permitida pode transportar uma aplicação bloqueada e mostra qual sensor e qual ação geraram cada evento.
 
-**Questões de revisão:** identificação de aplicações; overrides; Application Control × ISDB; filtros de IPS; ações do IPS; quarentena; fail-open; ordem da DoS policy.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** identificação de aplicações; overrides; Application Control × ISDB; filtros de IPS; ações do IPS; quarentena; fail-open; ordem da DoS policy.
 
 ---
 
@@ -981,7 +977,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno identifica se um arquivo foi analisado, detectado, bloqueado por condição técnica ou bloqueado por tipo.
 
-**Questões de revisão:** AV flow × proxy; protocolos inspecionados; oversize; arquivos protegidos; outbreak prevention; CDR; File Filter × AV.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** AV flow × proxy; protocolos inspecionados; oversize; arquivos protegidos; outbreak prevention; CDR; File Filter × AV.
 
 ---
 
@@ -1050,7 +1046,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno explica por que um túnel estabelecido não comprova o acesso entre as redes e localiza a etapa de uma falha.
 
-**Questões de revisão:** Phase 1 × Phase 2; IKEv1 × IKEv2; route-based × policy-based; NAT-T; mode-config; split tunnel; rotas blackhole; comandos de diagnóstico; Agentless VPN.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** Phase 1 × Phase 2; IKEv1 × IKEv2; route-based × policy-based; NAT-T; mode-config; split tunnel; rotas blackhole; comandos de diagnóstico; Agentless VPN.
 
 ---
 
@@ -1124,7 +1120,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno prevê o membro escolhido para um fluxo e comprova a decisão em condição normal e em falha.
 
-**Questões de revisão:** membros e zones; regra implícita; estratégias; SLA, failtime e recoverytime; critérios de regra; comandos de diagnóstico; shared × per-IP shaper.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** membros e zones; regra implícita; estratégias; SLA, failtime e recoverytime; critérios de regra; comandos de diagnóstico; shared × per-IP shaper.
 
 ---
 
@@ -1182,7 +1178,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno identifica os participantes, a informação recebida de cada um e o efeito de uma automação.
 
-**Questões de revisão:** root × downstream; requisitos do Fabric; conectores; threat feeds; Security Rating; triggers e ações de automação.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** root × downstream; requisitos do Fabric; conectores; threat feeds; Security Rating; triggers e ações de automação.
 
 ---
 
@@ -1257,7 +1253,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno prevê o primário eleito, comprova sincronização e continuidade e executa manutenção com critérios de sucesso.
 
-**Questões de revisão:** modos FGCP; critérios de eleição com e sem override; o que não sincroniza; checksums; gerência reservada; session pickup; split brain; upgrade do cluster; FGSP × VRRP.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** modos FGCP; critérios de eleição com e sem override; o que não sincroniza; checksums; gerência reservada; session pickup; split brain; upgrade do cluster; FGSP × VRRP.
 
 ---
 
@@ -1322,7 +1318,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Critério de conclusão:** o aluno entrega o ambiente atendendo aos requisitos e explica, com evidência, a causa de cada falha injetada.
 
-**Questões de revisão:** metodologia de diagnóstico; conserve mode; fail-open; offload e captura; debugs por processo; coleta para suporte. Gerar também um simulado completo com questões de todos os módulos.
+**Pontos cobrados na prova (para os quadros "Dica para a prova"):** metodologia de diagnóstico; conserve mode; fail-open; offload e captura; debugs por processo; coleta para suporte. Gerar também um simulado completo com questões de todos os módulos.
 
 ---
 

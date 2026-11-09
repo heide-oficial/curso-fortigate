@@ -5,9 +5,9 @@
  * Uso:
  *   node tools/pdf/gerar-pdf.cjs --modulo conteudo/modulo-01-primeiro-acesso-e-administracao-basica.md --saida pdf/modulo-01.pdf
  *
- * O PDF tem capa, sumário, o texto do módulo com as imagens, cada carrossel como um passo a passo
- * numerado, cada Guia de comandos CLI como um quadro (com as saídas dos comandos), as questões de
- * revisão sem as respostas e, no fim, o gabarito comentado.
+ * O PDF tem capa, sumário, o texto do módulo com as imagens (sempre uma por linha), cada carrossel
+ * como um passo a passo numerado e cada Guia de comandos CLI como um quadro, com as saídas dos comandos.
+ * Se o módulo tiver blocos :::quiz, as questões entram sem as respostas e o gabarito vai no fim.
  *
  * Requer Playwright (require('playwright')). Para numerar as páginas sem numerar a capa, usa o pacote
  * Python pypdf, se estiver instalado (pip install pypdf); sem ele, a capa também recebe o rodapé.
@@ -88,8 +88,8 @@ function montar({ md, raiz }) {
 
   function slides(b) {
     const itens = b.body.split('\n').filter((l) => l.trim()).map(spec).filter(Boolean);
-    // Com três imagens ou mais, o passo a passo vai em duas colunas para não ocupar páginas demais.
-    const wrap = el('div', 'steps' + (itens.length >= 3 ? ' grade' : ''));
+    // Sempre uma imagem por linha, na largura toda, para as telas não ficarem pequenas.
+    const wrap = el('div', 'steps');
     wrap.appendChild(el('div', 'steps-title', `Passo a passo · ${itens.length} ${itens.length === 1 ? 'imagem' : 'imagens'}`));
     itens.forEach((s, i) => {
       const f = el('figure', 'fig step');

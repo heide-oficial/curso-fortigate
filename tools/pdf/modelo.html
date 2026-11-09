@@ -46,9 +46,10 @@ body { font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: 10.5pt; l
 
 /* Texto */
 .doc h1 { display: none; }
-.doc h2 { font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 19pt; line-height: 1.2; color: var(--h2); margin: 0 0 5mm; padding-bottom: 2.5mm; border-bottom: 1.5px solid #ecd2ad; break-before: page; break-after: avoid; }
-.doc h3 { font-size: 13.5pt; color: var(--h3); margin: 8mm 0 3mm; break-after: avoid; }
-.doc h4 { font-size: 11.5pt; color: var(--h4); margin: 6mm 0 2mm; break-after: avoid; }
+.doc h2 { font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 18pt; line-height: 1.2; color: var(--h2); margin: 0 0 5mm; padding: 3mm 4.5mm; background: #fbf3e6; border: 1px solid #ecd2ad; border-left: 1.4mm solid var(--h2); border-radius: 2.5mm; break-before: page; break-after: avoid; }
+.doc h3 { font-size: 13pt; color: var(--text); margin: 8mm 0 3mm; padding: 2mm 3.5mm; background: var(--panel); border: 1px solid var(--line); border-left: 1mm solid #9aa1ab; border-radius: 2mm; break-after: avoid; }
+.doc h4 { display: table; font-size: 11pt; color: var(--text); margin: 6mm 0 2.5mm; padding: 1mm 3mm; background: #fafbfc; border: 1px solid var(--line); border-radius: 1.5mm; break-after: avoid; }
+.cli h3 { display: block; }
 .doc p, .doc ul, .doc ol { margin: 0 0 3mm; }
 .doc ul, .doc ol { padding-left: 6mm; }
 .doc li { margin: 1mm 0; }
@@ -85,11 +86,6 @@ body { font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: 10.5pt; l
 .fig .cap strong { color: var(--text); }
 .steps-title { font-family: "JetBrains Mono", monospace; font-size: 7.5pt; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 3mm 0 2mm; break-after: avoid; }
 .step .cap { display: flex; gap: 3mm; align-items: flex-start; }
-.steps.grade { display: grid; grid-template-columns: 1fr 1fr; gap: 0 4mm; }
-.steps.grade .steps-title { grid-column: 1 / -1; }
-.steps.grade .fig { margin: 0 0 4mm; }
-.steps.grade .fig img { max-height: 75mm; }
-.steps.grade .fig .cap { font-size: 8.8pt; padding: 2mm 3mm 2.5mm; }
 .step .num { flex: none; min-width: 6mm; height: 6mm; border-radius: 3mm; background: var(--accent); color: #fff; font-weight: 600; font-size: 8.5pt; display: grid; place-items: center; padding: 0 1.5mm; }
 
 .cli { border: 1.5px solid #c9ced6; border-radius: 3mm; margin: 6mm 0 4mm; padding: 0 5mm 3mm; background: #fbfbfc; }
@@ -97,7 +93,7 @@ body { font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: 10.5pt; l
 .cli-head .ico { font-family: "JetBrains Mono", monospace; color: #e8a94f; border: 1px solid #3a414b; border-radius: 1.5mm; padding: 0.5mm 2mm; font-size: 9pt; }
 .cli-head b { font-size: 11pt; }
 .cli-head span { color: #aeb5be; font-size: 9pt; }
-.cli h3 { font-size: 11.5pt; color: var(--h3); margin: 5mm 0 2mm; }
+.cli h3 { font-size: 11.5pt; color: var(--text); margin: 5mm 0 2mm; }
 .cli h3:first-of-type { margin-top: 0; }
 
 .quiz { border: 1px solid var(--line); border-radius: 2.5mm; padding: 3.5mm 4.5mm; margin: 0 0 4mm; break-inside: avoid; }

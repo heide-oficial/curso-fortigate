@@ -1,6 +1,6 @@
 {
   "roteiro": "m01",
-  "geradoEm": "2026-11-09T13:57:26.908Z",
+  "geradoEm": "2026-11-09T14:17:13.424Z",
   "arquivos": [
     {
       "arquivo": "01-1-fortigate-121g.png",
@@ -10,15 +10,6 @@
       "descricao": "FortiGate 121G FGT-MTZ no diagrama 2D do laboratório",
       "largura": 1920,
       "altura": 488
-    },
-    {
-      "arquivo": "01-2-topologia-mgmt.png",
-      "tipo": "imagem",
-      "passo": 7,
-      "titulo": "Cabo de gerência",
-      "descricao": "Diagrama com o cabo de rede entre a porta mgmt do FGT-MTZ e o ADMIN-PC em destaque",
-      "largura": 1920,
-      "altura": 1383
     },
     {
       "arquivo": "01-2-topologia-console.png",
@@ -138,9 +129,18 @@
       "altura": 1210
     },
     {
-      "arquivo": "01-2-admin-pc.png",
+      "arquivo": "01-2-topologia-mgmt.png",
       "tipo": "imagem",
       "passo": 18,
+      "titulo": "Caminho até a GUI",
+      "descricao": "Diagrama com o cabo de rede entre a porta mgmt do FGT-MTZ (10.10.99.1/24) e o ADMIN-PC (10.10.99.10/24) em destaque",
+      "largura": 1920,
+      "altura": 1383
+    },
+    {
+      "arquivo": "01-2-admin-pc.png",
+      "tipo": "imagem",
+      "passo": 19,
       "titulo": "Estação do administrador",
       "descricao": "Área de trabalho do ADMIN-PC com o Microsoft Edge em destaque na barra de tarefas",
       "largura": 1920,
@@ -149,7 +149,7 @@
     {
       "arquivo": "01-2-login-gui.png",
       "tipo": "imagem",
-      "passo": 19,
+      "passo": 20,
       "titulo": "Navegador do ADMIN-PC",
       "descricao": "Página de login da GUI do FGT-MTZ aberta no navegador do ADMIN-PC",
       "largura": 1920,
@@ -158,7 +158,7 @@
     {
       "arquivo": "01-2-assistente-1.png",
       "tipo": "imagem",
-      "passo": 20,
+      "passo": 21,
       "titulo": "Assistente de configuração",
       "descricao": "Tela inicial do assistente FortiGate Setup com os três passos",
       "largura": 1920,
@@ -167,7 +167,7 @@
     {
       "arquivo": "01-2-assistente-2.png",
       "tipo": "imagem",
-      "passo": 21,
+      "passo": 22,
       "titulo": "Atualização automática de patches",
       "descricao": "Passo Automatic Patch Upgrades do assistente, com a opção ativada",
       "largura": 1920,
@@ -176,7 +176,7 @@
     {
       "arquivo": "01-2-assistente-3.png",
       "tipo": "imagem",
-      "passo": 22,
+      "passo": 23,
       "titulo": "Policy inicial",
       "descricao": "Passo Initial Policy Configuration do assistente, com Change Your Password concluído",
       "largura": 1920,
@@ -185,7 +185,7 @@
     {
       "arquivo": "01-1-menu-gui",
       "tipo": "slides",
-      "passo": 24,
+      "passo": 25,
       "titulo": "GUI em tela cheia",
       "descricao": "Menu lateral da GUI do FortiGate com os menus principais",
       "imagens": [
@@ -293,7 +293,7 @@
     {
       "arquivo": "01-1-elementos-gui",
       "tipo": "slides",
-      "passo": 25,
+      "passo": 26,
       "titulo": "Barra superior",
       "descricao": "Barra superior da GUI: busca, FortiAI, CLI, notificações e menu do administrador",
       "imagens": [
@@ -354,9 +354,36 @@
       ]
     },
     {
+      "arquivo": "01-3-tema-1.png",
+      "tipo": "imagem",
+      "passo": 27,
+      "titulo": "Tema da GUI",
+      "descricao": "System > Settings, aba Preference, com a seção Theming em destaque",
+      "largura": 1920,
+      "altura": 1080
+    },
+    {
+      "arquivo": "01-3-tema-2.png",
+      "tipo": "imagem",
+      "passo": 28,
+      "titulo": "Temas disponíveis",
+      "descricao": "Lista de temas da GUI aberta, com o Jade selecionado",
+      "largura": 1920,
+      "altura": 733
+    },
+    {
+      "arquivo": "01-3-tema-3.png",
+      "tipo": "imagem",
+      "passo": 29,
+      "titulo": "Tema por administrador",
+      "descricao": "Painel Personalize com a opção de tema do administrador",
+      "largura": 1920,
+      "altura": 1080
+    },
+    {
       "arquivo": "01-1-system-information",
       "tipo": "slides",
-      "passo": 26,
+      "passo": 30,
       "titulo": "System Information",
       "descricao": "Widget System Information do dashboard Status do FGT-MTZ",
       "imagens": [
@@ -419,7 +446,7 @@
     {
       "arquivo": "01-1-feature-visibility-1.png",
       "tipo": "imagem",
-      "passo": 27,
+      "passo": 31,
       "titulo": "Feature Visibility",
       "descricao": "Página System > Feature Visibility com a lista de recursos por grupo",
       "largura": 1920,
@@ -428,7 +455,7 @@
     {
       "arquivo": "01-1-feature-visibility-2.png",
       "tipo": "imagem",
-      "passo": 28,
+      "passo": 32,
       "titulo": "Ativando DNS Database",
       "descricao": "Chave DNS Database ativada em Feature Visibility",
       "largura": 1920,
@@ -437,7 +464,7 @@
     {
       "arquivo": "01-1-feature-visibility-3.png",
       "tipo": "imagem",
-      "passo": 29,
+      "passo": 33,
       "titulo": "Novo item no menu",
       "descricao": "Menu Network mostrando o novo item DNS Servers",
       "largura": 1920,
@@ -446,7 +473,7 @@
     {
       "arquivo": "01-3-lista-objetos",
       "tipo": "slides",
-      "passo": 30,
+      "passo": 34,
       "titulo": "Listas de objetos",
       "descricao": "Lista Policy & Objects > Addresses com botões de ação, busca e coluna Ref.",
       "imagens": [
@@ -491,7 +518,7 @@
     {
       "arquivo": "01-3-cli-console-gui.png",
       "tipo": "imagem",
-      "passo": 31,
+      "passo": 35,
       "titulo": "CLI Console",
       "descricao": "CLI Console aberta na GUI com a saída de show system interface mgmt",
       "largura": 1920,
@@ -500,7 +527,7 @@
     {
       "arquivo": "01-3-show-full.png",
       "tipo": "imagem",
-      "passo": 32,
+      "passo": 36,
       "titulo": "show full-configuration",
       "descricao": "Saída de show full-configuration system interface mgmt na CLI Console",
       "largura": 1920,
@@ -509,7 +536,7 @@
     {
       "arquivo": "01-4-system-settings",
       "tipo": "slides",
-      "passo": 33,
+      "passo": 37,
       "titulo": "System > Settings",
       "descricao": "System > Settings, aba General: hostname, fuso horário e NTP",
       "imagens": [
@@ -563,7 +590,7 @@
     {
       "arquivo": "01-4-ntp-cli.png",
       "tipo": "imagem",
-      "passo": 34,
+      "passo": 38,
       "titulo": "NTP próprio pela CLI",
       "descricao": "Configuração do servidor NTP a.ntp.br pela CLI Console",
       "largura": 1920,
@@ -572,7 +599,7 @@
     {
       "arquivo": "01-4-dns",
       "tipo": "slides",
-      "passo": 35,
+      "passo": 39,
       "titulo": "DNS do sistema",
       "descricao": "Network > DNS com os servidores FortiGuard e os protocolos de DNS",
       "imagens": [
@@ -608,7 +635,7 @@
     {
       "arquivo": "01-4-administration-settings",
       "tipo": "slides",
-      "passo": 36,
+      "passo": 40,
       "titulo": "Administration settings",
       "descricao": "Aba Access de System > Settings com portas administrativas e Idle timeout",
       "imagens": [
@@ -644,7 +671,7 @@
     {
       "arquivo": "01-4-admin-access.png",
       "tipo": "imagem",
-      "passo": 38,
+      "passo": 42,
       "titulo": "Administrative Access",
       "descricao": "Edição da interface mgmt com Administrative Access HTTPS, SSH e PING",
       "largura": 1920,
@@ -653,7 +680,7 @@
     {
       "arquivo": "01-4-log-login.png",
       "tipo": "imagem",
-      "passo": 39,
+      "passo": 43,
       "titulo": "Eventos de login",
       "descricao": "Log & Report > System Events com os eventos administrativos",
       "largura": 1920,
@@ -662,7 +689,7 @@
     {
       "arquivo": "01-5-admin-profiles.png",
       "tipo": "imagem",
-      "passo": 40,
+      "passo": 44,
       "titulo": "Admin Profiles",
       "descricao": "Lista de perfis administrativos padrão: super_admin e prof_admin",
       "largura": 1920,
@@ -671,7 +698,7 @@
     {
       "arquivo": "01-5-admin-profile",
       "tipo": "slides",
-      "passo": 41,
+      "passo": 45,
       "titulo": "Perfil somente leitura",
       "descricao": "Novo perfil administrativo Atlas-Leitura com Read em todas as áreas",
       "imagens": [
@@ -698,7 +725,7 @@
     {
       "arquivo": "01-5-admin-conta",
       "tipo": "slides",
-      "passo": 42,
+      "passo": 46,
       "titulo": "Novo administrador",
       "descricao": "Criação do administrador carla.suporte com perfil e trusted hosts",
       "imagens": [
@@ -734,7 +761,7 @@
     {
       "arquivo": "01-5-password-policy.png",
       "tipo": "imagem",
-      "passo": 44,
+      "passo": 48,
       "titulo": "Política de senha",
       "descricao": "Política de senha dos administradores na aba Access",
       "largura": 1920,
@@ -743,7 +770,7 @@
     {
       "arquivo": "01-6-updates.png",
       "tipo": "imagem",
-      "passo": 46,
+      "passo": 50,
       "titulo": "Atualizações",
       "descricao": "Aba FortiGuard settings com o agendamento das atualizações",
       "largura": 1920,
@@ -752,7 +779,7 @@
     {
       "arquivo": "01-6-licencas-widget.png",
       "tipo": "imagem",
-      "passo": 47,
+      "passo": 51,
       "titulo": "Widget Licenses",
       "descricao": "Widget Licenses de um FortiGate só com FortiCare: Support e Updates licenciados, serviços de segurança em cinza",
       "largura": 1920,
@@ -761,7 +788,7 @@
     {
       "arquivo": "01-6-fortiguard.png",
       "tipo": "imagem",
-      "passo": 48,
+      "passo": 52,
       "titulo": "System > FortiGuard",
       "descricao": "System > FortiGuard, aba Licensed, com as assinaturas da base FortiCare",
       "largura": 1920,
@@ -770,7 +797,7 @@
     {
       "arquivo": "01-6-fortiguard-disponiveis.png",
       "tipo": "imagem",
-      "passo": 49,
+      "passo": 53,
       "titulo": "Available for purchase",
       "descricao": "System > FortiGuard, aba Available for purchase, com os serviços não contratados",
       "largura": 1920,
@@ -779,7 +806,7 @@
     {
       "arquivo": "01-6-licencas-utp.png",
       "tipo": "imagem",
-      "passo": 50,
+      "passo": 54,
       "titulo": "Bundle UTP",
       "descricao": "Widget Licenses com o bundle UTP: Support, Updates, IPS, AntiVirus e Web Filter licenciados",
       "largura": 1920,
@@ -788,7 +815,7 @@
     {
       "arquivo": "01-6-licencas-expiradas.png",
       "tipo": "imagem",
-      "passo": 51,
+      "passo": 55,
       "titulo": "Contrato vencido",
       "descricao": "Widget Licenses com IPS, AntiVirus e Web Filter expirados em vermelho",
       "largura": 1920,
@@ -797,7 +824,7 @@
     {
       "arquivo": "01-6-fortiguard-expiradas.png",
       "tipo": "imagem",
-      "passo": 52,
+      "passo": 56,
       "titulo": "Assinaturas expiradas",
       "descricao": "System > FortiGuard, aba Expired, com as assinaturas do bundle UTP vencidas",
       "largura": 1920,
@@ -806,7 +833,7 @@
     {
       "arquivo": "01-7-backup-passo-1.png",
       "tipo": "imagem",
-      "passo": 53,
+      "passo": 57,
       "titulo": "Menu do administrador",
       "descricao": "Menu do administrador aberto, com o item Configuration",
       "largura": 1920,
@@ -815,7 +842,7 @@
     {
       "arquivo": "01-7-backup-passo-2.png",
       "tipo": "imagem",
-      "passo": 54,
+      "passo": 58,
       "titulo": "Menu Configuration",
       "descricao": "Submenu Configuration com Backup, Restore e Reset to factory defaults",
       "largura": 1920,
@@ -824,7 +851,7 @@
     {
       "arquivo": "01-7-backup",
       "tipo": "slides",
-      "passo": 55,
+      "passo": 59,
       "titulo": "Backup criptografado",
       "descricao": "Tela Backup System Configuration com destino Local PC e criptografia ativada",
       "imagens": [
@@ -867,22 +894,94 @@
       ]
     },
     {
+      "arquivo": "01-7-restore-passo-1.png",
+      "tipo": "imagem",
+      "passo": 60,
+      "titulo": "Menu Restore",
+      "descricao": "Submenu Configuration com o item Restore em destaque",
+      "largura": 1920,
+      "altura": 1294
+    },
+    {
       "arquivo": "01-7-restore.png",
       "tipo": "imagem",
-      "passo": 56,
+      "passo": 61,
       "titulo": "Restauração",
       "descricao": "Tela de restauração da configuração com o envio do arquivo e a senha",
       "largura": 1920,
       "altura": 963
     },
     {
+      "arquivo": "01-2-reset-passo-1.png",
+      "tipo": "imagem",
+      "passo": 62,
+      "titulo": "Reset de fábrica",
+      "descricao": "Submenu Configuration com o item Reset to factory defaults em destaque",
+      "largura": 1920,
+      "altura": 1294
+    },
+    {
+      "arquivo": "01-2-reset-passo-2.png",
+      "tipo": "imagem",
+      "passo": 63,
+      "titulo": "Confirmação do reset",
+      "descricao": "Confirmação do reset de fábrica",
+      "largura": 1920,
+      "altura": 777
+    },
+    {
       "arquivo": "01-7-firmware.png",
       "tipo": "imagem",
-      "passo": 57,
+      "passo": 64,
       "titulo": "Firmware & Registration",
       "descricao": "System > Firmware & Registration com a versão do FGT-MTZ",
       "largura": 1920,
       "altura": 1080
+    },
+    {
+      "arquivo": "01-7-upgrade-1.png",
+      "tipo": "imagem",
+      "passo": 65,
+      "titulo": "Selecionando o equipamento",
+      "descricao": "FGT-MTZ selecionado na lista de Firmware & Registration, com o botão Upgrade",
+      "largura": 1920,
+      "altura": 1080
+    },
+    {
+      "arquivo": "01-7-upgrade-2.png",
+      "tipo": "imagem",
+      "passo": 66,
+      "titulo": "Tipo de upgrade",
+      "descricao": "Primeiro passo do assistente FortiGate Upgrade: tipo de upgrade",
+      "largura": 1920,
+      "altura": 2116
+    },
+    {
+      "arquivo": "01-7-upgrade-3.png",
+      "tipo": "imagem",
+      "passo": 67,
+      "titulo": "Versão de destino",
+      "descricao": "Passo Select Firmware com as versões recomendadas e o link do release notes",
+      "largura": 1920,
+      "altura": 2116
+    },
+    {
+      "arquivo": "01-7-upgrade-4.png",
+      "tipo": "imagem",
+      "passo": 68,
+      "titulo": "Agendamento e backup",
+      "descricao": "Passo de agendamento do upgrade e backup da configuração com senha",
+      "largura": 1920,
+      "altura": 2116
+    },
+    {
+      "arquivo": "01-7-upgrade-5.png",
+      "tipo": "imagem",
+      "passo": 69,
+      "titulo": "Revisão",
+      "descricao": "Passo Review do assistente de upgrade com a versão atual e a de destino",
+      "largura": 1920,
+      "altura": 2116
     }
   ]
 }

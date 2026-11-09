@@ -87,10 +87,6 @@ Ao final de cada capítulo há um botão **Guia de comandos CLI**. Ele abre uma 
 
 A CLI aparece no texto principal só quando é necessária: quando não existe opção na GUI, quando a saída de um comando é a melhor forma de diagnosticar um problema ou quando o assunto é a própria CLI.
 
-### Questões de revisão
-
-Cada módulo termina com questões no estilo da prova. Escolha uma alternativa e clique em **Enviar**: você vê na hora se acertou e a justificativa da resposta correta. Algumas questões pedem duas alternativas.
-
 ### Progresso
 
 No fim de cada módulo, use **Marcar como concluído**. O índice à esquerda mostra um visto nos módulos concluídos e a barra de **Progresso** acompanha o seu avanço. O progresso fica salvo neste navegador.

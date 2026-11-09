@@ -96,62 +96,7 @@ O sistema operacional do FortiGate se chama **FortiOS**. É ele que define quais
 
 > **Na prática:** as funções do FortiGate dependem umas das outras. Um filtro web, por exemplo, só atua sobre um tráfego que uma firewall policy já permitiu. Entender essa ordem é a base de todo o curso.
 
-### 01.1.3. Como a GUI está organizada
-
-A **GUI** (*Graphical User Interface*) é a interface web de administração, acessada por HTTPS. O menu lateral é organizado por **função**:
-
-:::slides
-midia/m01/01-1-menu-gui-1.png "GUI do FortiGate com o menu lateral em destaque" | O **menu lateral** organiza o FortiGate por função. Cada item abre um grupo de páginas.
-midia/m01/01-1-menu-gui-2.png "Menu Dashboard em destaque" | **Dashboard:** visão do estado do equipamento, com CPU, memória, sessões, licenças e as visões do **FortiView**.
-midia/m01/01-1-menu-gui-3.png "Menu Network em destaque" | **Network:** conectividade. Interfaces, DNS, rotas estáticas, policy routes e SD-WAN.
-midia/m01/01-1-menu-gui-4.png "Menu Policy & Objects em destaque" | **Policy & Objects:** quem pode falar com quem. As **firewall policies** e os objetos que elas usam: endereços, serviços, schedules, Virtual IPs e IP pools.
-midia/m01/01-1-menu-gui-5.png "Menu Security Profiles em destaque" | **Security Profiles:** o que é inspecionado no tráfego **já permitido** pela policy. Antivirus, Web Filter, DNS Filter, Application Control, IPS e inspeção SSL.
-midia/m01/01-1-menu-gui-6.png "Menu VPN em destaque" | **VPN:** túneis IPsec entre sites e acesso remoto de usuários.
-midia/m01/01-1-menu-gui-7.png "Menu User & Authentication em destaque" | **User & Authentication:** usuários, grupos, servidores LDAP e RADIUS, FortiTokens e contas de convidados.
-midia/m01/01-1-menu-gui-8.png "Menu WiFi & Switch Controller em destaque" | **WiFi & Switch Controller:** gerência de access points (FortiAP) e switches (FortiSwitch) pelo próprio FortiGate.
-midia/m01/01-1-menu-gui-9.png "Menu System em destaque" | **System:** o próprio equipamento. Administradores, perfis administrativos, firmware, configurações gerais, HA, certificados, FortiGuard e Feature Visibility.
-midia/m01/01-1-menu-gui-10.png "Menu Security Fabric em destaque" | **Security Fabric:** integração com outros produtos Fortinet: topologia, Security Rating, automação e conectores.
-midia/m01/01-1-menu-gui-11.png "Menu Log & Report em destaque" | **Log & Report:** os registros de tráfego, eventos e segurança, e a configuração dos destinos de log.
-:::
-
-| Menu | Para que serve |
-|---|---|
-| **Dashboard** | Visão do estado do equipamento |
-| **Network** | Conectividade: interfaces, DNS, rotas, SD-WAN |
-| **Policy & Objects** | Quem pode falar com quem: policies e objetos |
-| **Security Profiles** | O que é inspecionado no tráfego permitido |
-| **VPN** | Túneis IPsec e acesso remoto |
-| **User & Authentication** | Usuários, grupos, servidores de autenticação, FortiTokens |
-| **WiFi & Switch Controller** | Gerência de FortiAP e FortiSwitch (aparece quando o recurso está habilitado) |
-| **System** | Administradores, firmware, configurações gerais, HA, certificados, FortiGuard |
-| **Security Fabric** | Integração com outros produtos Fortinet |
-| **Log & Report** | Logs de tráfego, eventos e segurança |
-
-Repare na separação entre **Policy & Objects** e **Security Profiles**. A firewall policy decide se a conexão é **permitida**. O Security Profile decide o que acontece **com o conteúdo** da conexão permitida. Um perfil nunca libera algo que a policy bloqueou.
-
-Algumas funções são **nativas** do FortiGate (firewall, VPN, filtros). Outras são **integrações** com outros produtos: FortiAnalyzer para logs centralizados, FortiClient EMS para dados dos computadores, FortiSandbox para análise de arquivos. As integrações ficam em **Security Fabric > Fabric Connectors** e exigem o outro produto funcionando, não só a configuração no FortiGate.
-
-#### A barra superior
-
-A barra superior traz ferramentas disponíveis em qualquer página:
-
-:::slides
-midia/m01/01-1-elementos-gui-1.png "Barra superior da GUI em destaque" | A **barra superior** acompanha todas as páginas da GUI.
-midia/m01/01-1-elementos-gui-2.png "Botão de busca em destaque" | **Busca:** digite parte do nome ("dns", "admin", "firmware") para ir direto à página. Ajuda muito quando o menu muda entre versões.
-midia/m01/01-1-elementos-gui-3.png "Botão FortiAI em destaque" | **FortiAI:** o assistente de IA da Fortinet, que responde perguntas sobre a configuração. Depende de licença.
-midia/m01/01-1-elementos-gui-4.png "Botão CLI em destaque" | **CLI:** abre a **CLI Console**, um terminal da CLI dentro do navegador, sem precisar de SSH.
-midia/m01/01-1-elementos-gui-5.png "Botão de notificações em destaque" | **Notificações:** avisos do sistema, como firmware novo, licenças a vencer e problemas de configuração.
-midia/m01/01-1-elementos-gui-6.png "Menu do administrador em destaque" | **Menu do administrador:** **Configuration** (backup, restauração e reset de fábrica), troca de senha e logout.
-:::
-
-Além da barra superior, repare em outros elementos comuns:
-
-- **Dashboards:** painéis com widgets (System Information, Licenses, CPU, Memory, Sessions, Interfaces, Administrators). Você pode criar dashboards próprios e escolher os widgets.
-- **Listas:** a maioria das páginas tem busca, filtros por coluna e a coluna **Ref.** (referências), que mostra se um objeto está em uso.
-
-### 01.1.4. Modelos, plataformas e recursos disponíveis
-
-#### Famílias de FortiGate
+### 01.1.3. Modelos e plataformas
 
 O mesmo FortiOS roda em plataformas diferentes:
 
@@ -171,121 +116,12 @@ O FortiGate 121G tem portas de **console (CON)**, **HA** e **MGMT**, 16 portas d
 
 Guarde a ideia: **dois FortiGates com a mesma versão de FortiOS podem ter capacidades e até recursos diferentes**, por causa do hardware.
 
-#### Conhecendo o seu equipamento pela GUI
-
-O widget **System Information**, no dashboard **Status**, resume a identidade do equipamento:
-
-:::slides
-midia/m01/01-1-system-information-1.png "Widget System Information do FGT-MTZ" | O widget **System Information** resume a identidade do equipamento.
-midia/m01/01-1-system-information-2.png "Linha Hostname em destaque" | **Hostname:** o nome do equipamento. Ele aparece no prompt da CLI, nos logs e no Security Fabric.
-midia/m01/01-1-system-information-3.png "Linha Serial number em destaque" | **Serial number:** o número de série, usado no **registro** do equipamento e no suporte.
-midia/m01/01-1-system-information-4.png "Linha Firmware em destaque" | **Firmware:** versão do FortiOS e **build**, que identifica exatamente a imagem instalada. O destaque em vermelho indica que há uma versão mais nova disponível.
-midia/m01/01-1-system-information-5.png "Linha Mode em destaque" | **Mode:** **NAT** é o modo roteado, o padrão e o usado neste curso. O outro modo é o **Transparent**, em que o FortiGate funciona como uma ponte entre segmentos de rede.
-midia/m01/01-1-system-information-6.png "Linha System time em destaque" | **System time** e **Uptime:** a hora do equipamento e há quanto tempo ele está ligado. Você vai ver por que a hora correta é tão importante.
-:::
-
-A mesma informação, com mais detalhes, aparece no comando `get system status`. Esse comando é muito cobrado na prova: veja a saída completa no **Guia de comandos CLI** deste capítulo.
-
-#### Por que um recurso pode "não existir" no seu FortiGate
-
-É comum ler a documentação, procurar um recurso na GUI e não encontrar. Há quatro motivos principais:
-
-1. **Feature Visibility:** para deixar a GUI mais limpa, o FortiOS esconde vários recursos por padrão. Eles existem e funcionam, só não aparecem no menu. Exemplos: DNS Database, Load Balance, Explicit Proxy, Local-In Policy.
-2. **Modelo e memória:** alguns recursos dependem do hardware. Modelos com pouca memória RAM podem não ter recursos que exigem muito processamento. A matriz de recursos por plataforma (*Feature / Platform Matrix*) e o release notes informam essas restrições.
-3. **Licença:** o recurso aparece, mas não funciona sem o serviço FortiGuard correspondente.
-4. **Versão do FortiOS:** o recurso foi incluído, renomeado ou removido em determinada versão.
-
-#### Na GUI: habilitando um recurso em Feature Visibility
-
-:::slides
-midia/m01/01-1-feature-visibility-1.png "Página System > Feature Visibility com os recursos agrupados por área" | Em **System > Feature Visibility**, os recursos aparecem agrupados por área (*Network*, *Policy & objects* e outras). A chave de cada um indica se ele aparece no menu.
-midia/m01/01-1-feature-visibility-2.png "Chave DNS Database ativada em Feature Visibility" | Localize **DNS Database**, ative a chave e clique em **Apply**. A alteração vale na hora.
-midia/m01/01-1-feature-visibility-3.png "Menu Network com o novo item DNS Servers" | O item **Network > DNS Servers** passa a aparecer no menu.
-:::
-
-Feature Visibility só altera a **interface**. Desabilitar a visibilidade de um recurso **não desliga** uma configuração que já está em uso. Ela continua funcionando, apenas fica fora da vista na GUI.
-
-> **Atenção:** "não está no menu" não significa "não existe". Antes de concluir que o equipamento não suporta algo, confira Feature Visibility, a matriz de plataforma, a licença e o release notes.
-
 #### Erros comuns
 
-- Concluir que um recurso não existe porque o menu não aparece, quando ele só está oculto em Feature Visibility.
-- Achar que um perfil de segurança pode liberar um tráfego que a firewall policy não permitiu.
+- Achar que o FortiGate só protege a fronteira com a Internet: ele também segmenta as redes internas.
 - Esperar que uma VM tenha o mesmo desempenho de um appliance físico com aceleração em hardware.
 
 :::cli O FortiGate e o FortiOS
-### `get system status`: a identidade do equipamento
-
-É o comando de referência para conhecer um FortiGate.
-
-```
-get system status
-```
-
-```saida
-FGT-MTZ # get system status
-Version: FGT121G v8.0.1,build0215,260305 (GA.F)
-First GA patch build date: 260115
-Security Level: 2
-Firmware Signature: certified
-Virus-DB: 94.09321(2026-11-09 13:22)
-Extended DB: 94.09321(2026-11-09 13:22)
-AV AI/ML Model: 4.00124(2026-11-09 13:22)
-IPS-DB: 34.00512(2026-11-08 13:22)
-IPS-ETDB: 34.00512(2026-11-08 13:22)
-APP-DB: 32.00821(2026-11-08 13:22)
-Serial-Number: FG121GTK25000101
-BIOS version: 06000102
-System Part-Number: P29447-02
-Log hard disk: Available
-Hostname: FGT-MTZ
-Private Encryption: Disable
-Operation Mode: NAT
-Current virtual domain: root
-Max number of virtual domains: 10
-Virtual domains status: 1 in NAT mode, 0 in TP mode
-Virtual domain configuration: disable
-FIPS-CC mode: disable
-Current HA mode: standalone
-Branch point: 0215
-Release Version Information: GA
-FortiGuard contract: UTP (expired)
-System time: Mon Nov  9 10:22:06 2026
-Last reboot reason: warm reboot
-```
-
-| Campo | O que indica |
-|---|---|
-| `Version` | Modelo, versão do FortiOS e build. |
-| `Firmware Signature` | Se a imagem é assinada pela Fortinet (`certified`). |
-| `Virus-DB`, `IPS-DB`, `APP-DB` | Versões das bases de assinaturas e a data da última atualização. |
-| `Serial-Number` | Número de série. |
-| `Log hard disk` | Se há disco para logs locais. |
-| `Operation Mode` | `NAT` ou `Transparent`. |
-| `Virtual domain configuration` | Se o equipamento usa VDOMs. |
-| `Current HA mode` | `standalone` (sozinho) ou o modo do cluster. |
-| `FortiGuard contract` | O pacote de serviços FortiGuard e se ele está válido. |
-
-> **Dica para a prova:** `get system status` reúne versão, número de série, modo de operação, estado de VDOM e de HA em uma única saída.
-
-### Feature Visibility pela CLI
-
-As opções de visibilidade ficam em `config system settings`, com nomes que começam com `gui-`:
-
-```
-config system settings
-    set gui-dns-database enable
-end
-```
-
-Para ver todas as opções disponíveis na sua versão:
-
-```
-config system settings
-    set gui-?
-end
-```
-
 ### Desempenho e recursos
 
 ```
@@ -411,7 +247,15 @@ Outra opção para a configuração inicial é o **FortiExplorer**, aplicativo d
 
 O reset de fábrica apaga a configuração e devolve o equipamento ao estado original: mesma versão de firmware, configuração padrão. Use quando for reaproveitar um equipamento ou quando a configuração estiver irrecuperável.
 
-Pela GUI, o reset fica no **menu do administrador > Configuration > Reset to factory defaults**. Pela CLI, o comando é `execute factory-reset`. Depois do reset:
+Pela GUI, o reset fica no **menu do administrador** (o nome do administrador, no canto superior direito):
+
+:::slides
+midia/m01/01-7-backup-passo-1.png "Menu do administrador aberto com o item Configuration em destaque" | Clique no **nome do administrador** e depois em **Configuration**.
+midia/m01/01-2-reset-passo-1.png "Submenu Configuration com Reset to factory defaults em destaque" | No submenu **Configuration**, clique em **Reset to factory defaults**.
+midia/m01/01-2-reset-passo-2.png "Confirmação do reset de fábrica" | O FortiGate pede confirmação: todas as alterações de configuração serão perdidas. **OK** apaga a configuração e reinicia; **Cancel** desiste.
+:::
+
+Pela CLI, o comando é `execute factory-reset`. Depois do reset:
 
 - todas as policies, interfaces, VPNs, usuários e administradores criados são **apagados**;
 - a senha do `admin` volta a ser em branco;
@@ -539,7 +383,108 @@ A GUI e a CLI são **duas janelas para a mesma configuração**. Tudo o que voc�
 
 Por isso, mesmo trabalhando pela GUI, você precisa entender como a CLI está organizada.
 
-### 01.3.1. Navegação na GUI e acesso à CLI
+### 01.3.1. A GUI
+
+#### Como a GUI está organizada
+
+A **GUI** (*Graphical User Interface*) é a interface web de administração, acessada por HTTPS. O menu lateral é organizado por **função**:
+
+:::slides
+midia/m01/01-1-menu-gui-1.png "GUI do FortiGate com o menu lateral em destaque" | O **menu lateral** organiza o FortiGate por função. Cada item abre um grupo de páginas.
+midia/m01/01-1-menu-gui-2.png "Menu Dashboard em destaque" | **Dashboard:** visão do estado do equipamento, com CPU, memória, sessões, licenças e as visões do **FortiView**.
+midia/m01/01-1-menu-gui-3.png "Menu Network em destaque" | **Network:** conectividade. Interfaces, DNS, rotas estáticas, policy routes e SD-WAN.
+midia/m01/01-1-menu-gui-4.png "Menu Policy & Objects em destaque" | **Policy & Objects:** quem pode falar com quem. As **firewall policies** e os objetos que elas usam: endereços, serviços, schedules, Virtual IPs e IP pools.
+midia/m01/01-1-menu-gui-5.png "Menu Security Profiles em destaque" | **Security Profiles:** o que é inspecionado no tráfego **já permitido** pela policy. Antivirus, Web Filter, DNS Filter, Application Control, IPS e inspeção SSL.
+midia/m01/01-1-menu-gui-6.png "Menu VPN em destaque" | **VPN:** túneis IPsec entre sites e acesso remoto de usuários.
+midia/m01/01-1-menu-gui-7.png "Menu User & Authentication em destaque" | **User & Authentication:** usuários, grupos, servidores LDAP e RADIUS, FortiTokens e contas de convidados.
+midia/m01/01-1-menu-gui-8.png "Menu WiFi & Switch Controller em destaque" | **WiFi & Switch Controller:** gerência de access points (FortiAP) e switches (FortiSwitch) pelo próprio FortiGate.
+midia/m01/01-1-menu-gui-9.png "Menu System em destaque" | **System:** o próprio equipamento. Administradores, perfis administrativos, firmware, configurações gerais, HA, certificados, FortiGuard e Feature Visibility.
+midia/m01/01-1-menu-gui-10.png "Menu Security Fabric em destaque" | **Security Fabric:** integração com outros produtos Fortinet: topologia, Security Rating, automação e conectores.
+midia/m01/01-1-menu-gui-11.png "Menu Log & Report em destaque" | **Log & Report:** os registros de tráfego, eventos e segurança, e a configuração dos destinos de log.
+:::
+
+| Menu | Para que serve |
+|---|---|
+| **Dashboard** | Visão do estado do equipamento |
+| **Network** | Conectividade: interfaces, DNS, rotas, SD-WAN |
+| **Policy & Objects** | Quem pode falar com quem: policies e objetos |
+| **Security Profiles** | O que é inspecionado no tráfego permitido |
+| **VPN** | Túneis IPsec e acesso remoto |
+| **User & Authentication** | Usuários, grupos, servidores de autenticação, FortiTokens |
+| **WiFi & Switch Controller** | Gerência de FortiAP e FortiSwitch (aparece quando o recurso está habilitado) |
+| **System** | Administradores, firmware, configurações gerais, HA, certificados, FortiGuard |
+| **Security Fabric** | Integração com outros produtos Fortinet |
+| **Log & Report** | Logs de tráfego, eventos e segurança |
+
+Repare na separação entre **Policy & Objects** e **Security Profiles**. A firewall policy decide se a conexão é **permitida**. O Security Profile decide o que acontece **com o conteúdo** da conexão permitida. Um perfil nunca libera algo que a policy bloqueou.
+
+Algumas funções são **nativas** do FortiGate (firewall, VPN, filtros). Outras são **integrações** com outros produtos: FortiAnalyzer para logs centralizados, FortiClient EMS para dados dos computadores, FortiSandbox para análise de arquivos. As integrações ficam em **Security Fabric > Fabric Connectors** e exigem o outro produto funcionando, não só a configuração no FortiGate.
+
+#### A barra superior
+
+A barra superior traz ferramentas disponíveis em qualquer página:
+
+:::slides
+midia/m01/01-1-elementos-gui-1.png "Barra superior da GUI em destaque" | A **barra superior** acompanha todas as páginas da GUI.
+midia/m01/01-1-elementos-gui-2.png "Botão de busca em destaque" | **Busca:** digite parte do nome ("dns", "admin", "firmware") para ir direto à página. Ajuda muito quando o menu muda entre versões.
+midia/m01/01-1-elementos-gui-3.png "Botão FortiAI em destaque" | **FortiAI:** o assistente de IA da Fortinet, que responde perguntas sobre a configuração. Depende de licença.
+midia/m01/01-1-elementos-gui-4.png "Botão CLI em destaque" | **CLI:** abre a **CLI Console**, um terminal da CLI dentro do navegador, sem precisar de SSH.
+midia/m01/01-1-elementos-gui-5.png "Botão de notificações em destaque" | **Notificações:** avisos do sistema, como firmware novo, licenças a vencer e problemas de configuração.
+midia/m01/01-1-elementos-gui-6.png "Menu do administrador em destaque" | **Menu do administrador:** **Configuration** (backup, restauração e reset de fábrica), troca de senha e logout.
+:::
+
+Além da barra superior, repare em outros elementos comuns:
+
+- **Dashboards:** painéis com widgets (System Information, Licenses, CPU, Memory, Sessions, Interfaces, Administrators). Você pode criar dashboards próprios e escolher os widgets.
+- **Listas:** a maioria das páginas tem busca, filtros por coluna e a coluna **Ref.** (referências), que mostra se um objeto está em uso.
+
+#### Temas da GUI
+
+A aparência da GUI pode ser personalizada com **temas**, que mudam as cores do menu e da barra superior. O tema padrão, o **Jade** (verde), é o usado em todo o curso.
+
+:::slides
+midia/m01/01-3-tema-1.png "System > Settings, aba Preference, com a seção Theming em destaque" | Em **System > Settings**, aba **Preference**, a seção **Theming** define o **System theme**, que vale para todos os administradores. **Restrict user override** impede que administradores sem perfil `super_admin` troquem o próprio tema.
+midia/m01/01-3-tema-2.png "Lista de temas da GUI com o Jade selecionado" | A lista traz os temas prontos, como **Jade**, **Graphite**, **Jet Stream**, **Dark Matter** e **Eclipse**, e permite criar um tema próprio.
+midia/m01/01-3-tema-3.png "Painel Personalize do administrador" | Cada administrador também pode escolher o próprio tema em **menu do administrador > Personalize**: **Inherit from system** segue o tema do sistema; **Customize** escolhe outro.
+:::
+
+> **Na prática:** com vários FortiGates, um tema diferente por ambiente (produção, homologação, laboratório) ajuda a perceber na hora em qual equipamento você está.
+
+#### Conhecendo o seu equipamento pela GUI
+
+O widget **System Information**, no dashboard **Status**, resume a identidade do equipamento:
+
+:::slides
+midia/m01/01-1-system-information-1.png "Widget System Information do FGT-MTZ" | O widget **System Information** resume a identidade do equipamento.
+midia/m01/01-1-system-information-2.png "Linha Hostname em destaque" | **Hostname:** o nome do equipamento. Ele aparece no prompt da CLI, nos logs e no Security Fabric.
+midia/m01/01-1-system-information-3.png "Linha Serial number em destaque" | **Serial number:** o número de série, usado no **registro** do equipamento e no suporte.
+midia/m01/01-1-system-information-4.png "Linha Firmware em destaque" | **Firmware:** versão do FortiOS e **build**, que identifica exatamente a imagem instalada. O destaque em vermelho indica que há uma versão mais nova disponível.
+midia/m01/01-1-system-information-5.png "Linha Mode em destaque" | **Mode:** **NAT** é o modo roteado, o padrão e o usado neste curso. O outro modo é o **Transparent**, em que o FortiGate funciona como uma ponte entre segmentos de rede.
+midia/m01/01-1-system-information-6.png "Linha System time em destaque" | **System time** e **Uptime:** a hora do equipamento e há quanto tempo ele está ligado. Você vai ver por que a hora correta é tão importante.
+:::
+
+A mesma informação, com mais detalhes, aparece no comando `get system status`. Esse comando é muito cobrado na prova: veja a saída completa no **Guia de comandos CLI** deste capítulo.
+
+#### Por que um recurso pode "não existir" no seu FortiGate
+
+É comum ler a documentação, procurar um recurso na GUI e não encontrar. Há quatro motivos principais:
+
+1. **Feature Visibility:** para deixar a GUI mais limpa, o FortiOS esconde vários recursos por padrão. Eles existem e funcionam, só não aparecem no menu. Exemplos: DNS Database, Load Balance, Explicit Proxy, Local-In Policy.
+2. **Modelo e memória:** alguns recursos dependem do hardware. Modelos com pouca memória RAM podem não ter recursos que exigem muito processamento. A matriz de recursos por plataforma (*Feature / Platform Matrix*) e o release notes informam essas restrições.
+3. **Licença:** o recurso aparece, mas não funciona sem o serviço FortiGuard correspondente.
+4. **Versão do FortiOS:** o recurso foi incluído, renomeado ou removido em determinada versão.
+
+#### Na GUI: habilitando um recurso em Feature Visibility
+
+:::slides
+midia/m01/01-1-feature-visibility-1.png "Página System > Feature Visibility com os recursos agrupados por área" | Em **System > Feature Visibility**, os recursos aparecem agrupados por área (*Network*, *Policy & objects* e outras). A chave de cada um indica se ele aparece no menu.
+midia/m01/01-1-feature-visibility-2.png "Chave DNS Database ativada em Feature Visibility" | Localize **DNS Database**, ative a chave e clique em **Apply**. A alteração vale na hora.
+midia/m01/01-1-feature-visibility-3.png "Menu Network com o novo item DNS Servers" | O item **Network > DNS Servers** passa a aparecer no menu.
+:::
+
+Feature Visibility só altera a **interface**. Desabilitar a visibilidade de um recurso **não desliga** uma configuração que já está em uso. Ela continua funcionando, apenas fica fora da vista na GUI.
+
+> **Atenção:** "não está no menu" não significa "não existe". Antes de concluir que o equipamento não suporta algo, confira Feature Visibility, a matriz de plataforma, a licença e o release notes.
 
 #### Trabalhando com listas e objetos na GUI
 
@@ -551,6 +496,8 @@ midia/m01/01-3-lista-objetos-2.png "Botão Create new em destaque" | **Create ne
 midia/m01/01-3-lista-objetos-3.png "Campo de busca em destaque" | A **busca** filtra a lista pelo texto digitado em qualquer coluna.
 midia/m01/01-3-lista-objetos-4.png "Coluna Ref. em destaque" | A coluna **Ref.** mostra quantos objetos **usam** cada item. Clique no número para ver quem o referencia.
 :::
+
+### 01.3.2. A CLI
 
 #### Abrindo a CLI
 
@@ -584,7 +531,7 @@ midia/m01/01-3-show-full.png "Saída longa de show full-configuration system int
 
 Os recursos que facilitam o uso no dia a dia, como filtrar saídas com `grep` e desligar a paginação, estão no Guia de comandos CLI deste capítulo.
 
-### 01.3.2. Estrutura de comandos
+### 01.3.3. Estrutura de comandos
 
 #### A árvore de configuração
 
@@ -659,12 +606,86 @@ Esse comportamento evita que uma regra fique "apontando para nada", mas exige pl
 
 #### Erros comuns
 
+- Concluir que um recurso não existe porque o menu não aparece, quando ele só está oculto em Feature Visibility.
+- Achar que um perfil de segurança pode liberar um tráfego que a firewall policy não permitiu.
 - Usar `set` em uma lista (como `allowaccess`) achando que vai acrescentar um valor, e com isso apagar os outros.
 - Sair com `end` quando a intenção era descartar a alteração (`abort`).
 - Achar que um atributo "não existe" porque não aparece no `show` (ele está no valor padrão).
 - Tentar apagar um objeto em uso sem consultar as referências.
 
 :::cli GUI e CLI
+### `get system status`: a identidade do equipamento
+
+É o comando de referência para conhecer um FortiGate.
+
+```
+get system status
+```
+
+```saida
+FGT-MTZ # get system status
+Version: FGT121G v8.0.1,build0215,260305 (GA.F)
+First GA patch build date: 260115
+Security Level: 2
+Firmware Signature: certified
+Virus-DB: 94.09321(2026-11-09 13:22)
+Extended DB: 94.09321(2026-11-09 13:22)
+AV AI/ML Model: 4.00124(2026-11-09 13:22)
+IPS-DB: 34.00512(2026-11-08 13:22)
+IPS-ETDB: 34.00512(2026-11-08 13:22)
+APP-DB: 32.00821(2026-11-08 13:22)
+Serial-Number: FG121GTK25000101
+BIOS version: 06000102
+System Part-Number: P29447-02
+Log hard disk: Available
+Hostname: FGT-MTZ
+Private Encryption: Disable
+Operation Mode: NAT
+Current virtual domain: root
+Max number of virtual domains: 10
+Virtual domains status: 1 in NAT mode, 0 in TP mode
+Virtual domain configuration: disable
+FIPS-CC mode: disable
+Current HA mode: standalone
+Branch point: 0215
+Release Version Information: GA
+FortiGuard contract: UTP (expired)
+System time: Mon Nov  9 10:22:06 2026
+Last reboot reason: warm reboot
+```
+
+| Campo | O que indica |
+|---|---|
+| `Version` | Modelo, versão do FortiOS e build. |
+| `Firmware Signature` | Se a imagem é assinada pela Fortinet (`certified`). |
+| `Virus-DB`, `IPS-DB`, `APP-DB` | Versões das bases de assinaturas e a data da última atualização. |
+| `Serial-Number` | Número de série. |
+| `Log hard disk` | Se há disco para logs locais. |
+| `Operation Mode` | `NAT` ou `Transparent`. |
+| `Virtual domain configuration` | Se o equipamento usa VDOMs. |
+| `Current HA mode` | `standalone` (sozinho) ou o modo do cluster. |
+| `FortiGuard contract` | O pacote de serviços FortiGuard e se ele está válido. |
+
+> **Dica para a prova:** `get system status` reúne versão, número de série, modo de operação, estado de VDOM e de HA em uma única saída.
+
+### Feature Visibility pela CLI
+
+As opções de visibilidade ficam em `config system settings`, com nomes que começam com `gui-`:
+
+```
+config system settings
+    set gui-dns-database enable
+end
+```
+
+Para ver todas as opções disponíveis na sua versão:
+
+```
+config system settings
+    set gui-?
+end
+```
+
 ### Filtrando saídas com `grep`
 
 A saída da CLI pode ser enorme. O FortiOS aceita `grep` com opções úteis:
@@ -803,7 +824,7 @@ O acesso administrativo é controlado em camadas:
 3. **Trusted hosts:** de quais origens cada administrador pode fazer login.
 4. **Local-in policies** (opcional): regras específicas para o tráfego destinado ao equipamento.
 
-#### 1. Administrative Access por interface
+#### Camada 1: Administrative Access por interface
 
 Cada interface tem a lista de serviços administrativos que aceita:
 
@@ -827,7 +848,7 @@ Regra de ouro: **habilite somente o necessário, somente nas interfaces necessá
 
 > **Atenção:** se você está acessando a GUI por uma interface e desmarca o **HTTPS** dela, perde o acesso ao clicar em **OK**. Antes de alterar a interface que você está usando, tenha outro caminho (outra interface ou a console).
 
-#### 2. Configurações de administração
+#### Camada 2: Configurações de administração
 
 Ficam em **System > Settings**, aba **Access**, seção **Administration settings**:
 
@@ -848,7 +869,7 @@ Se mudar a porta não protege, por que mudar? Para reduzir o ruído de ataques a
 
 > **Atenção:** ao mudar a porta HTTPS, o acesso passa a ser `https://10.10.99.1:<nova-porta>`. Mantenha a sessão atual aberta e teste em outra aba antes de encerrá-la.
 
-#### 3. Trusted hosts
+#### Camada 3: Trusted hosts
 
 Trusted hosts são as **redes de origem permitidas para cada administrador**. São configurados na conta do administrador, em **System > Administrators**, com a opção **Restrict login to trusted hosts** (até dez redes).
 
@@ -1542,10 +1563,12 @@ Revisões internas não substituem o backup externo: se o equipamento queimar, a
 
 #### Na GUI: restauração
 
-No **menu do administrador > Configuration > Restore**, selecione o arquivo e informe a senha, se o backup for criptografado:
+A restauração fica no mesmo menu do backup:
 
-:::figura midia/m01/01-7-restore.png "Tela Restore System Configuration com o botão Upload e o campo Password"
-Em **Restore System Configuration**, clique em **Upload** para escolher o arquivo e preencha **Password** se o backup for criptografado. Ao clicar em **OK**, a configuração atual é substituída e o equipamento reinicia.
+:::slides
+midia/m01/01-7-backup-passo-1.png "Menu do administrador aberto com o item Configuration em destaque" | Clique no **nome do administrador**, no canto superior direito, e depois em **Configuration**.
+midia/m01/01-7-restore-passo-1.png "Submenu Configuration com o item Restore em destaque" | No submenu **Configuration**, clique em **Restore**.
+midia/m01/01-7-restore.png "Tela Restore System Configuration com o botão Upload e o campo Password" | Em **Restore System Configuration**, clique em **Upload** para escolher o arquivo e preencha **Password** se o backup for criptografado. Ao clicar em **OK**, a configuração atual é substituída e o equipamento reinicia.
 :::
 
 Regras de restauração:
@@ -1598,12 +1621,17 @@ Não se deve "pular" livremente de uma versão antiga para uma muito nova. Cada 
 **System > Firmware & Registration** mostra a versão de cada equipamento, o registro e o status de atualização.
 :::
 
-Para atualizar pela GUI:
+Para atualizar pela GUI, use o assistente **FortiGate Upgrade**:
 
-1. Selecione o equipamento e clique em **Upgrade**.
-2. Escolha a versão. As imagens oficiais vêm do FortiGuard, ou você pode enviar um arquivo baixado do portal de suporte.
-3. A GUI mostra o caminho de atualização, inclusive versões intermediárias, e oferece fazer o **backup** antes. Confirme.
-4. Após o reinício, confirme a nova versão no widget **System Information** e execute os testes de validação.
+:::slides
+midia/m01/01-7-upgrade-1.png "FGT-MTZ selecionado na lista, com o botão Upgrade" | Em **System > Firmware & Registration**, selecione o equipamento na lista e clique em **Upgrade**.
+midia/m01/01-7-upgrade-2.png "Assistente FortiGate Upgrade, passo Choose Upgrade Type" | **Choose Upgrade Type:** **FortiGate only** atualiza só este equipamento; **Full Fabric upgrade** atualiza também os dispositivos do Security Fabric (FortiSwitch, FortiAP), na ordem certa. Clique em **Next**.
+midia/m01/01-7-upgrade-3.png "Passo Select Firmware com as versões recomendadas" | **Select Firmware:** a aba **Recommended** traz as versões recomendadas para o modelo, cada uma com o link do **release notes**. **All Upgrades** lista todas as versões mais novas, e **File Upload** permite enviar uma imagem baixada do portal de suporte.
+midia/m01/01-7-upgrade-4.png "Passo de agendamento e backup da configuração" | **Agendamento e backup:** escolha **Immediate** ou uma data e hora (**Specify**) para a janela de manutenção. Antes do upgrade, o FortiGate faz um **backup** da configuração, protegido pela senha informada.
+midia/m01/01-7-upgrade-5.png "Passo Review com a versão atual e a de destino" | **Review:** confira o equipamento, a versão atual e a de destino. **Confirm and Backup Config** faz o backup e inicia o upgrade; o equipamento reinicia.
+:::
+
+Após o reinício, confirme a nova versão no widget **System Information** e execute os testes de validação.
 
 O FortiOS verifica a **assinatura digital** da imagem e alerta se ela não for oficial da Fortinet. Baixe imagens somente do FortiGuard ou do portal de suporte.
 
@@ -1690,152 +1718,4 @@ execute reboot
 ```
 
 Em VMs, a saída e o comportamento podem ser diferentes.
-:::
-
----
-
-## Questões de revisão
-
-:::quiz
-Um administrador executa `show system interface port1` e não vê a linha `set mtu`. O que isso significa?
-
-- [ ] A interface não suporta configuração de MTU.
-- [x] O MTU está no valor padrão; para vê-lo, é preciso usar `show full-configuration` ou `get`.
-- [ ] O MTU foi apagado e a interface está sem MTU.
-- [ ] O comando `show` só exibe atributos de interfaces lógicas.
-> O `show` exibe somente os valores **diferentes do padrão**. O MTU existe e está valendo, só que no valor padrão. `show full-configuration` e `get` mostram também os valores padrão.
-:::
-
-:::quiz
-Uma interface tem `allowaccess ping https ssh`. O administrador entra na interface, executa `set allowaccess snmp` e salva. Qual é o resultado?
-
-- [ ] `ping https ssh snmp`
-- [x] `snmp`
-- [ ] `ping https ssh`, porque o SNMP precisa ser habilitado globalmente antes
-- [ ] O comando é rejeitado por conflito com os valores existentes
-> Em atributos que são listas, `set` **substitui a lista inteira**. Para acrescentar o SNMP mantendo os demais, o comando correto seria `append allowaccess snmp`. Se o administrador estivesse conectado por HTTPS ou SSH através dessa interface, perderia o acesso ao salvar.
-:::
-
-:::quiz
-Todos os administradores de um FortiGate, exceto um, têm trusted hosts configurados para 10.10.99.0/24. O que acontece quando alguém de fora dessa rede acessa a GUI?
-
-- [ ] A conexão é bloqueada antes de exibir a página de login.
-- [x] A página de login responde, e só a conta sem trusted hosts consegue fazer login de fora dessa rede.
-- [ ] Ninguém consegue fazer login, porque basta uma conta com trusted hosts para restringir todas.
-- [ ] Todos conseguem fazer login, porque trusted hosts só valem para SSH.
-> Trusted hosts são configurados **por administrador**. Como uma conta não tem restrição, o FortiGate continua respondendo à página de login para qualquer origem, e essa conta consegue entrar de qualquer lugar. Para o serviço deixar de responder a origens não autorizadas, **todas** as contas precisam de trusted hosts.
-:::
-
-:::quiz
-Sobre a recuperação de senha com a conta `maintainer` em um FortiGate físico, quais afirmações estão corretas? (Escolha duas.)
-
-- [x] Exige acesso pela console e um reinício por ciclo de energia.
-- [ ] Funciona por SSH a partir de qualquer interface com SSH habilitado.
-- [x] Pode ser desabilitada pelo administrador.
-- [ ] Apaga toda a configuração do equipamento.
-> A conta maintainer exige **acesso físico**: console e desligar e ligar o equipamento na energia (*hard reboot*). Ela não apaga a configuração, apenas permite redefinir a senha. Como é um risco em ambientes muito sensíveis, pode ser desabilitada; nesse caso, sobra o reset de fábrica.
-:::
-
-:::quiz
-Observe o widget Licenses de um FortiGate:
-
-![Widget Licenses com Support e Updates em verde e IPS, AntiVirus e Web Filter em vermelho](midia/m01/01-6-licencas-expiradas.png)
-
-Qual afirmação descreve corretamente a situação?
-
-- [ ] O equipamento perdeu o suporte FortiCare e não pode mais baixar firmware.
-- [x] O contrato dos serviços de segurança venceu: as bases de antivírus e IPS param de ser atualizadas e as consultas do Web Filter deixam de responder.
-- [ ] O antivírus e o IPS param de funcionar imediatamente, sem nenhuma base.
-- [ ] O equipamento nunca teve licença de Web Filter.
-> Os blocos em vermelho indicam serviços **expirados**. As bases locais de antivírus e IPS continuam na última versão baixada, mas não recebem atualizações. O Web Filter depende de consulta em tempo real e deixa de classificar sites. **Support** e **Updates** estão verdes porque o contrato FortiCare é separado e continua válido. Um serviço que nunca foi contratado aparece em cinza, não em vermelho.
-:::
-
-:::quiz
-Um FortiGate com licenças válidas perdeu a comunicação com o FortiGuard há dois dias. Qual é o efeito mais provável?
-
-- [ ] O antivírus e o IPS param de funcionar imediatamente.
-- [x] O antivírus e o IPS continuam funcionando com as últimas bases baixadas; o Web Filter pode falhar ao classificar sites novos e aplica a ação de erro de rating.
-- [ ] Nada muda, porque todas as funções usam somente bases locais.
-- [ ] O FortiGate bloqueia todo o tráfego até a comunicação voltar.
-> As bases de AV e IPS são **baixadas** e usadas localmente, então continuam funcionando (desatualizadas). O Web Filter depende de **consulta em tempo real** ao FortiGuard: sem resposta, os sites novos ficam sem categoria e o perfil aplica a ação configurada para erro de rating.
-:::
-
-:::quiz
-Como o FortiGate se comunica com a FortiGuard Distribution Network (FDN)? (Escolha duas.)
-
-- [x] Os pacotes de antivírus e IPS são baixados por TCP.
-- [ ] Os pacotes de antivírus e IPS são consultados em tempo real a cada arquivo inspecionado.
-- [x] As consultas de Web Filtering e DNS Filtering usam UDP ou HTTPS.
-- [ ] Todas as comunicações com o FortiGuard usam apenas ICMP.
-> O FortiGate **baixa** os pacotes de AV e IPS por TCP (HTTPS) e os usa localmente. Já as classificações de Web Filtering, DNS Filtering e Antispam são **consultas em tempo real**, feitas por UDP ou HTTPS. Por padrão, os servidores são acessados por endereços anycast, que levam ao servidor mais próximo.
-:::
-
-:::quiz
-Uma empresa precisa de IPS, antivírus e filtragem web por categorias, sem os serviços avançados como DLP e IoT Security. Qual bundle FortiGuard atende com o menor nível?
-
-- [ ] ATP (Advanced Threat Protection)
-- [x] UTP (Unified Threat Protection)
-- [ ] Enterprise Protection
-- [ ] Apenas o FortiCare Premium
-> O **ATP** inclui IPS e proteção contra malware, mas não a filtragem web. O **UTP** acrescenta a filtragem de URL, DNS e vídeo e o antispam, atendendo à necessidade. O **Enterprise** inclui serviços avançados que a empresa não precisa. O FortiCare sozinho dá suporte e algumas bases essenciais, mas não IPS, antivírus nem Web Filter.
-:::
-
-:::quiz
-Qual comando mostra, em uma única saída, a versão do FortiOS, o número de série, o modo de operação e o modo de HA?
-
-- [ ] `get system performance status`
-- [ ] `show system global`
-- [x] `get system status`
-- [ ] `diagnose autoupdate versions`
-> `get system status` reúne versão e build, número de série, modo de operação (NAT ou Transparent), estado de VDOM, modo de HA e as versões das bases. `get system performance status` mostra CPU, memória e sessões; `diagnose autoupdate versions` mostra as bases e os contratos.
-:::
-
-:::quiz
-Um administrador entrou em `config firewall address`, editou um objeto, alterou dois atributos e percebeu que estava no objeto errado. Como sair sem gravar as alterações desse objeto?
-
-- [ ] `end`
-- [ ] `next`
-- [x] `abort`
-- [ ] `unset all`
-> Na CLI, a alteração só é gravada quando o item é salvo com `next` ou `end`. O `abort` sai do item **sem gravar**. `unset` devolve atributos ao valor padrão, o que também alteraria o objeto.
-:::
-
-:::quiz
-Um administrador tenta apagar um objeto de endereço e a GUI não permite. A coluna **Ref.** do objeto mostra o número 2. O que ele deve fazer?
-
-- [ ] Fazer o backup e restaurar a configuração sem o objeto.
-- [x] Clicar no número da coluna Ref. para ver quem usa o objeto, remover essas referências e depois apagar o objeto.
-- [ ] Apagar o objeto pela CLI, que não verifica referências.
-- [ ] Desabilitar o objeto em Feature Visibility.
-> O FortiOS não deixa apagar um objeto em uso, nem pela GUI nem pela CLI. A coluna **Ref.** mostra quantos objetos o referenciam, e clicar no número mostra quais. O fluxo correto é alterar ou remover quem usa o objeto e só então apagá-lo.
-:::
-
-:::quiz
-Um recurso descrito no Administration Guide não aparece no menu da GUI. Qual deve ser a primeira verificação?
-
-- [ ] Fazer upgrade para a versão mais recente.
-- [x] Conferir se o recurso está oculto em Feature Visibility.
-- [ ] Fazer reset de fábrica para restaurar os menus.
-- [ ] Reinstalar o firmware pelo menu de boot.
-> Muitos recursos ficam **ocultos por padrão** em System > Feature Visibility para deixar a GUI mais limpa. Eles existem e funcionam, só não aparecem no menu. Depois disso, vale conferir o modelo, a licença e o release notes da versão.
-:::
-
-:::quiz
-Um administrador com um perfil sem permissão de escrita em System tenta criar uma nova conta `super_admin`. O que acontece?
-
-- [ ] A conta é criada, mas fica desabilitada.
-- [x] A operação é negada: um administrador não pode conceder mais privilégios do que tem.
-- [ ] A conta é criada com o mesmo perfil do criador.
-- [ ] A conta é criada e precisa da aprovação de outro `super_admin`.
-> O FortiOS não permite que um administrador crie contas ou atribua perfis com privilégios acima dos seus. Sem escrita em System, a conta nem consegue criar administradores.
-:::
-
-:::quiz
-Após um upgrade, um serviço crítico passou a falhar. Qual recurso permite voltar rapidamente à versão anterior em muitos FortiGates físicos?
-
-- [ ] Fazer reset de fábrica.
-- [x] Iniciar pela outra partição de firmware, que mantém a imagem anterior.
-- [ ] Restaurar uma revisão de configuração gerada na versão nova.
-- [ ] Desabilitar a atualização automática do FortiGuard.
-> A maioria dos FortiGates físicos tem **duas partições de firmware**: a imagem anterior fica preservada na outra, e a CLI permite escolher a partição do próximo boot. Mantenha também o backup gerado na versão anterior.
 :::

@@ -204,7 +204,7 @@ async function iniciar({ saida, lab = process.env.LAB || 'http://127.0.0.1:5173'
       const destino = path.join(SAIDA, `${nome}.png`);
       const medir = async () => {
         const destaques = await caixas(o.destaque || []);
-        const unidas = o.unir && destaques.length ? [uniao(destaques)] : destaques;
+        const unidas = o.unir && destaques.length ? [uniao(destaques)] : fundir(destaques);
         const cabos = [].concat(o.destaque || []).filter((d) => d && d.cabo).map((d) => d.cabo);
         await page.evaluate(escurecer, { buracos: unidas, cabos });
         const area = uniao(await caixas(o.recorte || []));
@@ -273,6 +273,25 @@ function uniao(rs) {
   return { x, y, w: Math.max(...rs.map((r) => r.x + r.w)) - x, h: Math.max(...rs.map((r) => r.y + r.h)) - y };
 }
 
+/** Junta destaques que se tocam ou quase se tocam: dois contornos colados ficariam sobrepostos. */
+function fundir(rs, perto = 16) {
+  const out = rs.map((r) => ({ ...r }));
+  const encostam = (a, b) => a.x - perto < b.x + b.w && b.x - perto < a.x + a.w && a.y - perto < b.y + b.h && b.y - perto < a.y + a.h;
+  for (let mudou = true; mudou;) {
+    mudou = false;
+    for (let i = 0; i < out.length && !mudou; i++) {
+      for (let j = i + 1; j < out.length; j++) {
+        if (!encostam(out[i], out[j])) continue;
+        out[i] = uniao([out[i], out[j]]);
+        out.splice(j, 1);
+        mudou = true;
+        break;
+      }
+    }
+  }
+  return out;
+}
+
 /* Roda no navegador: escurece a tela, deixando claros os retângulos e o traçado dos cabos pedidos. */
 function escurecer({ buracos, cabos }) {
   document.getElementById('captura-escuro')?.remove();
@@ -300,7 +319,9 @@ function escurecer({ buracos, cabos }) {
   svg.innerHTML = `<defs><mask id="captura-mascara" maskUnits="userSpaceOnUse" x="0" y="0" width="${vw}" height="${vh}"><rect width="${vw}" height="${vh}" fill="#fff"/>${furos ? `<path d="${furos}" fill="#000"/>` : ''}${cortes}</mask></defs>`
     + `<rect width="${vw}" height="${vh}" fill="rgba(8,10,14,0.62)" mask="url(#captura-mascara)"/>`
     + (furos ? `<path d="${furos}" fill="none" stroke="#3d8bfd" stroke-width="2.5" style="filter:drop-shadow(0 0 6px rgba(61,139,253,.55))"/>` : '')
-    + `<g style="filter:drop-shadow(0 0 5px rgba(61,139,253,.7))">${linhas}</g>`;
+    + (furos ? `<mask id="captura-linhas" maskUnits="userSpaceOnUse" x="0" y="0" width="${vw}" height="${vh}"><rect width="${vw}" height="${vh}" fill="#fff"/><path d="${buracos.map(({ x, y, w, h }) => `M${x},${y} h${w} v${h} h-${w} z`).join(' ')}" fill="#000"/></mask>` : '')
+    // O traço do cabo passa por baixo dos cards e dos dispositivos em destaque, como no diagrama.
+    + `<g style="filter:drop-shadow(0 0 5px rgba(61,139,253,.7))"${furos ? ' mask="url(#captura-linhas)"' : ''}>${linhas}</g>`;
   document.documentElement.appendChild(svg);
 }
 

@@ -443,7 +443,9 @@ dialog::backdrop { background: rgba(5, 6, 8, 0.78); }
 .icon-btn:hover { background: var(--raise); border-color: var(--line-strong); }
 .icon-btn:disabled { color: var(--faint); cursor: default; }
 .icon-btn svg { width: 16px; height: 16px; }
-.modal-body { overflow-y: auto; padding: 20px 24px 32px; }
+.modal-body { overflow-y: auto; overscroll-behavior: contain; padding: 20px 24px 32px; }
+/* Com um modal aberto, a página de trás não rola: só o conteúdo do modal. */
+html.modal-aberto, html:has(dialog[open]) { overflow: hidden; }
 .modal-body.doc h3 { font-family: var(--font-display); font-size: 1.12rem; margin: 32px 0 12px; }
 .modal-body.doc > :first-child { margin-top: 0; }
 
@@ -1050,11 +1052,12 @@ dialog.lightbox[open] { display: block; }
     mountBlocks(bodyEl, pre.blocks, "cli");
     enhanceBasic(bodyEl);
     bodyEl.scrollTop = 0;
+    document.documentElement.classList.add("modal-aberto");
     if (cliModal.showModal) cliModal.showModal(); else cliModal.setAttribute("open", "");
     $("cli-modal-close").focus();
   }
-  function closeCli() { if (cliModal.close) cliModal.close(); else cliModal.removeAttribute("open"); }
-  cliModal.addEventListener("close", () => { if (cliReturn) cliReturn.focus(); });
+  function closeCli() { if (cliModal.close) cliModal.close(); else cliModal.removeAttribute("open"); document.documentElement.classList.remove("modal-aberto"); }
+  cliModal.addEventListener("close", () => { document.documentElement.classList.remove("modal-aberto"); if (cliReturn) cliReturn.focus({ preventScroll: true }); });
   cliModal.addEventListener("click", (e) => { if (e.target === cliModal) closeCli(); });
   $("cli-modal-close").addEventListener("click", closeCli);
 

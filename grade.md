@@ -72,7 +72,7 @@ Os alunos também recebem cada módulo em PDF, gerado direto do `.md`, sem ediç
 node tools/pdf/gerar-pdf.cjs --modulo conteudo/modulo-NN-*.md --saida pdf/modulo-NN.pdf
 ```
 
-O PDF tem capa, sumário, títulos em cards, cada carrossel como passo a passo numerado (**uma imagem por linha**, nunca lado a lado) e cada Guia de comandos CLI como um quadro com as saídas. Gere de novo sempre que o conteúdo ou as mídias mudarem.
+O PDF tem capa, sumário, títulos de capítulo e seção em cards (o `####` é um título simples), cada carrossel como passo a passo numerado (**uma imagem por linha**, nunca lado a lado) e cada Guia de comandos CLI como um quadro com as saídas. Gere de novo sempre que o conteúdo ou as mídias mudarem.
 
 ### Blocos especiais
 

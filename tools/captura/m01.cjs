@@ -268,7 +268,12 @@ const LISTA = 1250;
     await s.foto('01-1-elementos-gui-6', { recorte: [banner], margem: 6, destaque: [botaoAdmin()], descricao: 'Menu do administrador' });
   });
   await tentar('busca', async () => {
-    await p.locator('header.banner:visible button[title=\"Search\"]').first().click();
+    const lupa = p.locator('header.banner:visible button[title=\"Search\"]').first();
+    await lupa.click();
+    await s.espera(400);
+    const pular = itemMenu('Jump to page');
+    await s.foto('01-1-busca-0', { recorte: [lupa, menusAbertos().last()], margem: 30, destaque: [lupa, pular], descricao: 'Menu da busca com Jump to page' });
+    await pular.click();
     await s.espera(400);
     await p.keyboard.type('dns');
     await s.espera(500);

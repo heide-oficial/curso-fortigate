@@ -299,6 +299,9 @@ svg.i { width: 16px; height: 16px; flex: none; }
 
 .carousel { outline: none; }
 .carousel:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.carousel-captions { display: grid; }
+.carousel-captions > .caption { grid-area: 1 / 1; visibility: hidden; }
+.carousel-captions > .caption.on { visibility: visible; }
 .carousel .media-frame { touch-action: pan-y; }
 .carousel-bar { display: flex; align-items: center; gap: 10px; }
 .step-badge { min-width: 24px; height: 24px; padding: 0 6px; box-sizing: border-box; border-radius: 999px; display: grid; place-items: center; background: var(--accent); color: #1a1408; font: 600 0.78rem/1 var(--font-body); }
@@ -450,10 +453,13 @@ dialog.lightbox[open] { display: block; }
 .lb-help { position: fixed; top: calc(18px + env(safe-area-inset-top, 0px)); left: calc(16px + env(safe-area-inset-left, 0px)); font-size: 0.78rem; color: var(--faint); z-index: 2; }
 .lb-foot {
   position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-  width: min(760px, calc(100vw - 32px)); box-sizing: border-box; z-index: 2;
-  background: rgba(21, 24, 28, 0.94); border: 1px solid var(--line-strong); border-radius: 12px; padding: 12px 16px;
-  display: flex; flex-direction: column; gap: 8px;
+  width: min(760px, calc(100vw - 32px)); height: 132px; box-sizing: border-box; z-index: 2;
+  background: rgba(21, 24, 28, 0.9); border: 1px solid var(--line-strong); border-radius: 12px; padding: 12px 16px;
+  display: flex; flex-direction: column; gap: 8px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
 }
+.lb-foot .caption { flex: 1; min-height: 0; overflow-y: auto; }
+.lb-foot.no-bar { height: 104px; }
 .lb-foot[hidden] { display: none; }
 
 /* ---------- Responsivo ---------- */
@@ -801,10 +807,17 @@ dialog.lightbox[open] { display: block; }
       return d;
     });
     bar.append(badge, total, dots, prev, next);
-    const caption = document.createElement("div");
-    caption.className = "caption";
-    caption.setAttribute("aria-live", "polite");
-    foot.append(bar, caption);
+    const captions = document.createElement("div");
+    captions.className = "carousel-captions";
+    captions.setAttribute("aria-live", "polite");
+    const capEls = items.map((it) => {
+      const c = document.createElement("div");
+      c.className = "caption";
+      c.innerHTML = it.cap || "";
+      captions.appendChild(c);
+      return c;
+    });
+    foot.append(bar, captions);
     card.appendChild(foot);
 
     function go(i) {
@@ -814,8 +827,7 @@ dialog.lightbox[open] { display: block; }
         const v = f.querySelector("video");
         if (v) { if (k === index && !reducedMotion) v.play().catch(() => {}); else v.pause(); }
       });
-      caption.innerHTML = items[index].cap || "";
-      caption.hidden = !items[index].cap;
+      capEls.forEach((c, k) => { c.classList.toggle("on", k === index); c.setAttribute("aria-hidden", String(k !== index)); });
       badge.textContent = String(index + 1);
       total.textContent = "de " + items.length;
       prev.disabled = index === 0;
@@ -1046,11 +1058,11 @@ dialog.lightbox[open] { display: block; }
     lbImg.style.transform = "translate(" + lb.x + "px," + lb.y + "px) scale(" + lb.scale + ")";
     $("lb-zoom").textContent = Math.round((lb.scale / lb.fit) * 100) + "%";
   }
+  /* The caption card floats over the image with a fixed size, so the image never moves when the text changes. */
   function lbFit() {
     const w = lbImg.naturalWidth || 1920, h = lbImg.naturalHeight || 1080;
-    const foot = $("lb-foot").hidden ? 0 : $("lb-foot").offsetHeight + 24;
-    const vw = lbView.clientWidth, vh = lbView.clientHeight - foot;
-    lb.fit = Math.min((vw - 48) / w, (vh - 96) / h, 1.5);
+    const vw = lbView.clientWidth, vh = lbView.clientHeight;
+    lb.fit = Math.min((vw - 48) / w, (vh - 112) / h, 1.5);
     lb.scale = lb.fit;
     lb.x = (vw - w * lb.scale) / 2;
     lb.y = Math.max(64, (vh - h * lb.scale) / 2);
@@ -1070,6 +1082,7 @@ dialog.lightbox[open] { display: block; }
     const multi = lb.items.length > 1;
     $("lb-foot").hidden = !multi && !it.cap;
     $("lb-bar").hidden = !multi;
+    $("lb-foot").classList.toggle("no-bar", !multi);
     $("lb-step").textContent = String(lb.index + 1);
     $("lb-total").textContent = "de " + lb.items.length;
     $("lb-prev").disabled = lb.index === 0;
@@ -1077,9 +1090,10 @@ dialog.lightbox[open] { display: block; }
     $("lb-caption").innerHTML = it.cap || "";
     $("lb-caption").hidden = !it.cap;
     lbImg.alt = it.alt || "";
+    const same = lbImg.getAttribute("src") === it.src;
     lbImg.onload = lbFit;
     lbImg.src = it.src;
-    if (lbImg.complete && lbImg.naturalWidth) lbFit();
+    if (same && lbImg.complete && lbImg.naturalWidth) lbFit();
   }
   function openLightbox(items, i) {
     lb.ret = document.activeElement;
@@ -1097,7 +1111,12 @@ dialog.lightbox[open] { display: block; }
   }, { passive: false });
   let drag = null;
   const pointers = new Map();
+  lbImg.draggable = false;
+  lbImg.addEventListener("dragstart", (e) => e.preventDefault());
+  lbView.addEventListener("contextmenu", (e) => e.preventDefault());
   lbView.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    e.preventDefault();
     lbView.setPointerCapture(e.pointerId);
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     drag = { x: e.clientX, y: e.clientY, ox: lb.x, oy: lb.y, moved: false, dist: null };

@@ -9,6 +9,7 @@ Material do Curso FortiGate 7.6: administração de FortiGate e preparação par
 | `grade.md` | Grade do curso (documento de produção, não vai para os alunos): regras de produção, cenário e a especificação de cada módulo |
 | `conteudo/` | Um arquivo `.md` por módulo, com o conteúdo de estudo |
 | `midia/mNN/` | Imagens, carrosséis e vídeos de cada módulo, gerados a partir do laboratório |
+| `pdf/` | PDF de cada módulo para enviar aos alunos (`node tools/pdf/gerar-pdf.cjs --modulo conteudo/<arquivo>.md --saida pdf/modulo-NN.pdf`) |
 | `visualizador/curso-fortigate.html` | Página do aluno: lê a introdução e os módulos e exibe o curso com índice, figuras, carrosséis, vídeos, guias de comandos CLI e questões interativas |
 | `tools/` | Scripts de pré-visualização e de captura de mídia |
 | `docs/historico/` | Versões anteriores da grade |
@@ -29,4 +30,4 @@ As regras de escrita, o uso da CLI no texto, as regras de mídia e a sintaxe dos
 
 ## Mídias
 
-As mídias são geradas a partir dos roteiros do modo aula do laboratório (repositório `fortigate-clone`). O script de captura executa o roteiro de cada módulo em 1920×1080 e grava os arquivos em `midia/mNN/`: telas inteiras ou recortes ampliados (pelo menos 1920 px de largura), com o que não importa escurecido, uma imagem por passo para os carrosséis e vídeos MP4.
+As mídias são geradas a partir dos roteiros do modo aula do laboratório (repositório `fortigate-clone`). O script de captura executa o roteiro de cada módulo em 1920×1080 e grava os arquivos em `midia/mNN/`: telas inteiras ou recortes ampliados (pelo menos 1920 px de largura), com o que não importa escurecido, uma imagem por passo para os carrosséis de cada etapa.

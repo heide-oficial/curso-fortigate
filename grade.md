@@ -23,7 +23,7 @@ Este documento é de produção e **não é entregue aos alunos**. Os alunos rec
 ### Linguagem
 
 - O material é escrito **para o aluno**. Nunca fale do curso como se o leitor fosse quem o produz: nada de "esta grade", "o conteúdo deve", "capturas pendentes", "roteiro", "laboratório do curso" no sentido de produção.
-- O aluno **não usa o laboratório**. Ele vê as telas e os vídeos. Não escreva instruções do tipo "no seu laboratório, faça".
+- O aluno **não usa o laboratório**. Ele vê as telas capturadas do laboratório. Não escreva instruções do tipo "no seu laboratório, faça".
 - **Não coloque o número do módulo ou da seção ao lado de um assunto** ("(módulo 03)", "seção 01.4", colunas "Função (módulo)"). Se precisar apontar para outro ponto, use o nome do assunto ("no capítulo GUI e CLI", "mais adiante no curso").
 - Não escreva quadros "Na prova (7.6)" nem compare versões do FortiOS no texto. Exemplos de versão usam 7.6.x.
 - Linguagem fácil e didática, com termos técnicos quando necessários e explicados na primeira vez.
@@ -54,15 +54,17 @@ Não entram no material do aluno: laboratório do módulo, critério de conclus�
 - **Carrossel com texto por imagem** (`:::slides`) em vez de telas interativas. Cada imagem tem o seu texto, que aparece no card abaixo dela. Telas interativas com hotspots não são usadas.
 - **Destaque:** escureça o que não importa (menu lateral, barra superior, áreas vazias) e deixe o assunto em destaque. Em carrosséis, cada imagem destaca o elemento daquele passo.
 - **Recorte:** não capture a tela inteira quando o assunto é uma janela, um diálogo, um widget ou um menu. Recorte e amplie para o necessário (a captura continua com pelo menos 1920 px de largura).
-- **Vídeo** (`.mp4`, sem som) para ações em sequência, como um login com troca de senha.
-- Todas as mídias saem do laboratório (`fortigate-clone`), pelo roteiro do modo aula, com `node tools/captura/capturar.cjs --roteiro mNN --saida midia/mNN`. O passo do roteiro define o arquivo, o tipo (`imagem`, `slides` ou `video`), o recorte (`recorte`) e o destaque (`destaque`). Para estados que o laboratório precisa simular (licença vencida, por exemplo), use a `LabApi` do roteiro.
+- **Sem vídeos.** Ações em sequência (um login com troca de senha, a digitação de comandos) viram carrossel, com uma imagem por etapa e o texto de cada uma.
+- **Passo a passo completo:** antes de mostrar uma tela de um dispositivo, mostre onde ele está na topologia (com o cabo ou a conexão em destaque) e em qual dispositivo estamos (a área de trabalho do computador), até chegar à tela.
+- **Ordem dos assuntos:** apresente um conceito antes de usá-lo (por exemplo, o FortiGuard antes dos serviços FortiGuard que são licenciados).
+- Todas as mídias saem do laboratório (`fortigate-clone`), pelo roteiro do modo aula, com `node tools/captura/capturar.cjs --roteiro mNN --saida midia/mNN`. O passo do roteiro define o arquivo, o tipo (`imagem` ou `slides`), o recorte (`recorte`) e o destaque (`destaque`). Para estados que o laboratório precisa simular (licença vencida, por exemplo), use a `LabApi` do roteiro.
 - Imagens no mínimo 1920x1080, ou 1920 px de largura quando recortadas.
 
 ### Blocos especiais
 
 Os arquivos de mídia ficam em `midia/mNN/`, com nomes no formato `<seção>-<assunto>.ext`.
 
-**Figura** (imagem, GIF ou vídeo, com legenda opcional):
+**Figura** (imagem, com legenda opcional):
 
 ```
 :::figura midia/m01/01-6-updates.png "Descrição da imagem (texto alternativo)"
@@ -221,12 +223,12 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Erros comuns:** usar a conta padrão `admin` para todos; criar um perfil restrito e testá-lo na mesma sessão do super_admin.
 
-### 01.6. Licenciamento e FortiGuard
+### 01.6. FortiGuard e licenciamento
 
-**Aprendizado:** entender como o FortiGate é licenciado, saber quais serviços estão ativos e se o equipamento consegue atualizar bases e consultar ratings.
+**Aprendizado:** entender de onde vem a proteção do FortiGate, como ela é licenciada, quais serviços estão ativos e se o equipamento consegue atualizar bases e consultar ratings.
 
-- **01.6.1. Como o FortiGate é licenciado:** equipamento, suporte e serviços como camadas separadas. Níveis do FortiCare (Essentials, Premium, Elite). Bundles FortiGuard (ATP, UTP, Enterprise) e serviços à la carte. Relacionar cada perfil de segurança ao serviço de que depende. Registro. Ver na GUI um equipamento só com FortiCare, com UTP e com UTP vencido (widget Licenses e abas Licensed, Expired e Available for purchase).
-- **01.6.2. FortiGuard: de onde vem a proteção:** FortiGuard Labs, FDN, download de pacotes por TCP x consultas em tempo real por UDP ou HTTPS, anycast, verificação de certificado com OCSP stapling, DoT com o DNS do FortiGuard. Agendamento das atualizações, pré-requisitos e diferença entre licença vencida, base desatualizada e falha de rating.
+- **01.6.1. FortiGuard: de onde vem a proteção:** FortiGuard Labs, FDN, download de pacotes por TCP x consultas em tempo real por UDP ou HTTPS, anycast, verificação de certificado com OCSP stapling, DoT com o DNS do FortiGuard. Agendamento das atualizações e pré-requisitos.
+- **01.6.2. Como o FortiGate é licenciado:** equipamento, suporte e serviços como camadas separadas. Níveis do FortiCare (Essentials, Premium, Elite). Bundles FortiGuard (ATP, UTP, Enterprise) e serviços à la carte. Relacionar cada perfil de segurança ao serviço de que depende. Registro. Ver na GUI um equipamento só com FortiCare, com UTP e com UTP vencido (widget Licenses e abas Licensed, Expired e Available for purchase). Diferenciar licença vencida, base desatualizada e falha de rating.
 
 **Erros comuns:** supor que o perfil protege mesmo com a licença vencida ou sem comunicação com o FortiGuard; confundir o contrato FortiCare com o dos serviços de segurança.
 

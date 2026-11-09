@@ -106,9 +106,12 @@ midia/m01/01-1-menu-gui-2.png "Menu Dashboard em destaque" | **Dashboard:** vis�
 midia/m01/01-1-menu-gui-3.png "Menu Network em destaque" | **Network:** conectividade. Interfaces, DNS, rotas estáticas, policy routes e SD-WAN.
 midia/m01/01-1-menu-gui-4.png "Menu Policy & Objects em destaque" | **Policy & Objects:** quem pode falar com quem. As **firewall policies** e os objetos que elas usam: endereços, serviços, schedules, Virtual IPs e IP pools.
 midia/m01/01-1-menu-gui-5.png "Menu Security Profiles em destaque" | **Security Profiles:** o que é inspecionado no tráfego **já permitido** pela policy. Antivirus, Web Filter, DNS Filter, Application Control, IPS e inspeção SSL.
-midia/m01/01-1-menu-gui-6.png "Menu VPN em destaque" | **VPN:** túneis IPsec e acesso remoto. Logo abaixo, **User & Authentication** reúne usuários, grupos, servidores LDAP e RADIUS e FortiTokens.
-midia/m01/01-1-menu-gui-7.png "Menu System em destaque" | **System:** o próprio equipamento. Administradores, perfis administrativos, firmware, configurações gerais, HA, certificados, FortiGuard e Feature Visibility.
-midia/m01/01-1-menu-gui-8.png "Menu Security Fabric em destaque" | **Security Fabric:** integração com outros produtos (topologia, Security Rating, automação, conectores). **Log & Report:** os registros de tráfego, eventos e segurança.
+midia/m01/01-1-menu-gui-6.png "Menu VPN em destaque" | **VPN:** túneis IPsec entre sites e acesso remoto de usuários.
+midia/m01/01-1-menu-gui-7.png "Menu User & Authentication em destaque" | **User & Authentication:** usuários, grupos, servidores LDAP e RADIUS, FortiTokens e contas de convidados.
+midia/m01/01-1-menu-gui-8.png "Menu WiFi & Switch Controller em destaque" | **WiFi & Switch Controller:** gerência de access points (FortiAP) e switches (FortiSwitch) pelo próprio FortiGate.
+midia/m01/01-1-menu-gui-9.png "Menu System em destaque" | **System:** o próprio equipamento. Administradores, perfis administrativos, firmware, configurações gerais, HA, certificados, FortiGuard e Feature Visibility.
+midia/m01/01-1-menu-gui-10.png "Menu Security Fabric em destaque" | **Security Fabric:** integração com outros produtos Fortinet: topologia, Security Rating, automação e conectores.
+midia/m01/01-1-menu-gui-11.png "Menu Log & Report em destaque" | **Log & Report:** os registros de tráfego, eventos e segurança, e a configuração dos destinos de log.
 :::
 
 | Menu | Para que serve |
@@ -323,11 +326,16 @@ A console é o acesso "de último recurso". Funciona mesmo sem nenhuma configura
 - **Software:** qualquer emulador de terminal (PuTTY, SecureCRT, Tera Term, `screen` no Linux e no macOS).
 - **Parâmetros:** 9600 bps, 8 bits de dados, sem paridade, 1 bit de parada, sem controle de fluxo. É o famoso **9600 8N1**.
 
+Na Atlas, o primeiro acesso é feito pelo **NOTEBOOK-TI**, o notebook da equipe de TI, ligado à porta de console do FGT-MTZ:
+
 :::slides
-midia/m01/01-2-putty-serial-1.png "Janela do PuTTY configurada para conexão serial" | No notebook, o **PuTTY** é configurado para a console. A console é uma conexão **serial**: funciona mesmo sem nenhuma configuração de rede.
+midia/m01/01-2-topologia-console.png "Diagrama com o cabo de console entre o FGT-MTZ e o NOTEBOOK-TI em destaque" | O **cabo de console** liga a porta **CON** do FGT-MTZ ao adaptador USB-serial do **NOTEBOOK-TI**. Ele não transporta tráfego de rede: é uma linha serial direta até a CLI do equipamento.
+midia/m01/01-2-notebook.png "Área de trabalho do NOTEBOOK-TI com o botão Iniciar em destaque" | Esta é a área de trabalho do **NOTEBOOK-TI**. Clique no botão **Iniciar** da barra de tarefas.
+midia/m01/01-2-menu-iniciar.png "Menu Iniciar com o PuTTY em destaque" | No menu **Iniciar**, abra o **PuTTY**, um emulador de terminal gratuito.
+midia/m01/01-2-putty-serial-1.png "Janela do PuTTY configurada para conexão serial" | O PuTTY abre na tela de configuração da sessão. A console é uma conexão **serial**: funciona mesmo sem nenhuma configuração de rede.
 midia/m01/01-2-putty-serial-2.png "Campo Serial line com COM3" | **Serial line:** a porta serial do computador. No Windows, o adaptador USB-serial aparece como uma porta **COM** (aqui, COM3).
 midia/m01/01-2-putty-serial-3.png "Campo Speed com 9600" | **Speed:** **9600** bps. Com outra velocidade, aparecem caracteres sem sentido na tela.
-midia/m01/01-2-putty-serial-4.png "Connection type Serial selecionado" | **Connection type:** **Serial**. O mesmo PuTTY também abre conexões SSH, úteis quando o FortiGate já tem endereço de gerência.
+midia/m01/01-2-putty-serial-4.png "Connection type Serial selecionado" | **Connection type:** **Serial**. O mesmo PuTTY também abre conexões SSH, úteis quando o FortiGate já tem endereço de gerência. Clique em **Open** para abrir a console.
 :::
 
 > **Na prática:** em uma VM, a "console" é a janela de console do hipervisor (VMware, Hyper-V, KVM) ou da nuvem. Ela tem o mesmo papel do cabo console.
@@ -349,8 +357,10 @@ Consulte o *Quick Start Guide* do seu modelo. Com o endereço em mãos, acesse `
 
 Num FortiGate de fábrica, o primeiro login do `admin` **obriga a troca da senha** antes de liberar qualquer outra ação. Na console, o FortiOS mostra *You are forced to change your password* e pede a nova senha duas vezes: **New Password** e **Confirm Password**. A senha não aparece enquanto é digitada. Escolha uma senha forte e guarde-a em um cofre de senhas: essa conta é o seu acesso total ao equipamento.
 
-:::figura midia/m01/01-2-console-troca-senha.mp4 "Primeiro login pela console: admin com senha em branco, troca obrigatória de senha e prompt FGT-MTZ #"
-O primeiro login pela console do FGT-MTZ: usuário `admin`, senha em branco, troca obrigatória de senha e o prompt **`FGT-MTZ #`**. O `#` indica um administrador com acesso total.
+:::slides
+midia/m01/01-2-console-1.png "Console do FGT-MTZ no PuTTY com o prompt de login" | A console mostra o prompt **`FGT-MTZ login:`**. Digite `admin` e Enter.
+midia/m01/01-2-console-2.png "Login com senha em branco e pedido de troca de senha" | Na senha, apenas Enter (em branco). O FortiOS responde *You are forced to change your password* e pede a **New Password**.
+midia/m01/01-2-console-3.png "Nova senha confirmada e prompt FGT-MTZ #" | Digite a nova senha em **New Password** e repita em **Confirm Password**. O FortiGate mostra **Welcome!** e o prompt **`FGT-MTZ #`**. O `#` indica um administrador com acesso total.
 :::
 
 #### Configurando o endereço de gerência pela console
@@ -375,10 +385,12 @@ A configuração da interface `mgmt` digitada na console, logo depois da troca d
 
 #### Primeiro acesso pela GUI e o assistente de configuração
 
-Da estação 10.10.99.10, acesse `https://10.10.99.1`. A página de login aparece porque a interface `mgmt` agora tem endereço e aceita HTTPS.
+Com o endereço de gerência configurado, o trabalho passa para o **ADMIN-PC**, a estação do administrador (10.10.99.10), ligada à porta `mgmt`:
 
-:::figura midia/m01/01-2-login-gui.png "Página de login da GUI do FGT-MTZ aberta no navegador do ADMIN-PC em https://10.10.99.1"
-A página de login da GUI no navegador do ADMIN-PC. Num FortiGate real, antes dela o navegador alerta que o certificado não é confiável.
+:::slides
+midia/m01/01-2-topologia-mgmt.png "Diagrama com o cabo de rede entre a porta mgmt do FGT-MTZ e o ADMIN-PC em destaque" | O cabo de rede liga a porta **mgmt** do FGT-MTZ ao **ADMIN-PC**. É por esse caminho que a GUI é acessada.
+midia/m01/01-2-admin-pc.png "Área de trabalho do ADMIN-PC com o Microsoft Edge em destaque" | Na área de trabalho do **ADMIN-PC**, abra o navegador **Microsoft Edge** pela barra de tarefas.
+midia/m01/01-2-login-gui.png "Página de login da GUI do FGT-MTZ em https://10.10.99.1" | Acesse **https://10.10.99.1**. A página de login aparece porque a interface `mgmt` agora tem endereço e aceita HTTPS. Num FortiGate real, antes dela o navegador alerta que o certificado não é confiável.
 :::
 
 No primeiro login pela GUI, o FortiOS abre o **assistente de configuração inicial** (*FortiGate Setup*):
@@ -1241,9 +1253,54 @@ end
 
 ---
 
-## 01.6. Licenciamento e FortiGuard
+## 01.6. FortiGuard e licenciamento
 
-### 01.6.1. Como o FortiGate é licenciado
+As proteções do FortiGate dependem de informação atualizada sobre ameaças: assinaturas de vírus e ataques, categorias de sites, listas de botnets. Essa informação vem do **FortiGuard**, e o acesso a ela depende das **licenças** do equipamento. Primeiro, veja de onde vem a proteção; depois, como ela é licenciada.
+
+### 01.6.1. FortiGuard: de onde vem a proteção
+
+#### FortiGuard Labs
+
+O **FortiGuard Labs** é a organização de inteligência e pesquisa de ameaças da Fortinet, com sede no Canadá. Seus pesquisadores e sistemas de IA analisam ameaças do mundo todo e produzem as assinaturas de antivírus e IPS, as categorias de sites, as listas de botnets e as demais bases que o FortiGate usa.
+
+Para o FortiGate usar esses serviços, são necessárias duas coisas: **uma assinatura ativa** e **acesso à Internet**.
+
+#### FortiGuard Distribution Network (FDN)
+
+As atualizações chegam pela **FortiGuard Distribution Network (FDN)**, a rede de servidores da Fortinet espalhada pelo mundo. O FortiGate fala com a FDN de duas formas diferentes, e é importante distingui-las:
+
+1. **Download de pacotes (AV, IPS, aplicações, ISDB):** as bases são **baixadas** por **TCP** (HTTPS) e ficam no equipamento, normalmente uma vez por dia ou conforme o agendamento. Os perfis consultam essa cópia local. Se o FortiGuard ficar inacessível por um tempo, o antivírus e o IPS continuam funcionando com a última base baixada, só que desatualizados.
+2. **Consultas em tempo real (Web Filtering, DNS Filtering, Antispam):** a cada novo site, domínio ou e-mail, o FortiGate **pergunta** ao FortiGuard qual é a classificação, por **UDP** ou **HTTPS**. Existe cache, mas sem a consulta não há categoria para sites novos. O perfil então aplica a ação configurada para **erro de rating** (permitir ou bloquear).
+
+Essa diferença explica sintomas diferentes: sem comunicação com o FortiGuard, o antivírus continua bloqueando vírus conhecidos, mas o Web Filter pode deixar passar (ou bloquear) todos os sites sem classificação.
+
+#### Como o FortiGate alcança os servidores
+
+- **Anycast:** por padrão, o FortiGate acessa os servidores do FortiGuard por endereços **anycast**. O mesmo endereço é anunciado em vários pontos do mundo, e a rede encaminha cada consulta ao **servidor mais próximo**, com menor latência.
+- **Certificados verificados:** na comunicação com o FortiGuard, o FortiGate **valida o certificado SSL** apresentado pelo servidor, emitido por uma autoridade certificadora de terceiros, e confere se ele não foi revogado usando **OCSP stapling**. Isso impede que alguém se passe pelo FortiGuard.
+- **DNS com DoT:** quando o FortiGate usa o FortiGuard como servidor DNS (96.45.45.45 e 96.45.46.46), as consultas vão por **DNS over TLS (DoT)**, criptografadas.
+
+#### Na GUI: atualizações
+
+:::figura midia/m01/01-6-updates.png "Aba FortiGuard settings com o agendamento das atualizações e as opções de filtragem e servidores"
+Na aba **FortiGuard settings** ficam o agendamento das atualizações (**Scheduled updates**), as opções de consulta de rating (protocolo e porta) e os servidores FortiGuard usados.
+:::
+
+Em redes que restringem a saída, essas opções definem o que precisa ser liberado no firewall de borda.
+
+#### Pré-requisitos para funcionar
+
+Para o FortiGuard funcionar, o FortiGate precisa:
+
+1. **de rota** até a Internet;
+2. **de DNS do sistema** funcionando;
+3. **de hora correta**, porque a comunicação usa certificados;
+4. **de saída liberada** no caminho, se houver outro firewall ou proxy antes da Internet;
+5. **de licença válida** para o serviço (veja a próxima seção).
+
+Quando a atualização falha, verifique nessa ordem. A verificação de rota, DNS e hora e o acompanhamento detalhado da atualização são feitos pela CLI (veja o Guia de comandos CLI).
+
+### 01.6.2. Como o FortiGate é licenciado
 
 #### O equipamento e os serviços são coisas separadas
 
@@ -1321,49 +1378,6 @@ O que acontece quando uma licença vence:
 - as **consultas em tempo real** (Web Filter, DNS Filter) **deixam de responder**, e os sites ficam sem categoria;
 - os perfis continuam configurados, mas protegem cada vez menos.
 
-### 01.6.2. FortiGuard: de onde vem a proteção
-
-#### FortiGuard Labs
-
-O **FortiGuard Labs** é a organização de inteligência e pesquisa de ameaças da Fortinet, com sede no Canadá. Seus pesquisadores e sistemas de IA analisam ameaças do mundo todo e produzem as assinaturas de antivírus e IPS, as categorias de sites, as listas de botnets e as demais bases que o FortiGate usa.
-
-Para o FortiGate usar esses serviços, são necessárias duas coisas: **uma assinatura ativa** e **acesso à Internet**.
-
-#### FortiGuard Distribution Network (FDN)
-
-As atualizações chegam pela **FortiGuard Distribution Network (FDN)**, a rede de servidores da Fortinet espalhada pelo mundo. O FortiGate fala com a FDN de duas formas diferentes, e é importante distingui-las:
-
-1. **Download de pacotes (AV, IPS, aplicações, ISDB):** as bases são **baixadas** por **TCP** (HTTPS) e ficam no equipamento, normalmente uma vez por dia ou conforme o agendamento. Os perfis consultam essa cópia local. Se o FortiGuard ficar inacessível por um tempo, o antivírus e o IPS continuam funcionando com a última base baixada, só que desatualizados.
-2. **Consultas em tempo real (Web Filtering, DNS Filtering, Antispam):** a cada novo site, domínio ou e-mail, o FortiGate **pergunta** ao FortiGuard qual é a classificação, por **UDP** ou **HTTPS**. Existe cache, mas sem a consulta não há categoria para sites novos. O perfil então aplica a ação configurada para **erro de rating** (permitir ou bloquear).
-
-Essa diferença explica sintomas diferentes: sem comunicação com o FortiGuard, o antivírus continua bloqueando vírus conhecidos, mas o Web Filter pode deixar passar (ou bloquear) todos os sites sem classificação.
-
-#### Como o FortiGate alcança os servidores
-
-- **Anycast:** por padrão, o FortiGate acessa os servidores do FortiGuard por endereços **anycast**. O mesmo endereço é anunciado em vários pontos do mundo, e a rede encaminha cada consulta ao **servidor mais próximo**, com menor latência.
-- **Certificados verificados:** na comunicação com o FortiGuard, o FortiGate **valida o certificado SSL** apresentado pelo servidor, emitido por uma autoridade certificadora de terceiros, e confere se ele não foi revogado usando **OCSP stapling**. Isso impede que alguém se passe pelo FortiGuard.
-- **DNS com DoT:** quando o FortiGate usa o FortiGuard como servidor DNS (96.45.45.45 e 96.45.46.46), as consultas vão por **DNS over TLS (DoT)**, criptografadas.
-
-#### Na GUI: atualizações
-
-:::figura midia/m01/01-6-updates.png "Aba FortiGuard settings com o agendamento das atualizações e as opções de filtragem e servidores"
-Na aba **FortiGuard settings** ficam o agendamento das atualizações (**Scheduled updates**), as opções de consulta de rating (protocolo e porta) e os servidores FortiGuard usados.
-:::
-
-Em redes que restringem a saída, essas opções definem o que precisa ser liberado no firewall de borda.
-
-#### Pré-requisitos para funcionar
-
-Para o FortiGuard funcionar, o FortiGate precisa:
-
-1. **de rota** até a Internet;
-2. **de DNS do sistema** funcionando;
-3. **de hora correta**, porque a comunicação usa certificados;
-4. **de saída liberada** no caminho, se houver outro firewall ou proxy antes da Internet;
-5. **de licença válida** para o serviço.
-
-Quando a atualização falha, verifique nessa ordem. A verificação de rota, DNS e hora e o acompanhamento detalhado da atualização são feitos pela CLI (veja o Guia de comandos CLI).
-
 #### Diferencie três situações
 
 | Situação | Como identificar | Efeito |
@@ -1381,7 +1395,7 @@ Quando a atualização falha, verifique nessa ordem. A verificação de rota, DN
 - Investigar o FortiGuard sem antes verificar rota, DNS e hora do equipamento.
 - Confundir falha de download de bases com falha de consulta de rating.
 
-:::cli Licenciamento e FortiGuard
+:::cli FortiGuard e licenciamento
 ### Versões das bases e contratos
 
 ```

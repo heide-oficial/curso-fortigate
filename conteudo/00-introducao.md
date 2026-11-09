@@ -67,12 +67,11 @@ Os endereços públicos usam as faixas reservadas para documentação (203.0.113
 
 O texto principal ensina pela **GUI**, a interface web do FortiGate, que é onde o administrador passa a maior parte do tempo. As telas foram capturadas de um FortiGate de laboratório montado para o curso, com a rede da Atlas.
 
-### Imagens, passo a passo e vídeos
+### Imagens e passo a passo
 
 - Clique em qualquer imagem para **ampliá-la**. Na imagem ampliada, role o mouse para dar zoom e arraste para mover.
-- Os **passo a passo** mostram várias telas em sequência. Use as setas abaixo da imagem (ou as setas do teclado) para avançar, e leia o texto de cada passo.
+- Os **passo a passo** mostram várias telas em sequência, do começo ao fim de cada tarefa. Use as setas abaixo da imagem (ou as setas do teclado) para avançar, e leia o texto de cada passo.
 - Nas imagens, as partes **escurecidas** são contexto: o que importa naquele momento fica em destaque.
-- Os **vídeos** mostram ações que acontecem em sequência, como o primeiro login.
 
 ### Quadros especiais
 

@@ -534,11 +534,11 @@ const LISTA = 1250;
     await s.foto('01-4-log-aba', { recorte: [abaLoc('Summary'), abaLoc('Logs')], margem: 30, destaque: [abaLoc('Logs')], descricao: 'Aba Logs' });
     await aba('Logs');
     await s.espera(600);
-    await s.foto('01-4-log-login', { destaque: [conteudo().locator('table').last()], descricao: 'Logs de eventos com os logins administrativos' });
-    const linhaLogin = p.locator('tr:visible', { hasText: /login/i }).first();
-    await linhaLogin.dblclick().catch(() => linhaLogin.click());
+    await s.foto('01-4-log-login', { destaque: [p.locator('.lv-scroll:visible').first()], descricao: 'Logs de eventos com os logins administrativos' });
+    const linhaLogin = p.locator('.lv-scroll tr.row:visible', { hasText: /logged in successfully/i }).first();
+    await linhaLogin.click();
     await s.espera(700);
-    const det = p.locator('.slide-pane:visible, .log-details:visible, .detail-pane:visible').last();
+    const det = p.locator('.lv-details:visible').last();
     if (await det.isVisible().catch(() => false)) await s.foto('01-4-log-detalhe', { recorte: [det], margem: 10, descricao: 'Detalhes do evento de login' });
     await p.keyboard.press('Escape');
   });
@@ -596,7 +596,10 @@ const LISTA = 1250;
     await fotoOk('01-5-admin-conta-ok', 'Botão OK da conta');
     await botaoVis('OK', painel()).click();
     await s.espera(800);
-    await s.foto('01-5-admin-conta-lista', { largura: LISTA, recorte: [p.locator('.content-scroll thead:visible').first(), p.locator('tr:visible', { hasText: 'carla.suporte' }).first()], margem: 20, destaque: [p.locator('tr:visible', { hasText: 'carla.suporte' }).first()], descricao: 'Conta carla.suporte na lista' });
+    await s.rota('/system/admins');
+    const lc = conteudo().locator('tr', { hasText: 'carla.suporte' }).first();
+    await lc.waitFor();
+    await s.foto('01-5-admin-conta-lista', { largura: LISTA, recorte: [conteudo().locator('thead').first(), lc], margem: 20, destaque: [lc], descricao: 'Conta carla.suporte na lista' });
   });
   await tentar('senha', async () => {
     await s.rota('/system/settings');
@@ -635,16 +638,11 @@ const LISTA = 1250;
     await s.espera(1200);
     await s.fecharNovidades();
   });
-  await tentar('widget-admins', async () => {
-    await s.rota('/dashboard/status');
-    const w = widget('Administrators');
-    if (await w.count()) { await rolarAte(w); await s.foto('01-5-widget-admins', { recorte: [w], margem: 20, destaque: [w], descricao: 'Widget Administrators' }); }
-  });
   await tentar('log-alteracao', async () => {
     await s.rota('/log/system-events');
     await aba('Logs');
     await s.espera(600);
-    await s.foto('01-5-log-alteracoes', { destaque: [conteudo().locator('table').last()], descricao: 'Eventos de alteração de configuração e logins' });
+    await s.foto('01-5-log-alteracoes', { destaque: [p.locator('.lv-scroll:visible').first()], descricao: 'Eventos de logins dos administradores' });
   });
 
   if (await parar('H')) return;

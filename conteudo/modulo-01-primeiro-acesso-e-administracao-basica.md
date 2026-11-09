@@ -2,110 +2,151 @@
 
 ## Antes de começar
 
-**O que você vai aprender neste módulo**
+### O que você vai aprender
 
 Ao final deste módulo, você será capaz de:
 
-- explicar o que o FortiGate faz e onde cada função fica na interface;
-- identificar modelo, versão do FortiOS, licenças e por que um recurso pode não aparecer no seu equipamento;
+- explicar por que os firewalls evoluíram e o que diferencia o FortiGate;
+- reconhecer as funções do FortiGate e onde cada uma fica na interface;
+- identificar modelo, versão do FortiOS e licenças, e entender por que um recurso pode não aparecer no seu equipamento;
 - acessar um FortiGate novo pela console e pela rede, fazer o primeiro login e recuperar o acesso quando a senha se perde;
 - navegar com segurança pela GUI e usar a CLI quando ela for necessária;
 - configurar hostname, hora, DNS e o acesso administrativo de forma segura;
 - criar administradores com o privilégio mínimo necessário;
-- verificar licenças e o funcionamento do FortiGuard;
+- entender os tipos de licenciamento e o funcionamento do FortiGuard;
 - fazer backup, restaurar a configuração e atualizar o firmware com um plano de retorno.
 
 **Pré-requisitos:** nenhum. Este é o ponto de partida do curso.
 
-**Onde estamos no cenário Atlas Logística**
+### Topologia atual
 
-Neste módulo, o FortiGate da matriz (FGT-MTZ) sai da caixa. Ainda não há redes de usuários, regras nem Internet. O objetivo é deixar o equipamento **acessível, identificado, com hora correta, administração protegida, licenças verificadas e um backup guardado**.
+Neste módulo, o FortiGate da matriz da Atlas Logística (FGT-MTZ) sai da caixa. Ainda não há redes de usuários, regras nem Internet. O objetivo é deixar o equipamento **acessível, identificado, com hora correta, administração protegida, licenças verificadas e um backup guardado**.
 
-Para administrar o equipamento desde o primeiro dia, a Atlas usa uma rede de gerência separada (gerência *out-of-band*):
+Para administrar o equipamento desde o primeiro dia, a Atlas usa uma **rede de gerência separada** (gerência *out-of-band*), que não depende das redes dos usuários:
 
 | Elemento | Valor |
 |---|---|
-| Interface de gerência do FGT-MTZ | `mgmt` (ou uma porta livre, com alias `mgmt`, se o seu modelo ou VM não tiver porta dedicada) |
+| Interface de gerência do FGT-MTZ | `mgmt` |
 | Rede de gerência | 10.10.99.0/24 |
 | Endereço do FGT-MTZ na gerência | 10.10.99.1 |
-| Estação do administrador | 10.10.99.10 |
-| Rede de servidores (usada a partir do módulo 02) | 10.10.20.0/24 |
+| Estação do administrador (ADMIN-PC) | 10.10.99.10 |
+| Notebook da console (NOTEBOOK-TI) | ligado à porta de console do FGT-MTZ |
 
-:::figura midia/m01/00-topologia-gerencia.png "Diagrama: estação do administrador (10.10.99.10) ligada à porta mgmt do FGT-MTZ (10.10.99.1) e notebook ligado à porta CONSOLE"
-Topologia deste módulo: a estação do administrador acessa o FGT-MTZ pela rede de gerência, e um notebook fica ligado à console para o primeiro acesso e para emergências.
+:::figura midia/m01/00-topologia-gerencia.png "Diagrama: ADMIN-PC ligado à porta mgmt do FGT-MTZ e NOTEBOOK-TI ligado à porta de console"
+O **ADMIN-PC** acessa o FGT-MTZ pela porta **mgmt**. O **NOTEBOOK-TI** fica ligado à porta de **console**, para o primeiro acesso e para emergências. A porta mgmt ainda mostra o endereço de fábrica (192.168.1.99/24), que vamos trocar logo no primeiro acesso.
 :::
 
-> **Como ler este material**
-> - **Na prática:** dica de quem administra FortiGate no dia a dia.
-> - **Atenção:** algo que pode causar perda de acesso, de configuração ou de segurança.
-> - **Dica para a prova:** ponto que costuma ser cobrado no exame NSE 4.
-> - **Na prova (7.6):** diferença entre o FortiOS 8.0 usado no curso e o 7.6 cobrado no exame.
-> - **Guia de comandos CLI:** botão ao final de cada seção, com os comandos equivalentes ao que foi feito na GUI, os comandos de verificação e as opções extras.
-
-> **Sobre menus e comandos:** os caminhos de menu deste material foram escritos para FortiOS 8.0.x. Nomes de menus e opções mudam entre versões e modelos. Se algo não aparecer igual no seu equipamento, use a busca da GUI e consulte o *Administration Guide* da sua versão.
+> **Na prática:** se o seu modelo não tiver uma porta `mgmt` dedicada, use uma porta livre e dê a ela o apelido (*alias*) `mgmt`. O raciocínio é o mesmo.
 
 ---
 
 ## 01.1. O FortiGate e o FortiOS
 
-### 01.1.1. Funções do FortiGate e organização da GUI
+### 01.1.1. Por que os firewalls evoluíram
 
-#### O que é o FortiGate
+Para entender o que o FortiGate faz, vale olhar para os problemas que os firewalls antigos não resolviam. Eles nasceram para uma Internet bem mais simples, e foram ficando para trás:
 
-O FortiGate é o firewall de próxima geração (NGFW, *Next-Generation Firewall*) da Fortinet. Um firewall tradicional decide se uma conexão passa olhando principalmente **endereços IP e portas**. O FortiGate também faz isso, mas vai além. Ele pode:
+- **Protegiam só a fronteira entre a rede interna e a Internet.** A lógica era "dentro é confiável, fora é perigoso". Tudo o que acontecia dentro da rede passava sem controle.
+- **Decidiam só por portas e endereços IP.** Liberar a porta 443 liberava qualquer coisa que usasse a porta 443: um site legítimo, uma aplicação não autorizada ou um malware falando com o seu servidor de comando. O firewall não olhava o **conteúdo**.
+- **Não consideravam ameaças internas.** Um computador infectado ou um funcionário mal-intencionado já estava "do lado de dentro" e podia alcançar qualquer servidor.
+- **Dependiam de antivírus baseado só em assinaturas.** A assinatura reconhece um malware que já foi visto antes. Malwares **polimórficos** (que mudam o próprio código a cada cópia) e ataques **zero-day** (que exploram falhas ainda desconhecidas) passavam despercebidos.
+- **Não acompanharam a explosão de vetores de ataque.** Hoje há trabalho remoto, nuvem, aplicativos web, dispositivos IoT e criptografia em quase todo o tráfego. A **superfície de ataque** ficou muito maior.
+- **Davam uma falsa sensação de segurança às pequenas e médias empresas.** Muitas acreditavam que "ninguém vai atacar uma empresa pequena". Mas a maioria dos ataques é automatizada e não escolhe vítima pelo tamanho: **qualquer organização pode ser atacada**, e as menores costumam ter menos defesas.
 
-- **controlar o acesso entre redes** com firewall policies (módulo 03);
-- **traduzir endereços** para dar acesso à Internet e publicar serviços (NAT, módulo 05);
-- **rotear** o tráfego entre redes e links (módulo 06);
-- **identificar usuários** e aplicar regras por pessoa ou grupo (módulos 07 e 08);
-- **inspecionar o conteúdo** do tráfego permitido: sites, aplicações, ataques, vírus (módulos 09 a 12);
-- **criar VPNs** entre sites e para usuários remotos (módulo 13);
-- **escolher o melhor link** de Internet para cada aplicação (SD-WAN, módulo 14);
-- **integrar-se** com outros produtos Fortinet no Security Fabric (módulo 15);
-- **trabalhar em par**, com um equipamento assumindo se o outro falhar (HA, módulo 16).
+A resposta da indústria foi o **firewall de próxima geração** (NGFW, *Next-Generation Firewall*): um equipamento que continua controlando endereços e portas, mas que também **identifica aplicações e usuários, inspeciona o conteúdo** do tráfego, inclusive o criptografado, e consulta inteligência de ameaças atualizada.
 
-O sistema operacional que roda no FortiGate se chama **FortiOS**. É ele que define quais funções existem e como são configuradas. Por isso, neste curso, quando falamos "a versão", estamos falando da versão do FortiOS (por exemplo, 8.0.2), e não do hardware.
+### 01.1.2. O que é o FortiGate e quais são seus diferenciais
 
-> **Na prática:** pense no FortiGate como várias ferramentas em um só equipamento: firewall, roteador, concentrador VPN, filtro web, IPS e mais. Todas trabalham sobre o mesmo tráfego e dependem umas das outras. Por exemplo, um filtro web só atua sobre tráfego que uma firewall policy já permitiu. Entender essa ordem é a base de todo o curso.
+O **FortiGate** é o NGFW da Fortinet. Ele reúne recursos avançados de **infraestrutura de rede** (roteamento, SD-WAN, VPN, switching) e de **segurança** (firewall, IPS, antivírus, filtro web, controle de aplicações) em um único equipamento.
 
-#### Como a GUI está organizada
+#### Onde o FortiGate é usado
 
-A GUI (*Graphical User Interface*) é a interface web de administração, acessada por HTTPS. O menu lateral é organizado por **função**:
+- **Borda da rede (*edge*):** entre a empresa e a Internet, protegendo a saída dos usuários e os serviços publicados.
+- **Segmentação interna:** entre redes internas (usuários, servidores, convidados, OT), controlando o tráfego que nunca sai para a Internet. É a resposta às ameaças internas.
+- **Multi-cloud:** protegendo redes em nuvens públicas e privadas e ligando a nuvem às filiais.
 
-| Menu | Para que serve | Exemplos |
-|---|---|---|
-| **Dashboard** | Visão do estado do equipamento | CPU, memória, sessões, licenças, FortiView |
-| **Network** | Conectividade | Interfaces, DNS, rotas estáticas, policy routes, SD-WAN, captura de pacotes |
-| **Policy & Objects** | Quem pode falar com quem | Firewall policies, endereços, serviços, schedules, Virtual IPs, IP pools |
-| **Security Profiles** | O que é inspecionado no tráfego permitido | Antivirus, Web Filter, DNS Filter, Application Control, IPS, SSL/SSH Inspection |
-| **VPN** | Túneis | IPsec, assistente de VPN, acesso remoto |
-| **User & Authentication** | Identidade | Usuários, grupos, servidores LDAP/RADIUS, FortiTokens, convidados |
-| **WiFi & Switch Controller** | Gerência de FortiAP e FortiSwitch | Aparece quando o recurso está habilitado |
-| **System** | O próprio equipamento | Administradores, perfis administrativos, firmware, configurações gerais, HA, certificados, FortiGuard, Feature Visibility |
-| **Security Fabric** | Integração com outros produtos | Topologia, Security Rating, automação, conectores |
-| **Log & Report** | Registros | Logs de tráfego, eventos e segurança; configuração de logs |
+#### Formatos
 
-:::interativo midia/m01/01-1-menu-gui.json
-O menu lateral da GUI do FGT-MTZ. Passe o mouse (ou toque) em cada destaque para ver a função do menu.
+- **Appliance físico:** desde modelos de mesa para filiais até chassis para data centers.
+- **Máquina virtual (FortiGate-VM):** roda em VMware, Hyper-V, KVM e nas nuvens públicas.
+- **FortiGate as a Service (FGaaS):** o FortiGate entregue como serviço em nuvem, sem você administrar a infraestrutura por baixo.
+
+#### Diferenciais
+
+- **UTM (*Unified Threat Management*):** várias camadas de segurança no mesmo equipamento e na mesma console. Em vez de um firewall, um IPS, um filtro web e um antivírus de fabricantes diferentes, você administra **um só produto**, com menos custo e menos complexidade.
+- **Hardware dedicado da Fortinet:** os appliances têm processadores próprios (os **SPUs**: NP para o tráfego e CP para criptografia e inspeção), que tiram esse trabalho da CPU. O resultado é **alto desempenho** mesmo com várias proteções ativas, sem sobrecarregar a CPU.
+- **Integração com o ecossistema Fortinet:** o FortiGate é o centro do **Security Fabric**, integrando-se facilmente a FortiAnalyzer, FortiManager, FortiSwitch, FortiAP, FortiClient e outros produtos.
+- **Compatibilidade com outros fabricantes:** o FortiGate usa protocolos e padrões abertos (IPsec, BGP, LDAP, RADIUS, syslog, SAML, APIs REST) e tem conectores para nuvens e soluções de terceiros.
+
+#### O que o FortiGate faz
+
+Na prática, o FortiGate é várias ferramentas trabalhando sobre o mesmo tráfego. Ele pode:
+
+- **controlar o acesso entre redes** com firewall policies;
+- **traduzir endereços** para dar acesso à Internet e publicar serviços (NAT);
+- **rotear** o tráfego entre redes e links;
+- **identificar usuários** e aplicar regras por pessoa ou grupo;
+- **inspecionar o conteúdo** do tráfego permitido: sites, aplicações, ataques e vírus;
+- **criar VPNs** entre sites e para usuários remotos;
+- **escolher o melhor link** de Internet para cada aplicação (SD-WAN);
+- **integrar-se** a outros produtos no Security Fabric;
+- **trabalhar em par**, com um equipamento assumindo se o outro falhar (alta disponibilidade, HA).
+
+O sistema operacional do FortiGate se chama **FortiOS**. É ele que define quais funções existem e como são configuradas. Quando este material fala em "versão", fala da versão do FortiOS (por exemplo, 7.6.4), e não do hardware.
+
+> **Na prática:** as funções do FortiGate dependem umas das outras. Um filtro web, por exemplo, só atua sobre um tráfego que uma firewall policy já permitiu. Entender essa ordem é a base de todo o curso.
+
+### 01.1.3. Como a GUI está organizada
+
+A **GUI** (*Graphical User Interface*) é a interface web de administração, acessada por HTTPS. O menu lateral é organizado por **função**:
+
+:::slides
+midia/m01/01-1-menu-gui-1.png "GUI do FortiGate com o menu lateral em destaque" | O **menu lateral** organiza o FortiGate por função. Cada item abre um grupo de páginas.
+midia/m01/01-1-menu-gui-2.png "Menu Dashboard em destaque" | **Dashboard:** visão do estado do equipamento, com CPU, memória, sessões, licenças e as visões do **FortiView**.
+midia/m01/01-1-menu-gui-3.png "Menu Network em destaque" | **Network:** conectividade. Interfaces, DNS, rotas estáticas, policy routes e SD-WAN.
+midia/m01/01-1-menu-gui-4.png "Menu Policy & Objects em destaque" | **Policy & Objects:** quem pode falar com quem. As **firewall policies** e os objetos que elas usam: endereços, serviços, schedules, Virtual IPs e IP pools.
+midia/m01/01-1-menu-gui-5.png "Menu Security Profiles em destaque" | **Security Profiles:** o que é inspecionado no tráfego **já permitido** pela policy. Antivirus, Web Filter, DNS Filter, Application Control, IPS e inspeção SSL.
+midia/m01/01-1-menu-gui-6.png "Menu VPN em destaque" | **VPN:** túneis IPsec e acesso remoto. Logo abaixo, **User & Authentication** reúne usuários, grupos, servidores LDAP e RADIUS e FortiTokens.
+midia/m01/01-1-menu-gui-7.png "Menu System em destaque" | **System:** o próprio equipamento. Administradores, perfis administrativos, firmware, configurações gerais, HA, certificados, FortiGuard e Feature Visibility.
+midia/m01/01-1-menu-gui-8.png "Menu Security Fabric em destaque" | **Security Fabric:** integração com outros produtos (topologia, Security Rating, automação, conectores). **Log & Report:** os registros de tráfego, eventos e segurança.
 :::
+
+| Menu | Para que serve |
+|---|---|
+| **Dashboard** | Visão do estado do equipamento |
+| **Network** | Conectividade: interfaces, DNS, rotas, SD-WAN |
+| **Policy & Objects** | Quem pode falar com quem: policies e objetos |
+| **Security Profiles** | O que é inspecionado no tráfego permitido |
+| **VPN** | Túneis IPsec e acesso remoto |
+| **User & Authentication** | Usuários, grupos, servidores de autenticação, FortiTokens |
+| **WiFi & Switch Controller** | Gerência de FortiAP e FortiSwitch (aparece quando o recurso está habilitado) |
+| **System** | Administradores, firmware, configurações gerais, HA, certificados, FortiGuard |
+| **Security Fabric** | Integração com outros produtos Fortinet |
+| **Log & Report** | Logs de tráfego, eventos e segurança |
 
 Repare na separação entre **Policy & Objects** e **Security Profiles**. A firewall policy decide se a conexão é **permitida**. O Security Profile decide o que acontece **com o conteúdo** da conexão permitida. Um perfil nunca libera algo que a policy bloqueou.
 
-Algumas funções são **nativas** do FortiGate (firewall, VPN, filtros). Outras são **integrações** com outros produtos: FortiAnalyzer para logs centralizados, FortiClient EMS para dados de endpoint, FortiSandbox para análise de arquivos. As integrações costumam aparecer em **Security Fabric > Fabric Connectors** e exigem o outro produto funcionando, não só a configuração no FortiGate.
+Algumas funções são **nativas** do FortiGate (firewall, VPN, filtros). Outras são **integrações** com outros produtos: FortiAnalyzer para logs centralizados, FortiClient EMS para dados dos computadores, FortiSandbox para análise de arquivos. As integrações ficam em **Security Fabric > Fabric Connectors** e exigem o outro produto funcionando, não só a configuração no FortiGate.
 
-#### Elementos que aparecem em todas as telas
+#### A barra superior
 
-:::interativo midia/m01/01-1-elementos-gui.json
-A barra superior: **busca**, **FortiAI**, **CLI**, **notificações** e o **menu do administrador**, onde ficam backup, restauração e logout.
+A barra superior traz ferramentas disponíveis em qualquer página:
+
+:::slides
+midia/m01/01-1-elementos-gui-1.png "Barra superior da GUI em destaque" | A **barra superior** acompanha todas as páginas da GUI.
+midia/m01/01-1-elementos-gui-2.png "Botão de busca em destaque" | **Busca:** digite parte do nome ("dns", "admin", "firmware") para ir direto à página. Ajuda muito quando o menu muda entre versões.
+midia/m01/01-1-elementos-gui-3.png "Botão FortiAI em destaque" | **FortiAI:** o assistente de IA da Fortinet, que responde perguntas sobre a configuração. Depende de licença.
+midia/m01/01-1-elementos-gui-4.png "Botão CLI em destaque" | **CLI:** abre a **CLI Console**, um terminal da CLI dentro do navegador, sem precisar de SSH.
+midia/m01/01-1-elementos-gui-5.png "Botão de notificações em destaque" | **Notificações:** avisos do sistema, como firmware novo, licenças a vencer e problemas de configuração.
+midia/m01/01-1-elementos-gui-6.png "Menu do administrador em destaque" | **Menu do administrador:** **Configuration** (backup, restauração e reset de fábrica), troca de senha e logout.
 :::
 
-- **Dashboards:** painéis com widgets (System Information, Licenses, CPU, Memory, Sessions, Interfaces, Administrators). Você pode criar dashboards próprios e escolher os widgets.
-- **Busca do menu:** digite parte do nome ("dns", "admin", "firmware") para ir direto à página. Ajuda muito quando o menu muda entre versões.
-- **CLI:** abre a **CLI Console**, um terminal da CLI dentro do navegador, sem precisar de SSH.
-- **Menu do administrador** (canto superior direito): **Configuration** (backup, restauração e reset de fábrica), troca de senha e logout.
-- **Listas:** a maioria das páginas tem busca, filtros por coluna e a coluna **Ref.** (referências), essencial para saber se um objeto pode ser apagado (seção 01.3).
+Além da barra superior, repare em outros elementos comuns:
 
-### 01.1.2. Modelos, plataformas e recursos disponíveis
+- **Dashboards:** painéis com widgets (System Information, Licenses, CPU, Memory, Sessions, Interfaces, Administrators). Você pode criar dashboards próprios e escolher os widgets.
+- **Listas:** a maioria das páginas tem busca, filtros por coluna e a coluna **Ref.** (referências), que mostra se um objeto está em uso.
+
+### 01.1.4. Modelos, plataformas e recursos disponíveis
 
 #### Famílias de FortiGate
 
@@ -113,40 +154,42 @@ O mesmo FortiOS roda em plataformas diferentes:
 
 | Plataforma | Exemplos | Características |
 |---|---|---|
-| **Entry-level (desktop)** | FortiGate 40F, 60F, 70F, 90G | Pequenas empresas e filiais. Processador SoC (*System on a Chip*), que reúne CPU e aceleração em um só chip. Normalmente têm um switch interno (porta `lan` ou `internal`). |
-| **Mid-range** | FortiGate 100F, 200F, 400F, 600F | Empresas médias e matrizes. Processadores dedicados de aceleração (NP para tráfego, CP para criptografia e inspeção). |
+| **Entry-level (desktop)** | FortiGate 40F, 60F, 70G, 90G | Pequenas empresas e filiais. Processador SoC (*System on a Chip*), que reúne CPU e aceleração em um só chip. Normalmente têm um switch interno (porta `lan` ou `internal`). |
+| **Mid-range** | FortiGate 100F, 120G, 200G, 400F, 600F | Empresas médias e matrizes. Processadores dedicados de aceleração (NP para tráfego, CP para criptografia e inspeção). |
 | **High-end** | FortiGate 1000F, 3000F e superiores | Data centers e provedores. Grande capacidade e muitas portas de alta velocidade. |
 | **VM** | FortiGate-VM (VMware, Hyper-V, KVM, AWS, Azure, GCP…) | Mesmo FortiOS, sem aceleração em hardware. A capacidade depende da licença e dos recursos (vCPU, memória) alocados. |
-| **Rugged** | FortiGate Rugged | Ambientes industriais (temperatura, vibração). |
+| **Rugged** | FortiGate Rugged | Ambientes industriais, com variação de temperatura e vibração. |
 
-Os processadores de aceleração são explicados no módulo 17. Por enquanto, guarde a ideia: **dois FortiGates com a mesma versão de FortiOS podem ter capacidades e até recursos diferentes**, por causa do hardware.
+O FGT-MTZ da Atlas é um **FortiGate 121G**, um modelo mid-range:
+
+:::figura midia/m01/01-1-fortigate-121g.png "Painel frontal do FortiGate 121G no diagrama do laboratório"
+O FortiGate 121G tem portas de **console (CON)**, **HA** e **MGMT**, 16 portas de cobre (1 a 16), oito portas SFP (17 a 24) e quatro portas SFP+ de 10 Gbps (X1 a X4).
+:::
+
+Guarde a ideia: **dois FortiGates com a mesma versão de FortiOS podem ter capacidades e até recursos diferentes**, por causa do hardware.
 
 #### Conhecendo o seu equipamento pela GUI
 
 O widget **System Information**, no dashboard **Status**, resume a identidade do equipamento:
 
-:::interativo midia/m01/01-1-system-information.json
-O widget **System Information** do FGT-MTZ. Passe o mouse em cada linha para ver o que ela indica. Ao lado, o widget **Licenses** mostra o estado de cada serviço FortiGuard (seção 01.6).
+:::slides
+midia/m01/01-1-system-information-1.png "Widget System Information do FGT-MTZ" | O widget **System Information** resume a identidade do equipamento.
+midia/m01/01-1-system-information-2.png "Linha Hostname em destaque" | **Hostname:** o nome do equipamento. Ele aparece no prompt da CLI, nos logs e no Security Fabric.
+midia/m01/01-1-system-information-3.png "Linha Serial number em destaque" | **Serial number:** o número de série, usado no **registro** do equipamento e no suporte.
+midia/m01/01-1-system-information-4.png "Linha Firmware em destaque" | **Firmware:** versão do FortiOS e **build**, que identifica exatamente a imagem instalada. O destaque em vermelho indica que há uma versão mais nova disponível.
+midia/m01/01-1-system-information-5.png "Linha Mode em destaque" | **Mode:** **NAT** é o modo roteado, o padrão e o usado neste curso. O outro modo é o **Transparent**, em que o FortiGate funciona como uma ponte entre segmentos de rede.
+midia/m01/01-1-system-information-6.png "Linha System time em destaque" | **System time** e **Uptime:** a hora do equipamento e há quanto tempo ele está ligado. Você vai ver por que a hora correta é tão importante.
 :::
 
-| Campo | O que indica |
-|---|---|
-| **Hostname** | Nome do equipamento (você vai alterá-lo na seção 01.4). |
-| **Serial Number** | Número de série, usado no registro e no suporte. |
-| **Firmware** | Versão do FortiOS e build. O build identifica exatamente a imagem instalada. |
-| **Mode** | `NAT` (modo roteado, o padrão) ou `Transparent` (o FortiGate funciona como uma "ponte" entre segmentos). Este curso usa o modo NAT. |
-| **System Time** | Hora atual do equipamento (seção 01.4). |
-| **Uptime** | Há quanto tempo o equipamento está ligado. |
-
-A mesma informação, com mais detalhes, aparece no comando `get system status`. Esse comando é muito cobrado na prova; a leitura completa da saída está no **Guia de comandos CLI** desta seção.
+A mesma informação, com mais detalhes, aparece no comando `get system status`. Esse comando é muito cobrado na prova: veja a saída completa no **Guia de comandos CLI** deste capítulo.
 
 #### Por que um recurso pode "não existir" no seu FortiGate
 
 É comum ler a documentação, procurar um recurso na GUI e não encontrar. Há quatro motivos principais:
 
-1. **Feature Visibility:** para deixar a GUI mais limpa, o FortiOS esconde vários recursos por padrão. Eles existem e funcionam, só não aparecem no menu. Exemplos: DNS Database, VPN policy-based, Load Balance, Explicit Proxy.
+1. **Feature Visibility:** para deixar a GUI mais limpa, o FortiOS esconde vários recursos por padrão. Eles existem e funcionam, só não aparecem no menu. Exemplos: DNS Database, Load Balance, Explicit Proxy, Local-In Policy.
 2. **Modelo e memória:** alguns recursos dependem do hardware. Modelos com pouca memória RAM podem não ter recursos que exigem muito processamento. A matriz de recursos por plataforma (*Feature / Platform Matrix*) e o release notes informam essas restrições.
-3. **Licença:** o recurso aparece, mas não funciona sem o serviço FortiGuard correspondente (seção 01.6).
+3. **Licença:** o recurso aparece, mas não funciona sem o serviço FortiGuard correspondente.
 4. **Versão do FortiOS:** o recurso foi incluído, renomeado ou removido em determinada versão.
 
 #### Na GUI: habilitando um recurso em Feature Visibility
@@ -154,52 +197,71 @@ A mesma informação, com mais detalhes, aparece no comando `get system status`.
 :::slides
 midia/m01/01-1-feature-visibility-1.png "Página System > Feature Visibility com os recursos agrupados por área" | Em **System > Feature Visibility**, os recursos aparecem agrupados por área (*Network*, *Policy & objects* e outras). A chave de cada um indica se ele aparece no menu.
 midia/m01/01-1-feature-visibility-2.png "Chave DNS Database ativada em Feature Visibility" | Localize **DNS Database**, ative a chave e clique em **Apply**. A alteração vale na hora.
-midia/m01/01-1-feature-visibility-3.png "Menu Network com o novo item DNS Servers" | O item **Network > DNS Servers** passa a aparecer no menu. Ele será usado no módulo 02.
+midia/m01/01-1-feature-visibility-3.png "Menu Network com o novo item DNS Servers" | O item **Network > DNS Servers** passa a aparecer no menu.
 :::
 
 Feature Visibility só altera a **interface**. Desabilitar a visibilidade de um recurso **não desliga** uma configuração que já está em uso. Ela continua funcionando, apenas fica fora da vista na GUI.
 
 > **Atenção:** "não está no menu" não significa "não existe". Antes de concluir que o equipamento não suporta algo, confira Feature Visibility, a matriz de plataforma, a licença e o release notes.
 
-#### Erros comuns da seção 01.1
+#### Erros comuns
 
 - Concluir que um recurso não existe porque o menu não aparece, quando ele só está oculto em Feature Visibility.
 - Achar que um perfil de segurança pode liberar um tráfego que a firewall policy não permitiu.
 - Esperar que uma VM tenha o mesmo desempenho de um appliance físico com aceleração em hardware.
 
 :::cli O FortiGate e o FortiOS
-### `get system status` — a identidade do equipamento
+### `get system status`: a identidade do equipamento
 
-É o comando de referência para conhecer um FortiGate. Saída resumida (os valores variam):
+É o comando de referência para conhecer um FortiGate.
 
 ```
+get system status
+```
+
+```saida
 FGT-MTZ # get system status
-Version: FortiGate-60F v8.0.x,buildXXXX,XXXXXX (GA.F)
+Version: FGT121G v8.0.1,build0215,260305 (GA.F)
+First GA patch build date: 260115
+Security Level: 2
 Firmware Signature: certified
-Virus-DB: ...
-IPS-DB: ...
-Serial-Number: FGT60FTK2XXXXXXX
-BIOS version: ...
-Log hard disk: Not available
+Virus-DB: 94.09321(2026-11-09 13:22)
+Extended DB: 94.09321(2026-11-09 13:22)
+AV AI/ML Model: 4.00124(2026-11-09 13:22)
+IPS-DB: 34.00512(2026-11-08 13:22)
+IPS-ETDB: 34.00512(2026-11-08 13:22)
+APP-DB: 32.00821(2026-11-08 13:22)
+Serial-Number: FG121GTK25000101
+BIOS version: 06000102
+System Part-Number: P29447-02
+Log hard disk: Available
 Hostname: FGT-MTZ
+Private Encryption: Disable
 Operation Mode: NAT
 Current virtual domain: root
 Max number of virtual domains: 10
+Virtual domains status: 1 in NAT mode, 0 in TP mode
 Virtual domain configuration: disable
+FIPS-CC mode: disable
 Current HA mode: standalone
-System time: ...
+Branch point: 0215
+Release Version Information: GA
+FortiGuard contract: UTP (expired)
+System time: Mon Nov  9 10:22:06 2026
+Last reboot reason: warm reboot
 ```
 
 | Campo | O que indica |
 |---|---|
 | `Version` | Modelo, versão do FortiOS e build. |
 | `Firmware Signature` | Se a imagem é assinada pela Fortinet (`certified`). |
-| `Virus-DB`, `IPS-DB` | Versões das bases de assinaturas (seção 01.6). |
+| `Virus-DB`, `IPS-DB`, `APP-DB` | Versões das bases de assinaturas e a data da última atualização. |
 | `Serial-Number` | Número de série. |
-| `Log hard disk` | Se há disco para logs locais (módulo 04). |
+| `Log hard disk` | Se há disco para logs locais. |
 | `Operation Mode` | `NAT` ou `Transparent`. |
-| `Virtual domain configuration` | Se o equipamento usa VDOMs (apêndice B). |
-| `Current HA mode` | `standalone` ou o modo de cluster (módulo 16). |
+| `Virtual domain configuration` | Se o equipamento usa VDOMs. |
+| `Current HA mode` | `standalone` (sozinho) ou o modo do cluster. |
+| `FortiGuard contract` | O pacote de serviços FortiGuard e se ele está válido. |
 
 > **Dica para a prova:** `get system status` reúne versão, número de série, modo de operação, estado de VDOM e de HA em uma única saída.
 
@@ -221,13 +283,28 @@ config system settings
 end
 ```
 
-### Desempenho e recursos (prévia do módulo 17)
+### Desempenho e recursos
 
 ```
 get system performance status
 ```
 
-Mostra uso de CPU e memória, número de sessões e taxa de criação de sessões. Útil para saber se o equipamento está sobrecarregado.
+```saida
+FGT-MTZ # get system performance status
+CPU states: 1% user 1% system 0% nice 98% idle 0% iowait 0% irq 0% softirq
+CPU0 states: 2% user 1% system 0% nice 97% idle 0% iowait 0% irq 0% softirq
+CPU1 states: 2% user 1% system 0% nice 97% idle 0% iowait 0% irq 0% softirq
+...
+Memory: 8085452k total, 2263927k used (28.0%), 5821525k free (72.0%), 0k freeable (0.0%)
+Average network usage: 1360 / 9 kbps in 1 minute, 136 / 1 kbps in 10 minutes, 45 / 0 kbps in 30 minutes
+Average sessions: 0 sessions in 1 minute, 0 sessions in 10 minutes, 0 sessions in 30 minutes
+Average session setup rate: 0 sessions per second in last 1 minute, 0 sessions per second in last 10 minutes, 0 sessions per second in last 30 minutes
+Virus caught: 0 total in 1 minute
+IPS attacks blocked: 0 total in 1 minute
+Uptime: 0 days,  0 hours,  9 minutes
+```
+
+Mostra o uso de CPU (geral e por núcleo) e de memória, a quantidade de sessões e a taxa de criação de sessões. É o primeiro comando para saber se o equipamento está sobrecarregado.
 :::
 
 ---
@@ -242,12 +319,15 @@ Um FortiGate novo pode ser acessado de duas formas: pela **console** (cabo seria
 
 A console é o acesso "de último recurso". Funciona mesmo sem nenhuma configuração de rede, e é por ela que você recupera o equipamento quando perde o acesso pela rede.
 
-- **Cabo:** a maioria dos modelos tem uma porta `CONSOLE` RJ-45 (cabo RJ-45 para serial/USB). Alguns modelos também oferecem console por USB.
-- **Software:** qualquer emulador de terminal (PuTTY, SecureCRT, Tera Term, `screen` no Linux/macOS).
-- **Parâmetros:** 9600 bps, 8 bits de dados, sem paridade, 1 bit de parada, sem controle de fluxo (o famoso **9600 8N1**).
+- **Cabo:** a maioria dos modelos tem uma porta `CONSOLE` RJ-45 (cabo RJ-45 para serial ou USB). Alguns modelos também oferecem console por USB.
+- **Software:** qualquer emulador de terminal (PuTTY, SecureCRT, Tera Term, `screen` no Linux e no macOS).
+- **Parâmetros:** 9600 bps, 8 bits de dados, sem paridade, 1 bit de parada, sem controle de fluxo. É o famoso **9600 8N1**.
 
-:::interativo midia/m01/01-2-putty-serial.json
-Configuração do PuTTY para a console: tipo **Serial**, porta **COM3** e velocidade **9600**. Passe o mouse em cada campo para ver a explicação.
+:::slides
+midia/m01/01-2-putty-serial-1.png "Janela do PuTTY configurada para conexão serial" | No notebook, o **PuTTY** é configurado para a console. A console é uma conexão **serial**: funciona mesmo sem nenhuma configuração de rede.
+midia/m01/01-2-putty-serial-2.png "Campo Serial line com COM3" | **Serial line:** a porta serial do computador. No Windows, o adaptador USB-serial aparece como uma porta **COM** (aqui, COM3).
+midia/m01/01-2-putty-serial-3.png "Campo Speed com 9600" | **Speed:** **9600** bps. Com outra velocidade, aparecem caracteres sem sentido na tela.
+midia/m01/01-2-putty-serial-4.png "Connection type Serial selecionado" | **Connection type:** **Serial**. O mesmo PuTTY também abre conexões SSH, úteis quando o FortiGate já tem endereço de gerência.
 :::
 
 > **Na prática:** em uma VM, a "console" é a janela de console do hipervisor (VMware, Hyper-V, KVM) ou da nuvem. Ela tem o mesmo papel do cabo console.
@@ -256,11 +336,11 @@ Configuração do PuTTY para a console: tipo **Serial**, porta **COM3** e veloci
 
 A configuração de fábrica muda conforme o modelo. Em geral:
 
-- **Modelos desktop:** costumam vir com a interface interna (`lan`/`internal`) em 192.168.1.99/24, com HTTPS e PING liberados e um servidor DHCP entregando endereços aos computadores conectados.
+- **Modelos desktop:** costumam vir com a interface interna (`lan` ou `internal`) em 192.168.1.99/24, com HTTPS e PING liberados e um servidor DHCP entregando endereços aos computadores conectados.
 - **Modelos com porta `mgmt`:** essa porta costuma vir com 192.168.1.99/24 para gerência.
 - **VMs:** a `port1` normalmente recebe a gerência. Dependendo da plataforma, usa DHCP ou precisa ser configurada pela console.
 
-Consulte o *Quick Start Guide* do seu modelo. Com o endereço em mãos, acesse `https://192.168.1.99` (ou o endereço correspondente). O navegador vai alertar que o certificado não é confiável. Isso é esperado: o FortiGate usa um certificado autoassinado de fábrica, que você trocará por um certificado confiável no módulo 09.
+Consulte o *Quick Start Guide* do seu modelo. Com o endereço em mãos, acesse `https://192.168.1.99` (ou o endereço correspondente). O navegador vai alertar que o certificado não é confiável. Isso é esperado: de fábrica, o FortiGate usa um certificado autoassinado, que pode ser trocado por um certificado confiável.
 
 #### Primeiro login
 
@@ -270,16 +350,12 @@ Consulte o *Quick Start Guide* do seu modelo. Com o endereço em mãos, acesse `
 Num FortiGate de fábrica, o primeiro login do `admin` **obriga a troca da senha** antes de liberar qualquer outra ação. Na console, o FortiOS mostra *You are forced to change your password* e pede a nova senha duas vezes: **New Password** e **Confirm Password**. A senha não aparece enquanto é digitada. Escolha uma senha forte e guarde-a em um cofre de senhas: essa conta é o seu acesso total ao equipamento.
 
 :::figura midia/m01/01-2-console-troca-senha.mp4 "Primeiro login pela console: admin com senha em branco, troca obrigatória de senha e prompt FGT-MTZ #"
-O primeiro login pela console do FGT-MTZ: usuário `admin`, senha em branco, troca obrigatória de senha e o prompt **`FGT-MTZ #`**.
+O primeiro login pela console do FGT-MTZ: usuário `admin`, senha em branco, troca obrigatória de senha e o prompt **`FGT-MTZ #`**. O `#` indica um administrador com acesso total.
 :::
-
-Na GUI, o primeiro login abre o **assistente de configuração inicial** (*FortiGate Setup*), com três passos: **Automatic Patch Upgrades** (atualização automática de patches), **Change Your Password** e **Initial Policy Configuration** (criar ou não uma policy de saída inicial). Se a senha já foi definida na console, o passo de troca de senha aparece como concluído.
-
-Outra opção é o **FortiExplorer**, aplicativo da Fortinet (computador e celular) que se conecta ao FortiGate por USB nos modelos compatíveis e facilita a configuração inicial em campo.
 
 #### Configurando o endereço de gerência pela console
 
-Muitas vezes o primeiro passo precisa ser feito pela console, porque ainda não há acesso pela rede. Este é um dos casos em que a CLI é necessária. No cenário Atlas:
+Muitas vezes o primeiro passo precisa ser feito pela console, porque ainda não há acesso pela rede. Este é um dos casos em que a CLI é necessária. No cenário da Atlas:
 
 ```
 config system interface
@@ -291,39 +367,45 @@ config system interface
 end
 ```
 
-Em palavras: "na tabela de interfaces, edite a interface `mgmt`, use endereço fixo 10.10.99.1/24, aceite PING, HTTPS e SSH de gerência e salve". Se o seu equipamento não tiver uma porta `mgmt`, use uma porta livre, como `port8`. A estrutura desses comandos é explicada na seção 01.3.
+Em palavras: "na tabela de interfaces, edite a interface `mgmt`, use endereço fixo 10.10.99.1/24, aceite PING, HTTPS e SSH de gerência e salve". A estrutura desses comandos é explicada no capítulo **GUI e CLI**.
 
 :::figura midia/m01/01-2-console-mgmt.png "Configuração do endereço 10.10.99.1/24 na interface mgmt pela console, no PuTTY do notebook"
-A configuração da interface `mgmt` digitada na console, logo depois do primeiro login.
+A configuração da interface `mgmt` digitada na console, logo depois da troca de senha.
 :::
 
-Da estação 10.10.99.10, acesse `https://10.10.99.1`. A partir daqui, o trabalho segue pela GUI.
+#### Primeiro acesso pela GUI e o assistente de configuração
+
+Da estação 10.10.99.10, acesse `https://10.10.99.1`. A página de login aparece porque a interface `mgmt` agora tem endereço e aceita HTTPS.
 
 :::figura midia/m01/01-2-login-gui.png "Página de login da GUI do FGT-MTZ aberta no navegador do ADMIN-PC em https://10.10.99.1"
-A página de login da GUI, aberta no navegador do ADMIN-PC. Num FortiGate real, o navegador ainda alerta que o certificado não é confiável.
+A página de login da GUI no navegador do ADMIN-PC. Num FortiGate real, antes dela o navegador alerta que o certificado não é confiável.
 :::
+
+No primeiro login pela GUI, o FortiOS abre o **assistente de configuração inicial** (*FortiGate Setup*):
+
+:::slides
+midia/m01/01-2-assistente-1.png "Tela inicial do assistente FortiGate Setup com os três passos" | O assistente lista três passos em **Setup Progress**: **Automatic Patch Upgrades**, **Change Your Password** e **Initial Policy Configuration**. Clique em **Begin**.
+midia/m01/01-2-assistente-2.png "Passo Automatic Patch Upgrades com a opção ativada" | **Automatic Patch Upgrades:** com a opção ativada, o FortiGate instala sozinho novos **patches** da versão atual (por exemplo, de 7.6.3 para 7.6.4). Em produção, muitas equipes preferem desativar e atualizar na janela de manutenção.
+midia/m01/01-2-assistente-3.png "Passo Initial Policy Configuration com Change Your Password concluído" | **Change Your Password** aparece concluído, porque a senha já foi definida na console. Em **Initial Policy Configuration**, o assistente oferece criar uma policy de saída inicial. Como ainda não há redes configuradas, a Atlas escolhe **Do not create firewall policy now**.
+:::
+
+Lembre que o FortiGate bloqueia todo tráfego que nenhuma policy permite (**implicit deny**). Por isso o assistente oferece uma policy inicial: sem ela, nenhum computador atrás do FortiGate navega.
+
+Outra opção para a configuração inicial é o **FortiExplorer**, aplicativo da Fortinet (computador e celular) que se conecta ao FortiGate por USB nos modelos compatíveis e facilita a instalação em campo.
 
 ### 01.2.2. Reset de fábrica e recuperação de senha
 
 #### Reset de fábrica
 
-O reset de fábrica apaga a configuração e devolve o equipamento ao estado original (mesma versão de firmware, configuração padrão). Use quando for reaproveitar um equipamento ou quando a configuração estiver irrecuperável.
+O reset de fábrica apaga a configuração e devolve o equipamento ao estado original: mesma versão de firmware, configuração padrão. Use quando for reaproveitar um equipamento ou quando a configuração estiver irrecuperável.
 
-A forma universal de fazer o reset é pela CLI:
-
-```
-execute factory-reset
-```
-
-O FortiGate pede confirmação e reinicia. Depois disso:
+Pela GUI, o reset fica no **menu do administrador > Configuration > Reset to factory defaults**. Pela CLI, o comando é `execute factory-reset`. Depois do reset:
 
 - todas as policies, interfaces, VPNs, usuários e administradores criados são **apagados**;
 - a senha do `admin` volta a ser em branco;
 - o firmware **não** muda.
 
-Pela GUI, o mesmo reset fica no **menu do administrador > Configuration > Reset to factory defaults**. As variantes do comando (preservar parte da configuração ou, em VMs, a licença) estão no Guia de comandos CLI desta seção.
-
-> **Atenção:** o reset de fábrica é irreversível. **Faça backup antes** (seção 01.7). Em equipamentos remotos, o reset também apaga a configuração que permite acessá-los: você vai precisar de alguém no local.
+> **Atenção:** o reset de fábrica é irreversível. **Faça backup antes.** Em equipamentos remotos, o reset também apaga a configuração que permite acessá-los: você vai precisar de alguém no local.
 
 #### Recuperação da senha do administrador
 
@@ -331,22 +413,22 @@ Se ninguém sabe a senha de um administrador com perfil `super_admin`, o FortiOS
 
 1. Conecte-se pela **console**.
 2. **Desligue e ligue** o equipamento na energia. Uma reinicialização por software não serve: o procedimento exige o ciclo de energia, justamente para comprovar o acesso físico.
-3. Logo que o prompt de login aparecer, faça login com o usuário `maintainer` e a senha `bcpb` seguida do **número de série em letras maiúsculas** (por exemplo, `bcpbFGT60FTK2XXXXXXX`). A janela de tempo é curta, então tenha o número de série anotado (ele fica na etiqueta do equipamento).
-4. Já logado, redefina a senha do administrador (o comando está no Guia de comandos CLI desta seção).
+3. Logo que o prompt de login aparecer, faça login com o usuário `maintainer` e a senha `bcpb` seguida do **número de série em letras maiúsculas** (por exemplo, `bcpbFG121GTK25000101`). A janela de tempo é curta, então tenha o número de série anotado (ele fica na etiqueta do equipamento).
+4. Já logado, redefina a senha do administrador (o comando está no Guia de comandos CLI).
 
 Pontos importantes:
 
-- A conta maintainer **exige acesso físico** (console + ciclo de energia). É uma proteção: quem tem acesso físico ao equipamento já poderia fazer o reset de fábrica.
+- A conta maintainer **exige acesso físico** (console e ciclo de energia). É uma proteção: quem tem acesso físico ao equipamento já poderia fazer o reset de fábrica.
 - Ela pode ser **desabilitada** pelo administrador. Em ambientes com alta exigência de segurança, isso impede que alguém com acesso físico entre sem apagar a configuração.
 - Com a conta maintainer desabilitada e a senha perdida, sobra o **reset de fábrica**, seguido da restauração de um backup.
-- Em VMs, o procedimento é diferente (normalmente pela console do hipervisor e reset). Consulte o guia da plataforma.
+- Em VMs, o procedimento é diferente (normalmente pela console do hipervisor). Consulte o guia da plataforma.
 
 > **Dica para a prova:** a recuperação pela conta maintainer exige console e reinicialização por energia (*hard reboot*), e pode ser desabilitada pelo administrador.
 
-#### Erros comuns da seção 01.2
+#### Erros comuns
 
 - Fazer reset de fábrica sem backup.
-- Tentar a conta maintainer depois de reiniciar por software em vez de desligar e ligar na energia.
+- Tentar a conta maintainer depois de reiniciar por software, em vez de desligar e ligar na energia.
 - Deixar a senha do `admin` em local inseguro ou compartilhada entre várias pessoas.
 - Esquecer que a recuperação pela console pode ter sido desabilitada.
 
@@ -369,14 +451,27 @@ end
 | `edit "mgmt"` | Seleciona a interface `mgmt`. |
 | `set mode static` | Endereço fixo, em vez de DHCP. |
 | `set ip ...` | Endereço e máscara. |
-| `set allowaccess ping https ssh` | Serviços de gerência aceitos (seção 01.4). |
+| `set allowaccess ping https ssh` | Serviços de gerência aceitos. |
 | `next` / `end` | Salvam a alteração. |
 
-Verificação:
+Para conferir:
 
 ```
 show system interface mgmt
-execute ping 10.10.99.10
+```
+
+```saida
+FGT-MTZ # show system interface mgmt
+config system interface
+    edit "mgmt"
+        set vdom "root"
+        set ip 10.10.99.1 255.255.255.0
+        set allowaccess ping https ssh
+        set type physical
+        set role lan
+        set macaddr 04:d5:90:6a:21:48
+    next
+end
 ```
 
 ### Reset de fábrica e variantes
@@ -417,37 +512,40 @@ execute reboot
 execute shutdown
 ```
 
-Prefira desligar com `execute shutdown` antes de cortar a energia, para evitar corromper o disco ou a flash.
+Prefira desligar com `execute shutdown` antes de cortar a energia, para não corromper o disco ou a memória flash.
 :::
 
 ---
 
 ## 01.3. GUI e CLI
 
-A GUI e a CLI são **duas janelas para a mesma configuração**. Tudo o que você muda na GUI aparece na CLI, e vice-versa. Neste curso, o trabalho é feito principalmente pela GUI, que é onde o administrador passa a maior parte do tempo. A CLI entra em três situações:
+A GUI e a CLI são **duas janelas para a mesma configuração**. Tudo o que você muda na GUI aparece na CLI, e vice-versa. O trabalho do dia a dia acontece principalmente na GUI. A CLI entra em três situações:
 
 - quando **não existe opção na GUI** para o que você precisa;
-- quando a **saída de um comando é a ferramenta de diagnóstico** (logs de debug, tabela de sessões, estado do cluster);
+- quando a **saída de um comando é a ferramenta de diagnóstico** (debugs, tabela de sessões, estado do cluster);
 - quando é **mais rápido ou mais seguro** consultar e comparar, como ao ver a configuração completa de um objeto.
 
-Por isso, mesmo focando na GUI, você precisa entender como a CLI está organizada. É o que esta seção ensina.
+Por isso, mesmo trabalhando pela GUI, você precisa entender como a CLI está organizada.
 
 ### 01.3.1. Navegação na GUI e acesso à CLI
 
 #### Trabalhando com listas e objetos na GUI
 
-Quase toda página de configuração da GUI segue o mesmo padrão: uma **lista** de objetos com botões **Create New**, **Edit**, **Clone** e **Delete**, uma busca e colunas que podem ser filtradas e reorganizadas.
+Quase toda página de configuração da GUI segue o mesmo padrão:
 
-:::interativo midia/m01/01-3-lista-objetos.json
-A lista **Policy & Objects > Addresses**, com o padrão que se repete em quase toda a GUI. Passe o mouse nos destaques.
+:::slides
+midia/m01/01-3-lista-objetos-1.png "Lista Policy & Objects > Addresses" | A lista **Policy & Objects > Addresses** mostra o padrão que se repete em quase toda a GUI: uma **lista** de objetos com botões de ação, busca e colunas.
+midia/m01/01-3-lista-objetos-2.png "Botão Create new em destaque" | **Create new** cria um objeto. Os botões **Edit**, **Clone** e **Delete** ficam ativos quando um item é selecionado.
+midia/m01/01-3-lista-objetos-3.png "Campo de busca em destaque" | A **busca** filtra a lista pelo texto digitado em qualquer coluna.
+midia/m01/01-3-lista-objetos-4.png "Coluna Ref. em destaque" | A coluna **Ref.** mostra quantos objetos **usam** cada item. Clique no número para ver quem o referencia.
 :::
 
 #### Abrindo a CLI
 
 Você pode acessar a CLI por três caminhos:
 
-- **Console** (cabo serial), seção 01.2;
-- **SSH** para um endereço com `ssh` habilitado em *Administrative Access*;
+- **Console** (cabo serial);
+- **SSH**, para um endereço com `ssh` habilitado em *Administrative Access*;
 - **CLI Console da GUI**, pelo botão **CLI** (`>_`) da barra superior, opção **CLI Console**.
 
 :::figura midia/m01/01-3-cli-console-gui.png "CLI Console aberta dentro da GUI, mostrando o prompt FGT-MTZ # e a saída de um comando"
@@ -465,27 +563,14 @@ Quatro famílias de comandos dominam a CLI:
 | `get` | Mostra valores de configuração (incluindo os padrão) **e** informações de estado, como `get system status`. |
 | `diagnose` / `execute` | `diagnose` faz diagnóstico (debugs, tabelas internas). `execute` executa ações (ping, backup, reboot). |
 
-A diferença entre `show` e `show full-configuration` é uma das coisas mais úteis de entender cedo. Veja a interface `mgmt`:
+A diferença entre `show` e `show full-configuration` é uma das coisas mais úteis de entender cedo. Compare as duas saídas para a interface `mgmt`:
 
-```
-FGT-MTZ # show system interface mgmt
-config system interface
-    edit "mgmt"
-        set ip 10.10.99.1 255.255.255.0
-        set allowaccess ping https ssh
-        set type physical
-        set role lan
-        set snmp-index 1
-    next
-end
-```
+:::slides
+midia/m01/01-3-cli-console-gui.png "Saída curta de show system interface mgmt" | **`show system interface mgmt`**: só o que foi alterado em relação ao padrão. É a forma de ver **o que alguém configurou**.
+midia/m01/01-3-show-full.png "Saída longa de show full-configuration system interface mgmt" | **`show full-configuration system interface mgmt`**: dezenas de linhas, incluindo `mtu`, `speed` e `status up`, que estão no valor padrão. Use quando precisar saber **qual valor está valendo**.
+:::
 
-O `show` exibe só o que foi alterado em relação ao padrão. Já o `show full-configuration system interface mgmt` exibe dezenas de linhas, incluindo `mtu`, `speed` e `status up`. Use:
-
-- `show` para entender **o que alguém configurou**;
-- `show full-configuration` ou `get` para descobrir **qual valor está valendo**, mesmo que seja o padrão.
-
-Recursos que facilitam o uso no dia a dia, como filtrar saídas com `grep` e desligar a paginação, estão no Guia de comandos CLI desta seção.
+Os recursos que facilitam o uso no dia a dia, como filtrar saídas com `grep` e desligar a paginação, estão no Guia de comandos CLI deste capítulo.
 
 ### 01.3.2. Estrutura de comandos
 
@@ -544,7 +629,7 @@ unselect allowaccess ssh      # resultado: ping https snmp
 
 > **Atenção:** se você está conectado por HTTPS ou SSH através dessa interface e usa `set allowaccess` sem incluir o protocolo que está usando, **perde o acesso** ao salvar.
 
-Para descobrir comandos e valores, use `?` (lista as opções naquele ponto) e **Tab** (completa o nome). Os demais comandos de tabela (`rename`, `move`, `clone`, `purge`) estão no Guia de comandos CLI.
+Para descobrir comandos e valores, use `?` (lista as opções naquele ponto) e **Tab** (completa o nome).
 
 #### Quando a alteração passa a valer
 
@@ -555,12 +640,12 @@ Para descobrir comandos e valores, use `?` (lista as opções naquele ponto) e *
 
 Objetos do FortiOS se referenciam: um endereço é usado por uma policy, uma interface por uma rota, um perfil por uma policy. O FortiOS **não deixa apagar um objeto em uso**.
 
-- **Na GUI:** a coluna **Ref.** mostra quantas referências o objeto tem, e clicar no número mostra quem o usa (slides da seção 01.3.1). O botão **Delete** fica indisponível ou retorna erro para objetos referenciados.
+- **Na GUI:** a coluna **Ref.** mostra quantas referências o objeto tem, e clicar no número mostra quem o usa. O botão **Delete** fica indisponível ou retorna erro para objetos referenciados.
 - **Fluxo correto:** para remover um objeto, primeiro remova ou altere quem o referencia; depois apague o objeto.
 
-Esse comportamento evita que uma regra fique "apontando para nada", mas exige planejar a ordem das alterações, principalmente ao mudar interfaces (módulo 02).
+Esse comportamento evita que uma regra fique "apontando para nada", mas exige planejar a ordem das alterações.
 
-#### Erros comuns da seção 01.3
+#### Erros comuns
 
 - Usar `set` em uma lista (como `allowaccess`) achando que vai acrescentar um valor, e com isso apagar os outros.
 - Sair com `end` quando a intenção era descartar a alteração (`abort`).
@@ -574,7 +659,11 @@ A saída da CLI pode ser enorme. O FortiOS aceita `grep` com opções úteis:
 
 ```
 show full-configuration system global | grep admintimeout
-show system admin | grep -f trusthost
+```
+
+```saida
+FGT-MTZ # show full-configuration system global | grep admintimeout
+    set admintimeout 15
 ```
 
 - `grep <texto>`: mostra só as linhas que contêm o texto.
@@ -598,7 +687,7 @@ Para voltar ao padrão: `set output more`.
 | Comando | Efeito |
 |---|---|
 | `rename <item> to <novo>` | Renomeia um item. |
-| `move <id> before/after <id>` | Reordena itens (muito usado com policies, módulo 03). |
+| `move <id> before/after <id>` | Reordena itens (muito usado com firewall policies). |
 | `clone <item> to <novo>` | Duplica um item. |
 | `purge` | **Apaga todos os itens da tabela.** Use com extremo cuidado. |
 | `edit 0` | Em tabelas numeradas (como firewall policies), cria um item com o próximo número livre. |
@@ -622,7 +711,7 @@ config system global
 end
 ```
 
-No modo `revert`, se você não salvar explicitamente com `execute cfg save` dentro do tempo definido (em segundos), o equipamento volta à última configuração salva. É útil para mudanças remotas arriscadas. Teste o comportamento no seu build antes de usar em produção, porque a reversão envolve reinício.
+No modo `revert`, se você não salvar explicitamente com `execute cfg save` dentro do tempo definido (em segundos), o equipamento volta à última configuração salva. É útil para mudanças remotas arriscadas. Teste o comportamento antes de usar em produção, porque a reversão envolve reinício.
 :::
 
 ---
@@ -635,26 +724,26 @@ No modo `revert`, se você não salvar explicitamente com `execute cfg save` den
 
 - O **hostname** identifica o equipamento no prompt da CLI, na GUI, nos logs, no FortiAnalyzer, no Security Fabric e nos alertas. Com vários FortiGates, um bom padrão de nomes evita alterar o equipamento errado.
 - A **hora** precisa estar correta por vários motivos:
-  - **Certificados** têm validade. Com a hora errada, certificados válidos parecem expirados, e a inspeção SSL, as VPNs com certificado e a própria GUI geram erros (módulo 09).
+  - **Certificados** têm validade. Com a hora errada, certificados válidos parecem expirados, e a inspeção SSL, as VPNs com certificado e a própria comunicação com o FortiGuard falham.
   - **Logs** precisam de horário correto para investigar incidentes e correlacionar eventos com outros sistemas.
-  - **Tokens de MFA** (FortiToken) usam códigos baseados em tempo. Com a hora errada, o código é recusado (módulo 07).
-  - **Autenticação no Active Directory** (Kerberos) e o **FSSO** (módulo 08) dependem de hora sincronizada.
-  - **Schedules** de firewall policies (módulo 03) dependem do relógio do equipamento.
-- O **DNS do sistema** é usado pelo **próprio FortiGate** para resolver nomes: falar com o FortiGuard, sincronizar NTP por nome, resolver objetos FQDN, enviar alertas por e-mail, consultar servidores por nome. Ele é diferente do serviço DNS que o FortiGate pode oferecer aos clientes (módulo 02).
+  - **Tokens de MFA** (FortiToken) usam códigos baseados em tempo. Com a hora errada, o código é recusado.
+  - **Autenticação no Active Directory** (Kerberos) e o **FSSO** dependem de hora sincronizada.
+  - **Schedules** de firewall policies dependem do relógio do equipamento.
+- O **DNS do sistema** é usado pelo **próprio FortiGate** para resolver nomes: falar com o FortiGuard, sincronizar NTP por nome, resolver objetos FQDN, enviar alertas por e-mail. Ele é diferente do serviço DNS que o FortiGate pode oferecer aos computadores da rede.
 
 #### Na GUI: hostname e hora
 
-:::interativo midia/m01/01-4-system-settings.json
-**System > Settings**, aba **General**: hostname, fuso horário e NTP. Passe o mouse nos destaques.
+:::slides
+midia/m01/01-4-system-settings-1.png "Página System > Settings, aba General" | **System > Settings** tem quatro abas: **General** (hora, e-mail, modo de operação), **Access** (portas, timeout e política de senha dos administradores), **Device** e **Preference**.
+midia/m01/01-4-system-settings-2.png "Campo Hostname em destaque" | **Hostname:** FGT-MTZ, o padrão de nomes da Atlas.
+midia/m01/01-4-system-settings-3.png "Campo Time zone em destaque" | **Time zone:** o fuso horário da matriz, **America/Sao_Paulo**.
+midia/m01/01-4-system-settings-4.png "Campo Set time em destaque" | **Set time:** a hora vem de **NTP**, sincronizada automaticamente.
+midia/m01/01-4-system-settings-5.png "Campo Select server em destaque" | **Select server:** na GUI, o servidor NTP é o do **FortiGuard**. Servidores próprios são configurados pela CLI.
 :::
-
-A página tem quatro abas: **General** (hora, e-mail, modo de operação), **Access** (portas, timeout e política de senha dos administradores, seção 01.4.2), **Device** e **Preference**.
-
-Neste módulo, o FortiGate é **cliente** NTP. No módulo 02 ele também passa a ser **servidor** NTP para os clientes da rede (a opção **Setup device as local NTP server** fica nesta mesma página).
 
 #### Servidor NTP próprio: só pela CLI
 
-Na GUI do FortiOS 8.0, o campo **Select server** usa o servidor do FortiGuard. Para usar servidores próprios, como o **NTP.br** usado pela Atlas, a configuração é feita **pela CLI**. É um dos casos em que a CLI é necessária:
+Para usar servidores NTP próprios, como o **NTP.br** usado pela Atlas, a configuração é feita **pela CLI**. É um dos casos em que a CLI é necessária:
 
 ```
 config system ntp
@@ -671,34 +760,36 @@ end
 O servidor NTP da Atlas configurado pela CLI Console da GUI.
 :::
 
-> **Na prática:** se o FortiGate ainda não tem acesso à Internet, a sincronização NTP só vai funcionar depois que houver rota e conectividade (módulo 02). Em redes isoladas, aponte para um servidor NTP interno.
+> **Na prática:** sem acesso à Internet, a sincronização NTP só vai funcionar depois que houver rota e conectividade. Em redes isoladas, aponte para um servidor NTP interno.
 
 #### Na GUI: DNS do sistema
 
-:::interativo midia/m01/01-4-dns.json
-**Network > DNS**: os servidores DNS do próprio FortiGate e os protocolos de consulta. Passe o mouse nos destaques.
+:::slides
+midia/m01/01-4-dns-1.png "Página Network > DNS" | Em **Network > DNS** fica o DNS usado pelo **próprio FortiGate**.
+midia/m01/01-4-dns-2.png "Campo DNS servers em destaque" | **DNS servers:** **Use FortiGuard Servers** usa os servidores da Fortinet (96.45.45.45 e 96.45.46.46). **Specify** permite indicar servidores próprios, como o DNS do Active Directory.
+midia/m01/01-4-dns-3.png "Protocolos de DNS em destaque" | **Protocolos:** o FortiGate pode consultar o DNS com transporte cifrado, **DNS over TLS** (DoT, porta 853) ou **DNS over HTTPS** (DoH), quando o servidor suporta. Com os servidores do FortiGuard, o padrão é DoT.
 :::
 
 #### Verificação
 
 - **Hostname e hora:** confira no widget **System Information** do dashboard.
-- **NTP:** depois que houver conectividade (módulo 02), o horário do widget deve coincidir com a hora real. O estado detalhado da sincronização é visto pela CLI (Guia de comandos CLI).
-- **DNS:** a forma mais simples de testar é pela CLI, pedindo um ping para um nome (Guia de comandos CLI). Se o nome for resolvido para um endereço, o DNS está funcionando, mesmo que o ping não responda.
+- **NTP:** com conectividade, o horário do widget deve coincidir com a hora real. O estado detalhado da sincronização é visto pela CLI.
+- **DNS:** a forma mais simples de testar é pela CLI, pedindo um ping para um nome. Se o nome for resolvido para um endereço, o DNS está funcionando, mesmo que o ping não responda.
 
-> **Dica para a prova:** diferencie o **DNS do sistema** (usado pelo próprio FortiGate) do **DNS server** em uma interface (o FortiGate respondendo consultas dos clientes, módulo 02).
+> **Dica para a prova:** diferencie o **DNS do sistema** (usado pelo próprio FortiGate) do **DNS server** em uma interface (o FortiGate respondendo às consultas dos computadores da rede).
 
 ### 01.4.2. Acesso administrativo
 
 #### Conceito: gerência é tráfego destinado ao FortiGate
 
-Quando você acessa a GUI por HTTPS ou a CLI por SSH, a conexão tem como **destino o próprio FortiGate**. Esse tipo de tráfego é chamado de **local-in** (módulo 03). Ele **não** é controlado pelas firewall policies comuns, que controlam o tráfego que **atravessa** o equipamento de uma rede para outra.
+Quando você acessa a GUI por HTTPS ou a CLI por SSH, a conexão tem como **destino o próprio FortiGate**. Esse tipo de tráfego é chamado de **local-in**. Ele **não** é controlado pelas firewall policies comuns, que controlam o tráfego que **atravessa** o equipamento de uma rede para outra.
 
 O acesso administrativo é controlado em camadas:
 
 1. **Administrative Access da interface:** quais protocolos de gerência a interface aceita.
 2. **Configurações de administração:** portas e tempo de inatividade.
 3. **Trusted hosts:** de quais origens cada administrador pode fazer login.
-4. **Local-in policies** (opcional, módulo 03): regras específicas para o tráfego destinado ao equipamento.
+4. **Local-in policies** (opcional): regras específicas para o tráfego destinado ao equipamento.
 
 #### 1. Administrative Access por interface
 
@@ -712,15 +803,15 @@ Cada interface tem a lista de serviços administrativos que aceita:
 | **HTTP** | GUI sem criptografia. Normalmente apenas redireciona para HTTPS; evite habilitar. |
 | **SNMP** | Monitoramento por SNMP. |
 | **FMG-Access** | Gerência pelo FortiManager. |
-| **Security Fabric Connection** | Comunicação do Security Fabric (módulo 15). |
-| **RADIUS Accounting** | Receber accounting RADIUS (RSSO, módulo 08). |
-| **Speed Test / Probe Response** | Testes de banda e probes de SLA (módulo 14). |
+| **Security Fabric Connection** | Comunicação do Security Fabric. |
+| **RADIUS Accounting** | Receber accounting RADIUS. |
+| **Speed Test / Probe Response** | Testes de banda e probes de qualidade de link. |
 
-:::interativo midia/m01/01-4-admin-access.json
-Edição da interface **mgmt** em **Network > Interfaces**: em **Administrative Access**, só **HTTPS**, **SSH** e **PING**. Passe o mouse nos destaques.
+:::figura midia/m01/01-4-admin-access.png "Edição da interface mgmt com Administrative Access HTTPS, SSH e PING marcados"
+Em **Network > Interfaces**, na edição da interface **mgmt**, a seção **Administrative Access** tem só **HTTPS**, **SSH** e **PING** marcados: exatamente o que foi configurado pela console.
 :::
 
-Regra de ouro: **habilite somente o necessário, somente nas interfaces necessárias**. A interface WAN, especialmente, não deveria aceitar HTTPS e SSH de gerência vindos de qualquer lugar da Internet. Se a gerência remota for necessária, prefira acessar por VPN (módulo 13) ou restrinja com trusted hosts e local-in policies.
+Regra de ouro: **habilite somente o necessário, somente nas interfaces necessárias**. A interface WAN, especialmente, não deveria aceitar HTTPS e SSH de gerência vindos de qualquer lugar da Internet. Se a gerência remota for necessária, prefira acessar por VPN ou restrinja com trusted hosts e local-in policies.
 
 > **Atenção:** se você está acessando a GUI por uma interface e desmarca o **HTTPS** dela, perde o acesso ao clicar em **OK**. Antes de alterar a interface que você está usando, tenha outro caminho (outra interface ou a console).
 
@@ -728,8 +819,10 @@ Regra de ouro: **habilite somente o necessário, somente nas interfaces necessá
 
 Ficam em **System > Settings**, aba **Access**, seção **Administration settings**:
 
-:::interativo midia/m01/01-4-administration-settings.json
-Aba **Access** de **System > Settings**: portas da GUI e do SSH e **Idle timeout**, aqui alterado para 15 minutos.
+:::slides
+midia/m01/01-4-administration-settings-1.png "Seção Administration settings da aba Access" | A seção **Administration settings** reúne as portas da GUI e do SSH e o tempo de inatividade da sessão administrativa.
+midia/m01/01-4-administration-settings-2.png "Campo HTTPS port em destaque" | **HTTPS port:** a porta da GUI (padrão 443). Mudar a porta **não é** proteção real: um varredor de portas encontra o serviço em qualquer porta.
+midia/m01/01-4-administration-settings-3.png "Campo Idle timeout com 15 minutos" | **Idle timeout:** a Atlas mudou de 5 para **15 minutos**. Depois desse tempo sem uso, a sessão é encerrada.
 :::
 
 | Opção | Efeito |
@@ -739,22 +832,22 @@ Aba **Access** de **System > Settings**: portas da GUI e do SSH e **Idle timeout
 | **SSH port** | Porta do SSH (padrão 22). |
 | **Idle timeout** | Minutos de inatividade até a sessão administrativa expirar (padrão 5). |
 
-Mudar a porta **não é** uma proteção real: um varredor de portas encontra o serviço em qualquer porta. A mudança serve para reduzir ruído de ataques automatizados e, principalmente, para liberar a porta 443 quando outro serviço do FortiGate precisa dela (por exemplo, um portal VPN ou um VIP). A proteção real vem de não expor a gerência e de restringir as origens.
+Se mudar a porta não protege, por que mudar? Para reduzir o ruído de ataques automatizados e, principalmente, para liberar a porta 443 quando outro serviço do FortiGate precisa dela, como um portal de VPN ou um servidor publicado. A proteção real vem de não expor a gerência e de restringir as origens.
 
 > **Atenção:** ao mudar a porta HTTPS, o acesso passa a ser `https://10.10.99.1:<nova-porta>`. Mantenha a sessão atual aberta e teste em outra aba antes de encerrá-la.
 
 #### 3. Trusted hosts
 
-Trusted hosts são as **redes de origem permitidas para cada administrador**. São configurados na conta do administrador, com até dez entradas:
+Trusted hosts são as **redes de origem permitidas para cada administrador**. São configurados na conta do administrador, em **System > Administrators**, com a opção **Restrict login to trusted hosts** (até dez redes).
 
-:::figura midia/m01/01-5-admin-conta.png "Criação de um administrador com a opção Restrict login to trusted hosts"
-Em **System > Administrators**, cada conta tem a opção **Restrict login to trusted hosts**. Ao ativá-la, você informa as redes de origem permitidas (na Atlas, `10.10.99.0/24`).
+:::figura midia/m01/01-5-admin-conta-3.png "Opção Restrict login to trusted hosts na criação de um administrador"
+Na conta do administrador, **Restrict login to trusted hosts** limita as origens de login. Na Atlas, a rede de gerência `10.10.99.0/24`.
 :::
 
 Como funciona na prática:
 
 - Um administrador com trusted hosts só consegue fazer login a partir dessas redes.
-- Um administrador **sem** trusted hosts definidos aceita login de qualquer origem.
+- Um administrador **sem** trusted hosts aceita login de qualquer origem.
 - **Para que o FortiGate deixe de responder ao serviço de gerência para origens não autorizadas, todos os administradores precisam ter trusted hosts.** Se apenas uma conta estiver sem restrição, a página de login continua respondendo para todos, mesmo que as contas restritas sejam recusadas.
 
 > **Dica para a prova:** trusted hosts são configurados **por administrador**. Para restringir de fato o acesso aos serviços de gerência, todas as contas precisam de trusted hosts.
@@ -769,16 +862,16 @@ Muitas políticas de segurança exigem um aviso legal antes do login. O FortiOS 
 
 1. Da estação 10.10.99.10, acesse a GUI e o SSH: devem funcionar.
 2. De outra origem, ou por uma interface sem HTTPS em Administrative Access, tente acessar: não deve funcionar.
-3. Consulte os eventos de login em **Log & Report > System Events**. Logins bem-sucedidos e recusados aparecem com usuário, origem e método: na console, `console`; pela GUI, `https(IP de origem)`.
+3. Consulte os eventos de login em **Log & Report > System Events**.
 
-:::figura midia/m01/01-4-log-login.png "Log & Report > System Events filtrado por logins administrativos, com uma linha de login bem-sucedido e outra de login recusado"
-Os eventos de login administrativo mostram o usuário, o endereço de origem, a interface e o resultado. É a primeira evidência a consultar quando alguém não consegue entrar.
+:::figura midia/m01/01-4-log-login.png "Log & Report > System Events com os eventos de login administrativo"
+Os eventos de login administrativo mostram o usuário, o endereço de origem, o método (na console, `console`; pela GUI, `https(IP de origem)`) e o resultado. É a primeira evidência a consultar quando alguém não consegue entrar.
 :::
 
-#### Erros comuns da seção 01.4
+#### Erros comuns
 
 - Hora errada causando erros de certificado, MFA e FSSO, que parecem problemas de outra coisa.
-- Configurar o DNS do sistema achando que isso faz o FortiGate responder DNS aos clientes.
+- Configurar o DNS do sistema achando que isso faz o FortiGate responder DNS aos computadores.
 - Liberar HTTPS e SSH de gerência na WAN sem nenhuma restrição.
 - Configurar trusted hosts em uma única conta e achar que a página de login deixou de responder para todos.
 - Desmarcar o protocolo da sessão atual em Administrative Access e perder o acesso.
@@ -825,15 +918,21 @@ end
 - `type custom`: usa os servidores listados em `ntpserver`.
 - `syncinterval`: intervalo de sincronização, em minutos.
 
-Verificação:
+Para conferir o estado da sincronização:
 
 ```
 diagnose sys ntp status
-execute time
-execute date
 ```
 
-O `diagnose sys ntp status` mostra os servidores configurados, se estão alcançáveis e qual está sendo usado para sincronizar.
+```saida
+FGT-MTZ # diagnose sys ntp status
+synchronized: no, ntpsync: enabled, server-mode: disabled
+
+ipv4 server(a.ntp.br) 0.0.0.0 -- unreachable(0x0) S:1 T:1 selected
+server-version=4, stratum=2
+```
+
+Mostra os servidores configurados, se estão alcançáveis e qual está sendo usado. Nesta saída, o servidor ainda está `unreachable`: o FGT-MTZ ainda não tem acesso à Internet.
 
 ### DNS do sistema
 
@@ -844,10 +943,39 @@ config system dns
 end
 ```
 
-96.45.45.45 e 96.45.46.46 são os servidores DNS do FortiGuard. Verificação:
+96.45.45.45 e 96.45.46.46 são os servidores DNS do FortiGuard. Para conferir:
 
 ```
 get system dns
+```
+
+```saida
+FGT-MTZ # get system dns
+alt-primary         : 0.0.0.0
+alt-secondary       : 0.0.0.0
+cache-notfound-responses: disable
+cert-verify         : enable
+dns-cache-limit     : 5000
+dns-cache-ttl       : 1800
+domain              :
+...
+log                 : disable
+ocsp-stapling-request: enable
+primary             : 96.45.45.45
+protocol            : dot
+retry               : 2
+secondary           : 96.45.46.46
+server-hostname     :
+server-select-method: least-rtt
+ssl-certificate     : Fortinet_Factory
+timeout             : 5
+```
+
+Repare em `protocol: dot` (DNS over TLS) e em `cert-verify` e `ocsp-stapling-request`: o FortiGate valida o certificado do servidor DNS.
+
+Para testar a resolução:
+
+```
 execute ping www.fortinet.com
 ```
 
@@ -863,7 +991,7 @@ config system interface
 end
 ```
 
-Use `set allowaccess ?` para ver as opções da sua versão. Lembre da diferença entre `set` (substitui a lista) e `append` (acrescenta), explicada na seção 01.3.
+Use `set allowaccess ?` para ver as opções da sua versão. Lembre da diferença entre `set` (substitui a lista) e `append` (acrescenta).
 
 ### Portas e timeout de administração
 
@@ -932,6 +1060,10 @@ Separar conta e perfil permite criar perfis por função, como "Somente leitura"
 | `super_admin` | Acesso total, inclusive configurações globais, administradores e firmware. Não pode ser editado. |
 | `prof_admin` | Acesso de leitura e escrita amplo, mas sem algumas configurações globais. Em equipamentos com VDOMs, limitado ao VDOM atribuído. |
 
+:::figura midia/m01/01-5-admin-profiles.png "Lista System > Admin Profiles com os perfis padrão super_admin e prof_admin"
+Num FortiGate de fábrica, **System > Admin Profiles** traz só os perfis padrão: **super_admin** e **prof_admin**.
+:::
+
 #### Como um perfil é organizado
 
 Um perfil define, por **área** da GUI, o nível de permissão:
@@ -945,21 +1077,20 @@ As áreas são: Security Fabric, FortiView, User & Device, Firewall, Log & Repor
 
 #### Na GUI: criando um perfil somente leitura
 
-:::figura midia/m01/01-5-admin-profiles.png "Lista System > Admin Profiles com os perfis padrão super_admin e prof_admin"
-Num FortiGate de fábrica, **System > Admin Profiles** traz só os perfis padrão: **super_admin** e **prof_admin**.
-:::
-
-:::interativo midia/m01/01-5-admin-profile.json
-Criação do perfil **Atlas-Leitura**: em **Create new**, o atalho **Set All > Read** marca somente leitura em todas as áreas. Passe o mouse nos destaques.
+:::slides
+midia/m01/01-5-admin-profile-1.png "Novo perfil administrativo com as permissões por área" | Em **System > Admin Profiles > Create new**, cada **área** da GUI recebe um nível: **None**, **Read** ou **Read/Write**. Algumas áreas aceitam **Custom**.
+midia/m01/01-5-admin-profile-2.png "Perfil Atlas-Leitura com Read em todas as áreas" | Com o atalho **Set All > Read**, a Atlas cria o perfil **Atlas-Leitura**, somente leitura em todas as áreas, para a equipe de suporte. Clique em **OK** para salvar.
 :::
 
 #### Na GUI: criando a conta
 
-:::interativo midia/m01/01-5-admin-conta.json
-Criação do administrador **carla.suporte** em **System > Administrators > Create new > Administrator**. Passe o mouse nos destaques.
+:::slides
+midia/m01/01-5-admin-conta-1.png "Campo Username do novo administrador em destaque" | Em **System > Administrators > Create new > Administrator**, a conta **carla.suporte**. Use uma conta **por pessoa**: assim os logs mostram quem fez cada alteração.
+midia/m01/01-5-admin-conta-2.png "Campo Administrator profile em destaque" | **Administrator profile:** a conta usa o perfil **Atlas-Leitura**. Um administrador **não pode conceder mais privilégios do que tem**.
+midia/m01/01-5-admin-conta-3.png "Opção Restrict login to trusted hosts em destaque" | **Restrict login to trusted hosts:** limita as origens de login desta conta à rede de gerência.
 :::
 
-Os outros tipos de conta (autenticadas em LDAP, RADIUS ou por certificado) são configurados no módulo 07, depois que você aprender os servidores de autenticação.
+Contas autenticadas em servidores externos (LDAP, RADIUS) ou por certificado também são possíveis. Elas dependem dos servidores de autenticação, assunto de um módulo próprio.
 
 #### Regras importantes
 
@@ -988,11 +1119,11 @@ A política vale para as **próximas** definições de senha. Senhas existentes 
 
 #### Bloqueio por tentativas
 
-Para dificultar ataques de força bruta, o FortiGate bloqueia temporariamente a origem depois de várias tentativas de login falhas. Por padrão, são **3 tentativas** e **60 segundos** de bloqueio. Esses valores são ajustados pela CLI (Guia de comandos CLI).
+Para dificultar ataques de força bruta, o FortiGate bloqueia temporariamente a origem depois de várias tentativas de login falhas. Por padrão, são **3 tentativas** e **60 segundos** de bloqueio. Esses valores são ajustados **somente pela CLI** (veja o Guia de comandos CLI).
 
 #### Timeout de sessão
 
-O **Idle timeout** (seção 01.4.2) encerra sessões inativas. Sessões esquecidas abertas são um risco, principalmente em computadores compartilhados.
+O **Idle timeout** encerra sessões inativas. Sessões esquecidas abertas são um risco, principalmente em computadores compartilhados.
 
 #### E a conta `admin`?
 
@@ -1004,7 +1135,7 @@ A conta `admin` é conhecida por todos, inclusive por quem ataca. Boas práticas
 
 > **Dica para a prova:** diferencie conta (System > Administrators) de perfil (System > Admin Profiles), conheça os perfis padrão `super_admin` e `prof_admin` e as proteções disponíveis: trusted hosts, bloqueio por tentativas e política de senha.
 
-#### Erros comuns da seção 01.5
+#### Erros comuns
 
 - Usar a conta `admin` para todos os administradores, o que impede saber quem fez cada alteração.
 - Criar um perfil restrito e testá-lo na mesma sessão do `super_admin`.
@@ -1076,7 +1207,7 @@ end
 get system admin list
 ```
 
-Lista as sessões administrativas ativas, com usuário, método de acesso e origem.
+Lista as sessões administrativas ativas, com usuário, método de acesso, interface e origem.
 
 ### Política de senha
 
@@ -1112,86 +1243,141 @@ end
 
 ## 01.6. Licenciamento e FortiGuard
 
-### 01.6.1. Registro, contratos e serviços FortiGuard
+### 01.6.1. Como o FortiGate é licenciado
 
-#### Conceito: o equipamento e os serviços são coisas separadas
+#### O equipamento e os serviços são coisas separadas
 
 Comprar um FortiGate não é a mesma coisa que ter todas as proteções funcionando. Há três camadas:
 
 1. **O equipamento e o FortiOS:** firewall, roteamento, NAT, VPN e SD-WAN funcionam sem assinaturas de segurança.
-2. **O suporte (FortiCare):** suporte técnico, substituição de hardware e acesso a atualizações de firmware.
+2. **O suporte (FortiCare):** suporte técnico, substituição de hardware e direito a atualizações de firmware.
 3. **Os serviços de segurança (FortiGuard):** bases de assinaturas e consultas em nuvem que alimentam os perfis de segurança.
 
-Os serviços FortiGuard normalmente são vendidos em **pacotes** (*bundles*). Os nomes e o conteúdo dos pacotes mudam ao longo do tempo, então consulte o datasheet atual. O importante é saber **qual função depende de qual serviço**:
+#### Suporte FortiCare
 
-| Função (módulo) | Serviço FortiGuard de que depende |
+O contrato **FortiCare** é o que dá direito a abrir chamados no suporte da Fortinet (TAC), trocar o equipamento com defeito (RMA) e baixar novas versões de firmware. Ele também inclui algumas bases essenciais, como a de aplicações (Application Control), a de serviços de Internet (ISDB) e a de GeoIP.
+
+Os níveis de FortiCare mudam com o tempo, mas em linhas gerais são três:
+
+| Nível | Para quem | Em linhas gerais |
+|---|---|---|
+| **FortiCare Essentials** | Modelos de entrada, ambientes menos críticos | Suporte em horário comercial e troca do equipamento após o envio do defeituoso. |
+| **FortiCare Premium** | A maioria dos ambientes de produção | Suporte 24x7 para problemas críticos e troca antecipada do equipamento (*advance replacement*). |
+| **FortiCare Elite** | Ambientes muito críticos | Tudo do Premium, com tempo de resposta mais curto para problemas críticos e atendimento com mais prioridade. |
+
+> **Na prática:** confira os tempos de resposta e as condições de troca no datasheet ou com o seu distribuidor. Sem contrato FortiCare válido, você não baixa firmware novo nem abre chamado, mesmo que o equipamento continue funcionando.
+
+#### Serviços FortiGuard: bundles e à la carte
+
+Os serviços FortiGuard podem ser comprados de duas formas:
+
+- **Em pacotes (*bundles*):** um conjunto de serviços com um único contrato. É a forma mais comum e costuma sair mais barato do que comprar os mesmos serviços separadamente.
+- **À la carte:** cada serviço comprado individualmente, por exemplo só o IPS ou só o Web Filter. É útil quando a empresa precisa de um serviço específico ou quer **acrescentar** a um bundle um serviço que ele não inclui.
+
+Os bundles mais conhecidos são três, em níveis crescentes:
+
+| Bundle | O que inclui |
 |---|---|
-| Antivirus (12) | Serviço de Antivirus (bases de assinaturas e outbreak prevention) |
-| IPS (11) | Serviço de IPS |
-| Application Control (11) | Base de aplicações (costuma acompanhar o suporte FortiCare; confira no seu contrato) |
-| Web Filter (10) | Serviço de Web Filtering (consulta de rating em nuvem) |
-| DNS Filter (10) | Serviço de filtragem por DNS (normalmente associado ao Web Filtering) |
-| Internet Service Database (03) | Base ISDB, atualizada pelo FortiGuard |
-| Security Rating, IoT detection, sandbox em nuvem etc. | Serviços específicos, conforme o pacote |
+| **ATP** (*Advanced Threat Protection*) | FortiCare + **IPS** + **Advanced Malware Protection** (antivírus, bases de botnet, prevenção de surtos e consulta ao sandbox em nuvem). |
+| **UTP** (*Unified Threat Protection*) | Tudo do ATP + **filtragem de URL, DNS e vídeo** (Web Filter e DNS Filter) + **antispam**. |
+| **Enterprise Protection** | Tudo do UTP + serviços avançados, como prevenção de malware com IA em linha (*inline*), **DLP**, **IoT Security**, **Security Rating** e FortiConverter. |
+
+Alguns serviços são vendidos **só à la carte**, fora dos bundles: por exemplo, OT Security, FortiAnalyzer Cloud, FortiManager Cloud, FortiGate Cloud, monitoramento de qualidade de links SD-WAN e o SOC como serviço (SOCaaS).
+
+> **Atenção:** a Fortinet revisa periodicamente os nomes e a composição dos pacotes. Antes de recomendar uma licença, confira o datasheet atual do modelo. O que não muda é a lógica: **cada função de segurança depende de um serviço FortiGuard**.
+
+O importante é saber **qual função depende de qual serviço**:
+
+| Função | Serviço de que depende |
+|---|---|
+| Antivirus | Advanced Malware Protection (bases de antivírus e prevenção de surtos) |
+| IPS | Intrusion Prevention |
+| Application Control | Base de aplicações, incluída no FortiCare |
+| Web Filter | URL, DNS & Video Filtering (consulta de categoria em nuvem) |
+| DNS Filter | URL, DNS & Video Filtering |
+| Internet Service Database (ISDB) | Base ISDB, incluída no FortiCare |
+| Security Rating, IoT, DLP | Serviços específicos, conforme o pacote |
 
 #### Registro
 
-O equipamento é registrado no portal **FortiCare** (support.fortinet.com) pelo número de série. É no registro que os contratos são vinculados ao equipamento. Em VMs, a licença é aplicada por um arquivo de licença ou por um token, conforme o modelo de licenciamento.
+O equipamento é registrado no portal **FortiCloud** (support.fortinet.com) pelo número de série. É no registro que os contratos são vinculados ao equipamento. Em VMs, a licença é aplicada por um arquivo de licença ou por um token, conforme o modelo de licenciamento.
 
-#### Na GUI: verificando licenças
+#### Na GUI: verificando as licenças
 
-:::figura midia/m01/01-6-licencas-widget.png "Widget Licenses do dashboard Status com Support e Updates licenciados e os serviços de segurança não licenciados"
-No dashboard **Status**, o widget **Licenses** mostra cada serviço: em verde, licenciado; em cinza, não licenciado. O FGT-MTZ de fábrica tem só o suporte FortiCare (**Support** e **Updates**).
+O widget **Licenses** do dashboard e a página **System > FortiGuard** mostram o que o equipamento tem, o que pode comprar e o que venceu. Acompanhe o FGT-MTZ em três situações: só com FortiCare, com o bundle UTP e com o UTP vencido.
+
+:::slides
+midia/m01/01-6-licencas-widget.png "Widget Licenses com Support e Updates em verde e os serviços de segurança em cinza" | **Só FortiCare:** no widget **Licenses**, **Support** e **Updates** estão verdes (o contrato FortiCare). IPS, AntiVirus, Web Filter e Rating estão **cinza**: não licenciados.
+midia/m01/01-6-fortiguard.png "Página System > FortiGuard, aba Licensed" | Em **System > FortiGuard**, a aba **Licensed** detalha o que está ativo. Aqui, só as assinaturas da base FortiCare, com o status e a data de expiração.
+midia/m01/01-6-fortiguard-disponiveis.png "Página System > FortiGuard, aba Available for purchase" | A aba **Available for purchase** lista os serviços que o equipamento **não tem** e que podem ser comprados: IPS, Advanced Malware Protection, URL, DNS & Video Filtering e outros.
+midia/m01/01-6-licencas-utp.png "Widget Licenses com o bundle UTP: IPS, AntiVirus e Web Filter em verde" | **Com o bundle UTP:** IPS, AntiVirus e Web Filter ficam **verdes**. Rating continua cinza, porque o Security Rating faz parte do bundle Enterprise, não do UTP.
+midia/m01/01-6-licencas-expiradas.png "Widget Licenses com IPS, AntiVirus e Web Filter em vermelho" | **UTP vencido:** os serviços do bundle ficam **vermelhos**. Support e Updates continuam verdes, porque o contrato FortiCare é separado e ainda está válido.
+midia/m01/01-6-fortiguard-expiradas.png "Página System > FortiGuard, aba Expired, com as assinaturas vencidas" | A aba **Expired** mostra cada assinatura vencida e a data em que expirou. É aqui que você confirma o que precisa ser renovado.
 :::
 
-:::figura midia/m01/01-6-fortiguard.png "Página System > FortiGuard com as assinaturas do equipamento"
-Em **System > FortiGuard**, a aba **Subscriptions** detalha as assinaturas, com status e data de expiração.
-:::
+O que acontece quando uma licença vence:
 
-### 01.6.2. Atualização de bases e consulta de rating
+- as **bases locais** (antivírus, IPS) **param de ser atualizadas**, mas a última versão baixada continua em uso;
+- as **consultas em tempo real** (Web Filter, DNS Filter) **deixam de responder**, e os sites ficam sem categoria;
+- os perfis continuam configurados, mas protegem cada vez menos.
 
-#### Dois tipos de comunicação com o FortiGuard
+### 01.6.2. FortiGuard: de onde vem a proteção
 
-O FortiGate fala com o FortiGuard de duas formas diferentes, e é importante distingui-las:
+#### FortiGuard Labs
 
-1. **Download de atualizações:** bases de AV, IPS, aplicações e ISDB são **baixadas** e ficam no equipamento. Os perfis consultam essa cópia local. Se o FortiGuard ficar inacessível por um tempo, o AV e o IPS continuam funcionando com a última base baixada, só que ficam desatualizados.
-2. **Consulta em tempo real (rating):** o Web Filter e o DNS Filter **perguntam** ao FortiGuard, a cada novo site ou domínio, em qual categoria ele está. Existe cache, mas sem a consulta não há categoria para sites novos. O perfil então aplica a ação configurada para **erro de rating** (permitir ou bloquear, módulo 10).
+O **FortiGuard Labs** é a organização de inteligência e pesquisa de ameaças da Fortinet, com sede no Canadá. Seus pesquisadores e sistemas de IA analisam ameaças do mundo todo e produzem as assinaturas de antivírus e IPS, as categorias de sites, as listas de botnets e as demais bases que o FortiGate usa.
 
-Essa diferença explica sintomas diferentes: sem comunicação com o FortiGuard, o AV continua bloqueando vírus conhecidos, mas o Web Filter pode deixar passar (ou bloquear) todos os sites sem classificação.
+Para o FortiGate usar esses serviços, são necessárias duas coisas: **uma assinatura ativa** e **acesso à Internet**.
+
+#### FortiGuard Distribution Network (FDN)
+
+As atualizações chegam pela **FortiGuard Distribution Network (FDN)**, a rede de servidores da Fortinet espalhada pelo mundo. O FortiGate fala com a FDN de duas formas diferentes, e é importante distingui-las:
+
+1. **Download de pacotes (AV, IPS, aplicações, ISDB):** as bases são **baixadas** por **TCP** (HTTPS) e ficam no equipamento, normalmente uma vez por dia ou conforme o agendamento. Os perfis consultam essa cópia local. Se o FortiGuard ficar inacessível por um tempo, o antivírus e o IPS continuam funcionando com a última base baixada, só que desatualizados.
+2. **Consultas em tempo real (Web Filtering, DNS Filtering, Antispam):** a cada novo site, domínio ou e-mail, o FortiGate **pergunta** ao FortiGuard qual é a classificação, por **UDP** ou **HTTPS**. Existe cache, mas sem a consulta não há categoria para sites novos. O perfil então aplica a ação configurada para **erro de rating** (permitir ou bloquear).
+
+Essa diferença explica sintomas diferentes: sem comunicação com o FortiGuard, o antivírus continua bloqueando vírus conhecidos, mas o Web Filter pode deixar passar (ou bloquear) todos os sites sem classificação.
+
+#### Como o FortiGate alcança os servidores
+
+- **Anycast:** por padrão, o FortiGate acessa os servidores do FortiGuard por endereços **anycast**. O mesmo endereço é anunciado em vários pontos do mundo, e a rede encaminha cada consulta ao **servidor mais próximo**, com menor latência.
+- **Certificados verificados:** na comunicação com o FortiGuard, o FortiGate **valida o certificado SSL** apresentado pelo servidor, emitido por uma autoridade certificadora de terceiros, e confere se ele não foi revogado usando **OCSP stapling**. Isso impede que alguém se passe pelo FortiGuard.
+- **DNS com DoT:** quando o FortiGate usa o FortiGuard como servidor DNS (96.45.45.45 e 96.45.46.46), as consultas vão por **DNS over TLS (DoT)**, criptografadas.
 
 #### Na GUI: atualizações
 
 :::figura midia/m01/01-6-updates.png "Aba FortiGuard settings com o agendamento das atualizações e as opções de filtragem e servidores"
-Na aba **FortiGuard settings** ficam o agendamento das atualizações (**Scheduled updates**), as opções de consulta de rating e os servidores FortiGuard usados.
+Na aba **FortiGuard settings** ficam o agendamento das atualizações (**Scheduled updates**), as opções de consulta de rating (protocolo e porta) e os servidores FortiGuard usados.
 :::
 
-Nas versões atuais, o FortiGate usa por padrão os servidores **anycast** do FortiGuard, com comunicação por HTTPS. Em redes que restringem a saída, essas informações definem o que precisa ser liberado no firewall de borda (detalhes no Guia de comandos CLI).
+Em redes que restringem a saída, essas opções definem o que precisa ser liberado no firewall de borda.
 
 #### Pré-requisitos para funcionar
 
 Para o FortiGuard funcionar, o FortiGate precisa:
 
-1. **de rota** até a Internet (módulo 02);
-2. **de DNS do sistema** funcionando (seção 01.4);
-3. **de hora correta**, porque a comunicação usa certificados (seção 01.4);
+1. **de rota** até a Internet;
+2. **de DNS do sistema** funcionando;
+3. **de hora correta**, porque a comunicação usa certificados;
 4. **de saída liberada** no caminho, se houver outro firewall ou proxy antes da Internet;
 5. **de licença válida** para o serviço.
 
-Quando a atualização falha, verifique nessa ordem. A verificação de rota, DNS e hora e o acompanhamento detalhado da atualização são feitos pela CLI (Guia de comandos CLI).
+Quando a atualização falha, verifique nessa ordem. A verificação de rota, DNS e hora e o acompanhamento detalhado da atualização são feitos pela CLI (veja o Guia de comandos CLI).
 
 #### Diferencie três situações
 
 | Situação | Como identificar | Efeito |
 |---|---|---|
-| **Licença vencida** | License Information mostra contrato expirado | As bases deixam de ser atualizadas; o rating de Web Filter para de responder |
-| **Base desatualizada** (licença válida) | Licença válida, mas data da última atualização antiga | Proteção desatualizada, por problema de comunicação |
+| **Licença vencida** | Serviço em vermelho no widget Licenses e na aba Expired | As bases deixam de ser atualizadas; o rating de Web Filter para de responder |
+| **Base desatualizada** (licença válida) | Licença verde, mas data da última atualização antiga | Proteção desatualizada, por problema de comunicação |
 | **Falha de rating** | Web Filter registra erros de rating; as atualizações podem estar funcionando | Sites sem categoria; o perfil aplica a ação de erro de rating |
 
-> **Dica para a prova:** as bases de AV e IPS são locais (baixadas). O Web Filter depende de consulta em tempo real ao FortiGuard.
+> **Dica para a prova:** as bases de AV e IPS são locais (baixadas por TCP). Web Filter, DNS Filter e Antispam dependem de consulta em tempo real ao FortiGuard (UDP ou HTTPS).
 
-#### Erros comuns da seção 01.6
+#### Erros comuns
 
 - Supor que o perfil protege mesmo com a licença vencida ou sem comunicação com o FortiGuard.
+- Achar que vencer o bundle de segurança também tira o suporte FortiCare, ou o contrário: são contratos separados.
 - Investigar o FortiGuard sem antes verificar rota, DNS e hora do equipamento.
 - Confundir falha de download de bases com falha de consulta de rating.
 
@@ -1202,7 +1388,41 @@ Quando a atualização falha, verifique nessa ordem. A verificação de rota, DN
 diagnose autoupdate versions
 ```
 
-Lista cada base (AV, IPS, aplicações, ISDB etc.) com a versão, a data da última atualização, o resultado da última tentativa e a **data de expiração do contrato**. É o comando para responder "minha base está atualizada?" e "minha licença venceu?".
+```saida
+FGT-MTZ # diagnose autoupdate versions
+AV Engine
+---------
+Version: 7.00041
+Contract Expiry Date: 2026/10/31
+Last Updated using scheduled update on Fri Oct 30 10:22:12 2026
+Last Update Attempt: Mon Nov  9 10:12:12 2026
+Result: Unauthorized
+
+Virus Definitions
+---------
+Version: 94.09321
+Contract Expiry Date: 2026/10/31
+Last Updated using scheduled update on Fri Oct 30 10:22:12 2026
+Last Update Attempt: Mon Nov  9 10:12:12 2026
+Result: Unauthorized
+...
+```
+
+Lista cada base (AV, IPS, aplicações, ISDB e outras) com a versão, a data da última atualização, o resultado da última tentativa e a **data de expiração do contrato**. É o comando para responder "minha base está atualizada?" e "minha licença venceu?". Nesta saída, o contrato venceu em 2026/10/31: a base continua na versão 94.09321, e as novas tentativas de atualização são recusadas (`Unauthorized`).
+
+### Estado do Web Filter
+
+```
+get webfilter status
+```
+
+```saida
+FGT-MTZ # get webfilter status
+Locale       : english
+Service      : Web-filter
+Status       : Disable
+License      : Unlicensed
+```
 
 ### Agendamento e atualização imediata
 
@@ -1234,7 +1454,7 @@ Mostra, entre outras opções, `fortiguard-anycast`, o protocolo e a porta usado
 Verifique os pré-requisitos na ordem:
 
 ```
-get router info routing-table all     # existe rota padrão? (módulo 02)
+get router info routing-table all     # existe rota padrão?
 execute ping update.fortiguard.net    # resolve o nome e alcança?
 execute time                          # a hora está correta?
 diagnose autoupdate versions          # resultado da última tentativa e expiração
@@ -1255,7 +1475,7 @@ diagnose debug disable
 diagnose debug reset
 ```
 
-> **Atenção:** debugs consomem recursos e geram muita saída. Sempre os desligue ao terminar. Esse hábito vale para todo o curso.
+> **Atenção:** debugs consomem recursos e geram muita saída. Sempre os desligue ao terminar.
 :::
 
 ---
@@ -1271,14 +1491,14 @@ Toda a configuração do FortiGate (interfaces, policies, objetos, VPNs, usuári
 A primeira linha do arquivo identifica de onde ele veio:
 
 ```
-#config-version=FGT60F-8.0.x-FW-buildXXXX-XXXXXX:opmode=0:vdom=0:user=admin
+#config-version=FGT121G-7.06-FW-buildXXXX-XXXXXX:opmode=0:vdom=0:user=admin
 ```
 
 Ela informa o **modelo**, a **versão e o build** do FortiOS, o modo de operação, se há VDOMs e quem gerou o backup. Essas informações importam na hora de restaurar.
 
 #### Backup comum e backup criptografado
 
-O arquivo contém informações sensíveis: hashes de senhas de administradores, segredos de VPN, senhas de servidores LDAP e RADIUS e chaves privadas de certificados. Mesmo em um backup comum, esses segredos não aparecem em texto aberto: são armazenados de forma cifrada ou como hash (você verá linhas como `set password ENC ...`). Ainda assim, **o arquivo deve ser tratado como segredo**: com ele, alguém pode recriar o seu firewall em outro equipamento ou tentar atacar os segredos offline.
+O arquivo contém informações sensíveis: hashes de senhas de administradores, segredos de VPN, senhas de servidores LDAP e RADIUS e chaves privadas de certificados. Mesmo em um backup comum, esses segredos não aparecem em texto aberto: são armazenados de forma cifrada ou como hash (você verá linhas como `set password ENC ...`). Ainda assim, **o arquivo deve ser tratado como segredo**: com ele, alguém pode recriar o seu firewall em outro equipamento ou tentar quebrar os segredos offline.
 
 Por isso existe o **backup criptografado**: ao gerar o backup, você define uma senha, e o arquivo inteiro é cifrado. Para restaurar, a senha é obrigatória.
 
@@ -1289,26 +1509,35 @@ Por isso existe o **backup criptografado**: ao gerar o backup, você define uma 
 
 #### Na GUI: fazendo o backup
 
-:::interativo midia/m01/01-7-backup.json
-**Menu do administrador > Configuration > Backup**: destino e criptografia do arquivo. Passe o mouse nos destaques.
+:::slides
+midia/m01/01-7-backup-passo-1.png "Menu do administrador aberto com o item Configuration em destaque" | Clique no **nome do administrador**, no canto superior direito, e depois em **Configuration**.
+midia/m01/01-7-backup-passo-2.png "Submenu Configuration com o item Backup em destaque" | O submenu **Configuration** tem **Backup**, **Restore** e **Reset to factory defaults**. Clique em **Backup**.
+midia/m01/01-7-backup-1.png "Tela Backup System Configuration" | A tela **Backup System Configuration** define o destino e a criptografia do arquivo.
+midia/m01/01-7-backup-2.png "Opção Backup to em destaque" | **Backup to:** o computador do administrador (**Local PC**) ou um pendrive ligado ao FortiGate (**USB Disk**).
+midia/m01/01-7-backup-3.png "Opção Encryption ativada em destaque" | **Encryption:** com a opção ativada, o arquivo inteiro é cifrado com uma senha. Sem ela, o backup não pode ser restaurado.
+midia/m01/01-7-backup-4.png "Campos de senha do backup em destaque" | **Password** e **Confirm password:** a senha do backup. Guarde-a **separada** do arquivo e clique em **OK** para baixar.
 :::
+
+> **Na prática:** mantenha cópias **fora do equipamento**, feitas antes de toda mudança relevante e, idealmente, automatizadas (por exemplo, pelo FortiManager).
 
 #### Revisões de configuração
 
-Além do backup manual, o FortiGate pode guardar **revisões** internas da configuração, quando há armazenamento disponível. Em **Configuration > Revisions** (menu do administrador), você vê as revisões, compara duas delas e restaura uma revisão.
+Além do backup manual, o FortiGate pode guardar **revisões** internas da configuração, quando há armazenamento disponível. Em **Configuration > Revisions** (menu do administrador), você vê as revisões, compara duas delas e restaura uma revisão. O FortiGate também pode criar revisões automaticamente quando um administrador sai e antes de uma atualização de firmware. Essas opções são ativadas pela CLI.
 
-O FortiGate também pode criar revisões automaticamente quando um administrador sai e antes de uma atualização de firmware. Essas opções são ativadas pela CLI (Guia de comandos CLI).
-
-> **Na prática:** revisões internas não substituem o backup externo. Se o equipamento queimar, as revisões vão com ele. Mantenha cópias fora do FortiGate, idealmente automatizadas (por exemplo, pelo FortiManager), e faça uma cópia antes de toda mudança relevante.
+Revisões internas não substituem o backup externo: se o equipamento queimar, as revisões vão com ele.
 
 #### Na GUI: restauração
 
-No **menu do administrador > Configuration > Restore**, selecione o arquivo (**Upload**) e informe a senha, se o backup for criptografado. Clique em **OK**: o FortiGate substitui a configuração atual.
+No **menu do administrador > Configuration > Restore**, selecione o arquivo e informe a senha, se o backup for criptografado:
+
+:::figura midia/m01/01-7-restore.png "Tela Restore System Configuration com o botão Upload e o campo Password"
+Em **Restore System Configuration**, clique em **Upload** para escolher o arquivo e preencha **Password** se o backup for criptografado. Ao clicar em **OK**, a configuração atual é substituída e o equipamento reinicia.
+:::
 
 Regras de restauração:
 
 - **Mesmo modelo:** a restauração é direta.
-- **Modelo diferente:** o FortiOS normalmente recusa o arquivo, porque nomes de interfaces e recursos de hardware diferem. A migração entre modelos exige adaptar a configuração (nomes de portas, interfaces inexistentes) ou usar ferramentas de conversão, sempre como um procedimento planejado.
+- **Modelo diferente:** o FortiOS normalmente recusa o arquivo, porque os nomes das interfaces e os recursos de hardware diferem. A migração entre modelos exige adaptar a configuração (nomes de portas, interfaces inexistentes) ou usar ferramentas de conversão, sempre como um procedimento planejado.
 - **Versão diferente de firmware:** restaurar um backup de outra versão pode funcionar com conversão, mas há risco de perder ou alterar configurações. O ideal é restaurar no mesmo build em que o backup foi gerado.
 
 > **Atenção:** a restauração **substitui** toda a configuração atual e reinicia o equipamento. Se o backup tiver outro endereço de gerência ou outras restrições de acesso, você pode perder o acesso pela rede, então tenha a console à mão.
@@ -1317,10 +1546,10 @@ Regras de restauração:
 
 #### Versões do FortiOS
 
-O FortiOS segue o formato **major.minor.patch**, por exemplo 8.0.2:
+O FortiOS segue o formato **major.minor.patch**, por exemplo 7.6.4:
 
-- **major.minor** (8.0): a "família" da versão, com seu conjunto de recursos;
-- **patch** (.2): correções e alguns ajustes dentro da família;
+- **major.minor** (7.6): a "família" da versão, com seu conjunto de recursos;
+- **patch** (.4): correções e alguns ajustes dentro da família;
 - **build**: o número exato da imagem compilada (aparece no widget System Information).
 
 A Fortinet classifica as versões como **Feature** (com recursos novos, ainda amadurecendo) e **Mature** (estáveis, recomendadas para produção). Em produção, a recomendação geral é usar versões Mature, a menos que você precise de um recurso específico.
@@ -1333,7 +1562,7 @@ Antes de qualquer atualização, leia o **release notes** da versão de destino.
 - **Changes in default behavior / changes in CLI:** o que muda de comportamento ou de comando;
 - **Known issues:** problemas conhecidos que podem afetar o seu ambiente;
 - **Resolved issues:** o que foi corrigido;
-- **Product integration and support:** compatibilidade com FortiAnalyzer, FortiManager, FortiClient, FortiSwitch, FortiAP etc.;
+- **Product integration and support:** compatibilidade com FortiAnalyzer, FortiManager, FortiClient, FortiSwitch, FortiAP e outros;
 - **Recursos removidos ou alterados**, inclusive limitações por modelo.
 
 #### Upgrade path
@@ -1348,7 +1577,7 @@ Não se deve "pular" livremente de uma versão antiga para uma muito nova. Cada 
 2. **Faça backup** da configuração e guarde fora do equipamento.
 3. **Registre o estado atual:** versão, recursos em uso e alguns testes de referência (acesso à Internet, VPN ativa, autenticação), para comparar depois.
 4. **Agende uma janela de manutenção:** o equipamento reinicia.
-5. **Atualize pela GUI** (passo a passo abaixo).
+5. **Atualize pela GUI.**
 6. **Valide:** confira a versão no widget System Information, repita os testes de referência, verifique os logs de eventos e compare a configuração com o backup.
 
 :::figura midia/m01/01-7-firmware.png "Página System > Firmware & Registration com o FGT-MTZ, sua versão e o status de atualização"
@@ -1366,7 +1595,7 @@ O FortiOS verifica a **assinatura digital** da imagem e alerta se ela não for o
 
 #### Plano de retorno: as duas partições
 
-A maioria dos FortiGates físicos tem **duas partições de firmware**. Ao atualizar, a nova imagem é gravada em uma partição e a anterior fica preservada na outra. Isso permite voltar rapidamente à versão anterior escolhendo de qual partição o equipamento vai iniciar no próximo boot. Essa operação é feita pela CLI (Guia de comandos CLI).
+A maioria dos FortiGates físicos tem **duas partições de firmware**. Ao atualizar, a nova imagem é gravada em uma partição e a anterior fica preservada na outra. Isso permite voltar rapidamente à versão anterior escolhendo de qual partição o equipamento vai iniciar no próximo boot. Essa operação é feita pela CLI.
 
 Mesmo assim, **mantenha o backup** feito na versão anterior: ao voltar, você pode precisar restaurar a configuração exata daquele momento.
 
@@ -1387,7 +1616,7 @@ O menu de boot também tem a opção de **formatar** o dispositivo de boot, que 
 
 > **Atenção:** a recuperação pelo menu de boot é um procedimento de emergência. Faça com calma, pela console, com a imagem correta para o seu modelo e um backup disponível.
 
-#### Erros comuns da seção 01.7
+#### Erros comuns
 
 - Atualizar sem backup, ou com o backup guardado só dentro do próprio equipamento.
 - Pular versões fora do upgrade path.
@@ -1428,7 +1657,7 @@ end
 ### Atualização de firmware pela CLI
 
 ```
-execute restore image tftp FGT_60F-v8-buildXXXX-FORTINET.out 10.10.99.10
+execute restore image tftp FGT_121G-v7.6.x-buildXXXX-FORTINET.out 10.10.99.10
 ```
 
 ### Partições e retorno à versão anterior (somente pela CLI)
@@ -1451,221 +1680,148 @@ Em VMs, a saída e o comportamento podem ser diferentes.
 
 ---
 
-## Laboratório do módulo 01 — preparando o FGT-MTZ
-
-**Objetivo:** deixar o FGT-MTZ acessível pela rede de gerência, identificado, com administração protegida, licenças verificadas e backup.
-
-**Você vai precisar de:** o FGT-MTZ (físico ou VM) com configuração de fábrica, acesso à console e a estação de administração 10.10.99.10 conectada à interface de gerência.
-
-> A sincronização NTP, a verificação do FortiGuard e o download de bases exigem acesso à Internet, que será configurado no módulo 02. Neste laboratório você deixa tudo configurado; a confirmação desses itens é refeita ao final do módulo 02.
-
-### Parte 1 — Primeiro acesso pela console
-
-1. Conecte-se à console (9600 8N1).
-2. Faça login com `admin` e senha em branco e defina uma senha forte.
-3. Configure a interface de gerência com os comandos da seção 01.2.1 (endereço 10.10.99.1/24, com PING, HTTPS e SSH).
-4. Da estação 10.10.99.10, acesse `https://10.10.99.1`.
-
-### Parte 2 — Conhecendo o equipamento
-
-1. No dashboard **Status**, anote do widget **System Information**: modelo, versão, build, número de série e modo de operação.
-2. Abra a **CLI Console** da GUI e execute `get system status`. Compare com o widget e anote o modo de HA.
-3. Na CLI Console, compare `show system interface mgmt` com `show full-configuration system interface mgmt` e identifique três atributos que só aparecem no segundo.
-4. Em **System > Feature Visibility**, habilite **DNS Database** e confirme que **Network > DNS Servers** apareceu.
-
-### Parte 3 — Hostname, hora e DNS
-
-1. Em **System > Settings**, aba **General**, confira o hostname `FGT-MTZ` e o fuso horário.
-2. Pela **CLI Console**, configure o servidor NTP `a.ntp.br` (seção 01.4.1).
-3. Confirme o hostname no topo da GUI e no prompt da CLI Console.
-4. Em **Network > DNS**, mantenha os servidores FortiGuard ou especifique os servidores da Atlas.
-
-### Parte 4 — Acesso administrativo seguro
-
-1. Em **System > Settings**, aba **Access**, defina o **Idle timeout** em 15 minutos e confirme o redirecionamento para HTTPS.
-2. Na interface `mgmt`, confirme que apenas **PING**, **HTTPS** e **SSH** estão marcados em **Administrative Access**.
-3. Na mesma aba, seção **Security**, confira a política de senha (mínimo de 12 caracteres, com maiúsculas, minúsculas, números e caracteres especiais).
-4. Pelo Guia de comandos CLI da seção 01.5, ajuste o bloqueio por tentativas para 300 segundos.
-
-### Parte 5 — Administradores e perfis
-
-1. Crie o perfil `Atlas-Leitura` (somente leitura em todas as áreas).
-2. Crie o administrador nominal `joao.admin` com perfil `super_admin` e trusted host 10.10.99.0/24.
-3. Crie o administrador `carla.suporte` com perfil `Atlas-Leitura` e trusted host 10.10.99.0/24.
-4. **Sem fechar a sessão atual**, abra uma janela anônima e faça login com `joao.admin`. Depois, faça login com `carla.suporte` e tente alterar o hostname: a alteração não deve ser possível.
-5. Restrinja o `admin` com trusted host 10.10.99.0/24, ou remova-o após validar o `joao.admin`.
-6. Em **Log & Report > System Events**, encontre o login de cada conta e a alteração de hostname da Parte 3.
-
-### Parte 6 — Licenças e FortiGuard
-
-1. Consulte o widget **Licenses** e a tabela **License Information** em **System > FortiGuard**.
-2. Anote, para AV e IPS, a versão da base e a data de expiração do contrato.
-3. Confirme que **Scheduled updates** está ativado. A atualização efetiva será testada no módulo 02.
-
-### Parte 7 — Backup e plano de firmware
-
-1. Gere um **backup criptografado** pela GUI (**Configuration > Backup**, opção **Encryption**) e guarde a senha separadamente.
-2. Gere também um backup **não** criptografado e abra em um editor de texto: identifique a linha `#config-version`, o bloco de administradores e o formato das senhas (`ENC`). Depois, apague esse arquivo.
-3. Escreva um **plano de atualização** para a próxima versão disponível do seu FortiOS: versão de destino, upgrade path, itens do release notes que afetam a Atlas, testes de validação e procedimento de retorno. (A execução do upgrade é opcional neste módulo.)
-
----
-
-## Critério de conclusão
-
-Você concluiu o módulo 01 se consegue:
-
-- [ ] acessar um FortiGate novo pela console e pela rede e trocar a senha inicial;
-- [ ] identificar modelo, versão, build, número de série e modo de operação na GUI e com `get system status`;
-- [ ] explicar a diferença entre `show`, `show full-configuration` e `get`;
-- [ ] explicar a diferença entre `set`, `append` e `unselect` em listas e entre `end` e `abort`;
-- [ ] configurar hostname, fuso, NTP e DNS do sistema e explicar por que a hora importa;
-- [ ] restringir a gerência por interface e por trusted hosts **sem perder o acesso**;
-- [ ] criar um perfil administrativo e uma conta e comprovar a restrição em outra sessão;
-- [ ] verificar licenças e versões das bases e explicar a diferença entre bases locais e consulta de rating;
-- [ ] gerar um backup criptografado e explicar o que ele contém e como restaurá-lo;
-- [ ] apresentar um plano de atualização de firmware com upgrade path e retorno.
-
----
-
 ## Questões de revisão
 
-**1.** Um administrador executa `show system interface port1` e não vê a linha `set mtu`. O que isso significa?
+:::quiz
+Um administrador executa `show system interface port1` e não vê a linha `set mtu`. O que isso significa?
 
-- a) A interface não suporta configuração de MTU.
-- b) O MTU está no valor padrão; para vê-lo, use `show full-configuration` ou `get`.
-- c) O MTU foi apagado e a interface está sem MTU.
-- d) O comando `show` só exibe atributos de interfaces físicas.
+- [ ] A interface não suporta configuração de MTU.
+- [x] O MTU está no valor padrão; para vê-lo, é preciso usar `show full-configuration` ou `get`.
+- [ ] O MTU foi apagado e a interface está sem MTU.
+- [ ] O comando `show` só exibe atributos de interfaces lógicas.
+> O `show` exibe somente os valores **diferentes do padrão**. O MTU existe e está valendo, só que no valor padrão. `show full-configuration` e `get` mostram também os valores padrão.
+:::
 
-**2.** Uma interface tem `allowaccess ping https ssh`. O administrador executa `set allowaccess snmp` e salva. Qual é o resultado?
+:::quiz
+Uma interface tem `allowaccess ping https ssh`. O administrador entra na interface, executa `set allowaccess snmp` e salva. Qual é o resultado?
 
-- a) `ping https ssh snmp`
-- b) `snmp`
-- c) `ping https ssh`, porque o SNMP precisa ser habilitado globalmente antes
-- d) O comando é rejeitado por conflito
+- [ ] `ping https ssh snmp`
+- [x] `snmp`
+- [ ] `ping https ssh`, porque o SNMP precisa ser habilitado globalmente antes
+- [ ] O comando é rejeitado por conflito com os valores existentes
+> Em atributos que são listas, `set` **substitui a lista inteira**. Para acrescentar o SNMP mantendo os demais, o comando correto seria `append allowaccess snmp`. Se o administrador estivesse conectado por HTTPS ou SSH através dessa interface, perderia o acesso ao salvar.
+:::
 
-**3.** Todos os administradores, exceto um, têm trusted hosts configurados para 10.10.99.0/24. O que acontece quando alguém de fora dessa rede acessa a GUI?
+:::quiz
+Todos os administradores de um FortiGate, exceto um, têm trusted hosts configurados para 10.10.99.0/24. O que acontece quando alguém de fora dessa rede acessa a GUI?
 
-- a) A conexão é bloqueada antes de exibir a página de login.
-- b) A página de login responde, mas só a conta sem trusted hosts consegue logar de fora dessa rede.
-- c) Ninguém consegue logar, porque basta uma conta com trusted hosts para restringir todas.
-- d) Todos conseguem logar, porque os trusted hosts só valem para SSH.
+- [ ] A conexão é bloqueada antes de exibir a página de login.
+- [x] A página de login responde, e só a conta sem trusted hosts consegue fazer login de fora dessa rede.
+- [ ] Ninguém consegue fazer login, porque basta uma conta com trusted hosts para restringir todas.
+- [ ] Todos conseguem fazer login, porque trusted hosts só valem para SSH.
+> Trusted hosts são configurados **por administrador**. Como uma conta não tem restrição, o FortiGate continua respondendo à página de login para qualquer origem, e essa conta consegue entrar de qualquer lugar. Para o serviço deixar de responder a origens não autorizadas, **todas** as contas precisam de trusted hosts.
+:::
 
-**4.** Sobre a recuperação de senha com a conta maintainer em um FortiGate físico, qual afirmação está correta?
+:::quiz
+Sobre a recuperação de senha com a conta `maintainer` em um FortiGate físico, quais afirmações estão corretas? (Escolha duas.)
 
-- a) Funciona por SSH a partir de qualquer interface com SSH habilitado.
-- b) Exige acesso pela console e reinício por ciclo de energia, e pode ser desabilitada pelo administrador.
-- c) Apaga toda a configuração do equipamento.
-- d) Funciona após `execute reboot`, desde que o login seja feito em até 10 minutos.
+- [x] Exige acesso pela console e um reinício por ciclo de energia.
+- [ ] Funciona por SSH a partir de qualquer interface com SSH habilitado.
+- [x] Pode ser desabilitada pelo administrador.
+- [ ] Apaga toda a configuração do equipamento.
+> A conta maintainer exige **acesso físico**: console e desligar e ligar o equipamento na energia (*hard reboot*). Ela não apaga a configuração, apenas permite redefinir a senha. Como é um risco em ambientes muito sensíveis, pode ser desabilitada; nesse caso, sobra o reset de fábrica.
+:::
 
-**5.** Um FortiGate com licenças válidas perdeu a comunicação com o FortiGuard há dois dias. Qual é o efeito mais provável?
+:::quiz
+Observe o widget Licenses de um FortiGate:
 
-- a) O AV e o IPS param de funcionar imediatamente.
-- b) O AV e o IPS continuam funcionando com as últimas bases baixadas; o Web Filter pode falhar ao classificar sites novos e aplica a ação de erro de rating.
-- c) Nada muda, porque todas as funções usam somente bases locais.
-- d) O firewall bloqueia todo o tráfego até a comunicação voltar.
+![Widget Licenses com Support e Updates em verde e IPS, AntiVirus e Web Filter em vermelho](midia/m01/01-6-licencas-expiradas.png)
 
-**6.** Qual comando mostra, em uma única saída, a versão do FortiOS, o número de série, o modo de operação e o modo de HA?
+Qual afirmação descreve corretamente a situação?
 
-- a) `get system performance status`
-- b) `show system global`
-- c) `get system status`
-- d) `diagnose autoupdate versions`
+- [ ] O equipamento perdeu o suporte FortiCare e não pode mais baixar firmware.
+- [x] O contrato dos serviços de segurança venceu: as bases de antivírus e IPS param de ser atualizadas e as consultas do Web Filter deixam de responder.
+- [ ] O antivírus e o IPS param de funcionar imediatamente, sem nenhuma base.
+- [ ] O equipamento nunca teve licença de Web Filter.
+> Os blocos em vermelho indicam serviços **expirados**. As bases locais de antivírus e IPS continuam na última versão baixada, mas não recebem atualizações. O Web Filter depende de consulta em tempo real e deixa de classificar sites. **Support** e **Updates** estão verdes porque o contrato FortiCare é separado e continua válido. Um serviço que nunca foi contratado aparece em cinza, não em vermelho.
+:::
 
-**7.** Um administrador entrou em `config firewall address`, editou um objeto, alterou dois atributos e percebeu que estava no objeto errado. Como sair sem gravar as alterações desse objeto?
+:::quiz
+Um FortiGate com licenças válidas perdeu a comunicação com o FortiGuard há dois dias. Qual é o efeito mais provável?
 
-- a) `end`
-- b) `next`
-- c) `abort`
-- d) `unset all`
+- [ ] O antivírus e o IPS param de funcionar imediatamente.
+- [x] O antivírus e o IPS continuam funcionando com as últimas bases baixadas; o Web Filter pode falhar ao classificar sites novos e aplica a ação de erro de rating.
+- [ ] Nada muda, porque todas as funções usam somente bases locais.
+- [ ] O FortiGate bloqueia todo o tráfego até a comunicação voltar.
+> As bases de AV e IPS são **baixadas** e usadas localmente, então continuam funcionando (desatualizadas). O Web Filter depende de **consulta em tempo real** ao FortiGuard: sem resposta, os sites novos ficam sem categoria e o perfil aplica a ação configurada para erro de rating.
+:::
 
-**8.** Um administrador quer restaurar o backup de um FortiGate 60F em um FortiGate 100F. O que é esperado?
+:::quiz
+Como o FortiGate se comunica com a FortiGuard Distribution Network (FDN)? (Escolha duas.)
 
-- a) A restauração é direta, porque o FortiOS é o mesmo.
-- b) O arquivo tende a ser recusado ou exigir adaptação, porque o modelo (e os nomes de interfaces) é diferente.
-- c) Só funciona se o backup for criptografado.
-- d) Funciona se ambos tiverem a mesma licença FortiGuard.
+- [x] Os pacotes de antivírus e IPS são baixados por TCP.
+- [ ] Os pacotes de antivírus e IPS são consultados em tempo real a cada arquivo inspecionado.
+- [x] As consultas de Web Filtering e DNS Filtering usam UDP ou HTTPS.
+- [ ] Todas as comunicações com o FortiGuard usam apenas ICMP.
+> O FortiGate **baixa** os pacotes de AV e IPS por TCP (HTTPS) e os usa localmente. Já as classificações de Web Filtering, DNS Filtering e Antispam são **consultas em tempo real**, feitas por UDP ou HTTPS. Por padrão, os servidores são acessados por endereços anycast, que levam ao servidor mais próximo.
+:::
 
-**9.** Um recurso descrito no Administration Guide não aparece no menu da GUI. Qual deve ser a primeira verificação?
+:::quiz
+Uma empresa precisa de IPS, antivírus e filtragem web por categorias, sem os serviços avançados como DLP e IoT Security. Qual bundle FortiGuard atende com o menor nível?
 
-- a) Fazer upgrade para a versão mais recente.
-- b) Conferir se o recurso está oculto em Feature Visibility.
-- c) Fazer reset de fábrica para restaurar os menus.
-- d) Reinstalar o firmware pelo menu de boot.
+- [ ] ATP (Advanced Threat Protection)
+- [x] UTP (Unified Threat Protection)
+- [ ] Enterprise Protection
+- [ ] Apenas o FortiCare Premium
+> O **ATP** inclui IPS e proteção contra malware, mas não a filtragem web. O **UTP** acrescenta a filtragem de URL, DNS e vídeo e o antispam, atendendo à necessidade. O **Enterprise** inclui serviços avançados que a empresa não precisa. O FortiCare sozinho dá suporte e algumas bases essenciais, mas não IPS, antivírus nem Web Filter.
+:::
 
-**10.** Ao planejar a atualização de firmware, qual prática é recomendada?
+:::quiz
+Qual comando mostra, em uma única saída, a versão do FortiOS, o número de série, o modo de operação e o modo de HA?
 
-- a) Ir direto à versão mais nova para reduzir o número de reinícios.
-- b) Seguir o upgrade path recomendado, ler o release notes e fazer backup antes.
-- c) Atualizar primeiro e fazer o backup depois, para que ele já esteja na versão nova.
-- d) Fazer downgrade antes do upgrade para limpar a configuração.
+- [ ] `get system performance status`
+- [ ] `show system global`
+- [x] `get system status`
+- [ ] `diagnose autoupdate versions`
+> `get system status` reúne versão e build, número de série, modo de operação (NAT ou Transparent), estado de VDOM, modo de HA e as versões das bases. `get system performance status` mostra CPU, memória e sessões; `diagnose autoupdate versions` mostra as bases e os contratos.
+:::
 
-**11.** Um administrador com perfil sem permissão de escrita em System tenta criar uma nova conta `super_admin`. O que acontece?
+:::quiz
+Um administrador entrou em `config firewall address`, editou um objeto, alterou dois atributos e percebeu que estava no objeto errado. Como sair sem gravar as alterações desse objeto?
 
-- a) A conta é criada, mas fica desabilitada.
-- b) A operação é negada: um administrador não pode conceder mais privilégios do que tem.
-- c) A conta é criada com o mesmo perfil do criador.
-- d) A conta é criada e precisa de aprovação de outro `super_admin`.
+- [ ] `end`
+- [ ] `next`
+- [x] `abort`
+- [ ] `unset all`
+> Na CLI, a alteração só é gravada quando o item é salvo com `next` ou `end`. O `abort` sai do item **sem gravar**. `unset` devolve atributos ao valor padrão, o que também alteraria o objeto.
+:::
 
-**12.** Após um upgrade, um serviço crítico passou a falhar. Qual recurso permite voltar rapidamente à versão anterior em muitos FortiGates físicos?
+:::quiz
+Um administrador tenta apagar um objeto de endereço e a GUI não permite. A coluna **Ref.** do objeto mostra o número 2. O que ele deve fazer?
 
-- a) Fazer reset de fábrica.
-- b) Iniciar pela outra partição de firmware, que mantém a imagem anterior.
-- c) Restaurar uma revisão de configuração da versão nova.
-- d) Desabilitar a atualização automática do FortiGuard.
+- [ ] Fazer o backup e restaurar a configuração sem o objeto.
+- [x] Clicar no número da coluna Ref. para ver quem usa o objeto, remover essas referências e depois apagar o objeto.
+- [ ] Apagar o objeto pela CLI, que não verifica referências.
+- [ ] Desabilitar o objeto em Feature Visibility.
+> O FortiOS não deixa apagar um objeto em uso, nem pela GUI nem pela CLI. A coluna **Ref.** mostra quantos objetos o referenciam, e clicar no número mostra quais. O fluxo correto é alterar ou remover quem usa o objeto e só então apagá-lo.
+:::
 
-### Gabarito comentado
+:::quiz
+Um recurso descrito no Administration Guide não aparece no menu da GUI. Qual deve ser a primeira verificação?
 
-1. **b** — o `show` exibe só valores diferentes do padrão. O MTU existe, mas está no padrão.
-2. **b** — `set` substitui a lista inteira. Para acrescentar, use `append allowaccess snmp`.
-3. **b** — trusted hosts são por administrador. Como uma conta não tem restrição, o serviço continua respondendo e essa conta consegue logar de qualquer origem.
-4. **b** — a conta maintainer exige console e ciclo de energia e pode ser desabilitada. Ela não apaga a configuração.
-5. **b** — as bases de AV e IPS são locais e continuam em uso (desatualizadas). O Web Filter depende de consulta em tempo real.
-6. **c** — `get system status` reúne versão, série, modo de operação, VDOM e HA.
-7. **c** — `abort` sai do item sem gravar. `next` e `end` gravam.
-8. **b** — o arquivo de configuração identifica o modelo, e as interfaces diferem; a migração entre modelos é um procedimento planejado.
-9. **b** — muitos recursos ficam ocultos por padrão em Feature Visibility.
-10. **b** — upgrade path, release notes e backup são a base de uma atualização segura.
-11. **b** — o FortiOS não permite que um administrador conceda privilégios acima dos seus.
-12. **b** — a imagem anterior fica na outra partição, e a CLI permite escolher a partição do próximo boot. Mantenha também o backup da versão anterior.
+- [ ] Fazer upgrade para a versão mais recente.
+- [x] Conferir se o recurso está oculto em Feature Visibility.
+- [ ] Fazer reset de fábrica para restaurar os menus.
+- [ ] Reinstalar o firmware pelo menu de boot.
+> Muitos recursos ficam **ocultos por padrão** em System > Feature Visibility para deixar a GUI mais limpa. Eles existem e funcionam, só não aparecem no menu. Depois disso, vale conferir o modelo, a licença e o release notes da versão.
+:::
 
----
+:::quiz
+Um administrador com um perfil sem permissão de escrita em System tenta criar uma nova conta `super_admin`. O que acontece?
 
-## Mídias do módulo
+- [ ] A conta é criada, mas fica desabilitada.
+- [x] A operação é negada: um administrador não pode conceder mais privilégios do que tem.
+- [ ] A conta é criada com o mesmo perfil do criador.
+- [ ] A conta é criada e precisa da aprovação de outro `super_admin`.
+> O FortiOS não permite que um administrador crie contas ou atribua perfis com privilégios acima dos seus. Sem escrita em System, a conta nem consegue criar administradores.
+:::
 
-Todas as mídias deste módulo são geradas a partir do roteiro do modo aula do laboratório (`tools/captura/capturar.cjs`). As telas interativas usam um arquivo `.json` com a posição e a explicação de cada destaque.
+:::quiz
+Após um upgrade, um serviço crítico passou a falhar. Qual recurso permite voltar rapidamente à versão anterior em muitos FortiGates físicos?
 
-| Seção | Arquivo | Tipo |
-|---|---|---|
-| Abertura | `midia/m01/00-topologia-gerencia.png` | Imagem |
-| 01.1 | `midia/m01/01-1-menu-gui.json` | Tela interativa |
-| 01.1 | `midia/m01/01-1-elementos-gui.json` | Tela interativa |
-| 01.1 | `midia/m01/01-1-system-information.json` | Tela interativa |
-| 01.1 | `midia/m01/01-1-feature-visibility-1.png` | Imagem (slides) |
-| 01.1 | `midia/m01/01-1-feature-visibility-2.png` | Imagem (slides) |
-| 01.1 | `midia/m01/01-1-feature-visibility-3.png` | Imagem (slides) |
-| 01.2 | `midia/m01/01-2-putty-serial.json` | Tela interativa |
-| 01.2 | `midia/m01/01-2-console-troca-senha.mp4` | Vídeo |
-| 01.2 | `midia/m01/01-2-console-mgmt.png` | Imagem |
-| 01.2 | `midia/m01/01-2-login-gui.png` | Imagem |
-| 01.3 | `midia/m01/01-3-lista-objetos.json` | Tela interativa |
-| 01.3 | `midia/m01/01-3-cli-console-gui.png` | Imagem |
-| 01.4 | `midia/m01/01-4-system-settings.json` | Tela interativa |
-| 01.4 | `midia/m01/01-4-ntp-cli.png` | Imagem |
-| 01.4 | `midia/m01/01-4-dns.json` | Tela interativa |
-| 01.4 | `midia/m01/01-4-admin-access.json` | Tela interativa |
-| 01.4 | `midia/m01/01-4-administration-settings.json` | Tela interativa |
-| 01.4 | `midia/m01/01-5-admin-conta.png` | Imagem |
-| 01.4 | `midia/m01/01-4-log-login.png` | Imagem |
-| 01.5 | `midia/m01/01-5-admin-profiles.png` | Imagem |
-| 01.5 | `midia/m01/01-5-admin-profile.json` | Tela interativa |
-| 01.5 | `midia/m01/01-5-admin-conta.json` | Tela interativa |
-| 01.5 | `midia/m01/01-5-password-policy.png` | Imagem |
-| 01.6 | `midia/m01/01-6-licencas-widget.png` | Imagem |
-| 01.6 | `midia/m01/01-6-fortiguard.png` | Imagem |
-| 01.6 | `midia/m01/01-6-updates.png` | Imagem |
-| 01.7 | `midia/m01/01-7-backup.json` | Tela interativa |
-| 01.7 | `midia/m01/01-7-firmware.png` | Imagem |
-
----
-
-**Próximo módulo:** 02 — Interfaces e serviços de rede. O FGT-MTZ ganha WAN, VLANs, DMZ e rota padrão, e os itens que dependiam de Internet neste módulo (NTP e FortiGuard) são confirmados.
+- [ ] Fazer reset de fábrica.
+- [x] Iniciar pela outra partição de firmware, que mantém a imagem anterior.
+- [ ] Restaurar uma revisão de configuração gerada na versão nova.
+- [ ] Desabilitar a atualização automática do FortiGuard.
+> A maioria dos FortiGates físicos tem **duas partições de firmware**: a imagem anterior fica preservada na outra, e a CLI permite escolher a partição do próximo boot. Mantenha também o backup gerado na versão anterior.
+:::

@@ -7,10 +7,12 @@
  *
  * O laboratório precisa estar rodando (npm run dev no fortigate-clone). O script percorre o roteiro do
  * início ao fim e, nos passos marcados com `captura`, salva:
- *   - imagem:     <arquivo>.png em 1920x1080
- *   - interativo: <arquivo>.png e <arquivo>.json com a área e a explicação de cada elemento
- *   - video:      <arquivo>.mp4 com a ação do passo animada, como na aula (cursor visível)
- * e um capturas.json com a lista do que foi gerado.
+ *   - imagem: <arquivo>.png (a tela inteira em 1920x1080 ou, com `recorte`, só a área pedida, renderizada
+ *             com mais pixels por ponto para continuar com pelo menos 1920 px de largura)
+ *   - slides: <arquivo>-1.png, -2.png... uma imagem por slide do foco do passo, cada uma com o elemento
+ *             daquele slide em destaque (o resto escurecido), para os carrosséis do curso
+ *   - video:  <arquivo>.mp4 com a ação do passo animada, como na aula (cursor visível)
+ * e um capturas.json com a lista do que foi gerado. Com `destaque`, o resto da tela sai escurecido.
  *
  * Requer Playwright (require('playwright')) e ffmpeg com libx264.
  */
@@ -28,6 +30,7 @@ const SO = args.so ? new Set(args.so.split(',')) : null; // gerar só alguns arq
 
 const W = 1920;
 const H = 1080;
+const ESCALA_MAX = 5;
 
 fs.mkdirSync(SAIDA, { recursive: true });
 
@@ -64,6 +67,38 @@ function codificar({ frames, fim }, destino) {
     '-vf', `fps=30,scale=${W}:${H}:force_original_aspect_ratio=decrease,pad=${W}:${H}:(ow-iw)/2:(oh-ih)/2,format=yuv420p`,
     '-c:v', 'libx264', '-preset', 'slow', '-crf', '24', '-movflags', '+faststart', '-an', destino]);
   fs.rmSync(dir, { recursive: true, force: true });
+}
+
+/** Saves the screen, or the crop area rendered at a higher pixel density so it stays at least W px wide. */
+async function fotografar(page, recorte, destino, slide) {
+  if (!recorte) {
+    await page.screenshot({ path: destino });
+    return { w: W, h: H };
+  }
+  const ajustar = ({ x, y, w, h }) => {
+    if (w * ESCALA_MAX < W) {
+      const novo = Math.ceil(W / ESCALA_MAX);
+      x = Math.max(0, Math.min(W - novo, Math.round(x - (novo - w) / 2)));
+      w = novo;
+    }
+    return { x, y, w, h };
+  };
+  const antes = ajustar(recorte);
+  const escala = Math.max(1, W / antes.w);
+  const cdp = await page.context().newCDPSession(page);
+  await cdp.send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: escala, mobile: false });
+  await page.waitForTimeout(500);
+  // Some popups move a little when the pixel density changes: measure again at the new density.
+  const depois = (await page.evaluate((k) => window.__guia.preparar(k), slide)).recorte;
+  await page.waitForTimeout(150);
+  let { x, y, w, h } = depois ? ajustar(depois) : antes;
+  w = antes.w;
+  const { data } = await cdp.send('Page.captureScreenshot', { format: 'png', clip: { x, y, width: w, height: h, scale: 1 } });
+  await cdp.send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 1, mobile: false });
+  await cdp.detach();
+  fs.writeFileSync(destino, Buffer.from(data, 'base64'));
+  await page.waitForTimeout(200);
+  return { w: Math.round(w * escala), h: Math.round(h * escala) };
 }
 
 (async () => {
@@ -111,20 +146,20 @@ function codificar({ frames, fim }, destino) {
 
     await page.evaluate((c) => window.__guia.captura(true, { limpo: !!c.limpo, comFoco: !!c.comFoco }), cap);
     await page.waitForTimeout(900);
-    const png = path.join(SAIDA, `${cap.arquivo}.png`);
-    await page.screenshot({ path: png });
-    const item = { arquivo: path.basename(png), tipo: cap.tipo || 'imagem', passo: p.numero, titulo: p.titulo, descricao: cap.descricao || '' };
-    if (cap.tipo === 'interativo') {
-      const alvos = await page.evaluate(() => window.__guia.alvos());
-      const pontos = alvos.map((a) => ({ titulo: a.titulo, texto: a.texto, principal: !a.proprio, ...(a.area && a.area.w > 0 ? { x: a.area.x, y: a.area.y, w: a.area.w, h: a.area.h } : {}) }));
-      const json = { imagem: path.basename(png), largura: W, altura: H, descricao: cap.descricao || '', pontos };
-      fs.writeFileSync(path.join(SAIDA, `${cap.arquivo}.json`), `${JSON.stringify(json, null, 2)}\n`);
-      item.pontos = pontos.length;
+    const tipo = cap.tipo || 'imagem';
+    const imagens = tipo === 'slides' ? p.slides.map((s, i) => ({ slide: i, nome: `${cap.arquivo}-${i + 1}.png`, legenda: s })) : [{ nome: `${cap.arquivo}.png` }];
+    const salvas = [];
+    for (const img of imagens) {
+      const prep = await page.evaluate((k) => window.__guia.preparar(k), img.slide);
+      await page.waitForTimeout(150);
+      const tam = await fotografar(page, prep.recorte, path.join(SAIDA, img.nome), img.slide);
+      salvas.push({ arquivo: img.nome, largura: tam.w, altura: tam.h, ...(img.legenda ? { slide: img.legenda } : {}) });
     }
     await page.evaluate(() => window.__guia.captura(false));
     await page.waitForTimeout(200);
+    const item = { arquivo: salvas.length === 1 ? salvas[0].arquivo : cap.arquivo, tipo, passo: p.numero, titulo: p.titulo, descricao: cap.descricao || '', ...(salvas.length > 1 ? { imagens: salvas } : { largura: salvas[0].largura, altura: salvas[0].altura }) };
     geradas.push(item);
-    console.log(`  ${p.numero}. ${p.titulo} -> ${path.basename(png)}${item.pontos ? ` (+${item.pontos} pontos)` : ''}`);
+    console.log(`  ${p.numero}. ${p.titulo} -> ${salvas.map((x) => `${x.arquivo} (${x.largura}x${x.altura})`).join(', ')}`);
   }
 
   if (!SO) fs.writeFileSync(path.join(SAIDA, 'capturas.json'), `${JSON.stringify({ roteiro: ROTEIRO, geradoEm: new Date().toISOString(), arquivos: geradas }, null, 2)}\n`);

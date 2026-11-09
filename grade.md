@@ -1,104 +1,125 @@
-# FortiGate Administrator — grade do curso
+# Curso FortiGate 7.6 — grade do curso
 
-FortiOS 8.0.x · preparação para o NSE 4 – FortiOS Administrator · Revisão 6 · 09/11/2026
+Preparação para o NSE 4 – FortiOS Administrator (FortiOS 7.6) · Revisão 7 · 09/11/2026
 
 ## Visão geral
 
 **Público:** profissionais que vão administrar FortiGate em produção e querem se preparar para a certificação NSE 4.
 
+**Nome do curso:** **Curso FortiGate 7.6**. A prova NSE 4 vigente é baseada no FortiOS 7.6. Antes de fechar o material, confira o blueprint oficial do exame.
+
 **Objetivo do curso:** ao final, o aluno instala, configura, protege, mantém e diagnostica um FortiGate de matriz e de filial. Isso inclui policies, NAT, roteamento, autenticação, perfis de segurança, VPN IPsec, SD-WAN, Security Fabric e alta disponibilidade.
 
-**Estrutura:** a sequência tem 17 módulos temáticos, cada um com um assunto do início ao fim. Depois deles vêm três apêndices "Além do NSE 4", com temas frequentes na administração que não são o foco da prova. A hierarquia é **módulo → seção → tópico**.
+**Estrutura:** a sequência tem 17 módulos temáticos, cada um com um assunto do início ao fim. Depois deles vêm três apêndices "Além do NSE 4", com temas frequentes na administração que não são o foco da prova. A hierarquia é **módulo → capítulo → seção**.
 
 **Seções de aprofundamento:** as seções marcadas com *(Aprofundamento)* podem ser puladas na primeira leitura. Nenhum módulo posterior depende delas, exceto quando isso está indicado.
 
-**Versão:** o curso ensina FortiOS 8.0.x. A prova NSE 4 vigente nesta revisão é baseada em FortiOS 7.6. Quando menus, nomes ou comportamentos diferirem, o conteúdo deve trazer um quadro **"Na prova (7.6)"**. Antes de fechar o material, confira o blueprint oficial do exame.
-
 **Fora do escopo:** IPv6 e dual stack; OSPF, BGP e demais protocolos dinâmicos; ADVPN; GRE, VXLAN e EVPN; multicast; Central NAT avançado, PCP, full-cone, MAP-E e CGNAT; Hyperscale; FortiOS Carrier; DLP; Inline CASB; Email Filter; WAF; ICAP; VoIP; WAN Optimization; FortiGate VM em nuvem; SASE; FortiExtender; OT/Rugged; automação por API, Ansible e Terraform.
 
-## Como usar esta grade para produzir o conteúdo
+## Regras de produção do conteúdo
 
-Produza o conteúdo na ordem da grade, em um arquivo `.md` por módulo, na pasta `conteudo/`.
+Este documento é de produção e **não é entregue aos alunos**. Os alunos recebem a introdução (`conteudo/00-introducao.md`) e os módulos (`conteudo/modulo-NN-*.md`). Produza o conteúdo na ordem da grade, em um arquivo `.md` por módulo. **As regras abaixo valem para todos os módulos.** O módulo 01 é a referência de como elas ficam na prática.
+
+### Linguagem
+
+- O material é escrito **para o aluno**. Nunca fale do curso como se o leitor fosse quem o produz: nada de "esta grade", "o conteúdo deve", "capturas pendentes", "roteiro", "laboratório do curso" no sentido de produção.
+- O aluno **não usa o laboratório**. Ele vê as telas e os vídeos. Não escreva instruções do tipo "no seu laboratório, faça".
+- **Não coloque o número do módulo ou da seção ao lado de um assunto** ("(módulo 03)", "seção 01.4", colunas "Função (módulo)"). Se precisar apontar para outro ponto, use o nome do assunto ("no capítulo GUI e CLI", "mais adiante no curso").
+- Não escreva quadros "Na prova (7.6)" nem compare versões do FortiOS no texto. Exemplos de versão usam 7.6.x.
+- Linguagem fácil e didática, com termos técnicos quando necessários e explicados na primeira vez.
 
 ### Foco na GUI e regra de uso da CLI
 
-O curso ensina principalmente pela GUI, que é a interface usada nas demonstrações em laboratório. No texto principal, a CLI só aparece em três casos:
+O curso ensina principalmente pela GUI. No texto principal, a CLI só aparece em três casos:
 
 1. **não há opção na GUI** para o que está sendo ensinado;
 2. **a saída do comando é a ferramenta de diagnóstico** (debug flow, tabela de sessões, estado do HA, debug de IKE, saídas cobradas na prova);
-3. **o tema é a própria CLI** (seção 01.3).
+3. **o tema é a própria CLI**.
 
-Todo o resto vai para o **Guia de comandos CLI** da seção: o equivalente em CLI da configuração feita na GUI, os comandos de verificação e diagnóstico com a saída comentada e as opções disponíveis só pela CLI.
+Todo o resto vai para o **Guia de comandos CLI** do capítulo: o equivalente em CLI da configuração feita na GUI, os comandos de verificação e diagnóstico e as opções disponíveis só pela CLI. Todo comando que mostra informações traz a saída real, capturada no laboratório, em um bloco `saida` logo depois do comando (o visualizador mostra o botão **Mostrar saída**).
 
-### Estrutura de cada tópico
+### Estrutura de cada módulo
 
-1. **Conceito:** o que é e como o FortiGate processa.
-2. **Na GUI:** passo a passo com figuras ou slides.
-3. **Verificação:** onde ver o resultado na GUI (monitor, log, widget) e o que esperar.
-4. **CLI no texto**, somente nos três casos acima.
+1. **Antes de começar:** "O que você vai aprender", pré-requisitos e **Topologia atual** (o estado da rede da Atlas neste módulo, com o diagrama).
+2. **Capítulos** (`## NN.N.`) com **seções** (`### NN.N.N.`). Cada seção segue: **conceito** (o que é e como o FortiGate processa), **na GUI** (passo a passo com imagens), **verificação** (onde ver o resultado e o que esperar) e, só nos três casos acima, **CLI no texto**.
+3. Cada capítulo termina com **Erros comuns** e o bloco **Guia de comandos CLI**.
+4. O módulo termina com **Questões de revisão** interativas (`:::quiz`).
 
-Cada seção termina com **Erros comuns** e com um bloco **Guia de comandos CLI**.
+Não entram no material do aluno: laboratório do módulo, critério de conclusão, lista de mídias e campos de produção. Os campos **Laboratório** e **Critério de conclusão** desta grade orientam o roteiro do modo aula e as questões de revisão.
 
-Cada módulo termina com:
+### Mídias: quanto mais visual, melhor
 
-- **Laboratório:** passo a passo no cenário do curso.
-- **Critério de conclusão:** checklist do que o aluno precisa demonstrar.
-- **Questões de revisão:** questões de múltipla escolha no estilo da prova, com gabarito comentado.
-- **Lista de capturas:** tabela gerada a partir das figuras e slides do módulo, com arquivo, tipo e o que mostrar.
+- **Mostre o que o texto descreve.** Se o texto cita telas, passos ou estados (por exemplo, os passos de um assistente, as abas de uma página, um estado de erro ou de licença vencida), eles precisam aparecer em imagem.
+- **Passo a passo de navegação:** mostre como se chega à tela (menu → submenu → diálogo), não só a tela final.
+- **Carrossel com texto por imagem** (`:::slides`) em vez de telas interativas. Cada imagem tem o seu texto, que aparece no card abaixo dela. Telas interativas com hotspots não são usadas.
+- **Destaque:** escureça o que não importa (menu lateral, barra superior, áreas vazias) e deixe o assunto em destaque. Em carrosséis, cada imagem destaca o elemento daquele passo.
+- **Recorte:** não capture a tela inteira quando o assunto é uma janela, um diálogo, um widget ou um menu. Recorte e amplie para o necessário (a captura continua com pelo menos 1920 px de largura).
+- **Vídeo** (`.mp4`, sem som) para ações em sequência, como um login com troca de senha.
+- Todas as mídias saem do laboratório (`fortigate-clone`), pelo roteiro do modo aula, com `node tools/captura/capturar.cjs --roteiro mNN --saida midia/mNN`. O passo do roteiro define o arquivo, o tipo (`imagem`, `slides` ou `video`), o recorte (`recorte`) e o destaque (`destaque`). Para estados que o laboratório precisa simular (licença vencida, por exemplo), use a `LabApi` do roteiro.
+- Imagens no mínimo 1920x1080, ou 1920 px de largura quando recortadas.
 
-O campo **Extensão** (curta, média ou longa) indica o volume relativo de conteúdo esperado para o módulo.
+### Blocos especiais
 
-### Convenções de mídia e blocos especiais
-
-Os arquivos de mídia ficam em `midia/mNN/` (por exemplo, `midia/m01/`), com nomes no formato `<seção>-<assunto>.ext` (por exemplo, `01-4-dns-1.png`). Para animações, prefira vídeo curto (`.mp4`/`.webm`, sem som) a GIF, porque é muito mais leve. GIF continua aceito.
+Os arquivos de mídia ficam em `midia/mNN/`, com nomes no formato `<seção>-<assunto>.ext`.
 
 **Figura** (imagem, GIF ou vídeo, com legenda opcional):
 
 ```
-:::figura midia/m01/01-1-feature-visibility.png "Descrição exata da tela a capturar"
-Legenda opcional em markdown, exibida abaixo da imagem.
+:::figura midia/m01/01-6-updates.png "Descrição da imagem (texto alternativo)"
+Legenda em markdown, exibida no card abaixo da imagem.
 :::
 ```
 
-**Slides** (uma imagem por linha; a legenda depois de `|` é opcional):
+**Carrossel** (uma imagem por linha; o texto depois de `|` aparece no card abaixo da imagem):
 
 ```
 :::slides
-midia/m01/01-5-admin-1.png "Descrição da captura" | Legenda do passo 1.
-midia/m01/01-5-admin-2.png "Descrição da captura" | Legenda do passo 2.
-midia/m01/01-5-admin-3.png "Descrição da captura"
+midia/m01/01-7-backup-passo-1.png "Descrição" | Texto do passo 1.
+midia/m01/01-7-backup-passo-2.png "Descrição" | Texto do passo 2.
 :::
 ```
 
-**Guia de comandos CLI** (aceita markdown completo, inclusive blocos de código):
+**Guia de comandos CLI** (markdown completo; a saída de um comando vai num bloco `saida` logo depois dele):
 
 ````
-:::cli Título da seção
+:::cli Título do capítulo
 ### Assunto
 ```
-config system global
-    set hostname "FGT-MTZ"
-end
+get system status
+```
+```saida
+FGT-MTZ # get system status
+Version: ...
 ```
 Explicação.
 :::
 ````
 
-**Tela interativa** (imagem com destaques numerados; ao passar o mouse, aparece a explicação de cada elemento). O `.json` é gerado pelo script de captura a partir dos slides do passo no roteiro do modo aula:
+**Questão de revisão** (enunciado em markdown, imagem opcional, alternativas com `- [ ]` e `- [x]` e justificativa em linhas `>`). Com mais de uma alternativa correta, o enunciado termina com "(Escolha duas.)":
 
 ```
-:::interativo midia/m01/01-1-system-information.json
-Legenda opcional em markdown.
+:::quiz
+Enunciado da questão.
+
+![Descrição](midia/m01/01-6-licencas-expiradas.png)
+
+- [ ] Alternativa errada
+- [x] Alternativa correta
+- [ ] Alternativa errada
+- [ ] Alternativa errada
+> Por que a alternativa correta está certa e as outras não.
 :::
 ```
 
-As mídias são geradas pelo roteiro do modo aula do laboratório (`fortigate-clone`, `src/lab/guide/roteiros/`), com `node tools/captura/capturar.cjs --roteiro mNN --saida midia/mNN`. O passo do roteiro define o arquivo, o tipo (`imagem`, `video` ou `interativo`) e a descrição.
+As questões seguem o estilo da prova NSE 4 (cenário, uma ou duas respostas, imagens de tela ou saídas de comando), mas são **originais**. Não copie questões de exames reais ou de sites de "dumps": o conteúdo da prova é confidencial pelo acordo de certificação da Fortinet e protegido por direitos autorais.
 
-O texto entre aspas descreve a captura. Ele serve como texto alternativo e, enquanto o arquivo não existir, aparece no quadro de captura pendente do visualizador.
+### Quadros
 
-### Atenção à versão
+Use só três tipos, sempre começando pelo rótulo em negrito. O visualizador mostra cada um com seu ícone:
 
-Verifique cada menu e comando no release notes e no *Administration Guide* do patch 8.0.x usado. Quando o comportamento ou o menu diferir do 7.6, insira um quadro **"Na prova (7.6)"**.
+- `> **Na prática:**` dica de quem administra FortiGate no dia a dia;
+- `> **Atenção:**` algo que pode causar perda de acesso, de configuração ou de segurança;
+- `> **Dica para a prova:**` ponto que costuma ser cobrado no NSE 4.
 
 ## Cenário do curso
 
@@ -122,28 +143,28 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 ## Sequência dos módulos
 
-| # | Módulo | Extensão |
-|---|---|---|
-| 01 | Primeiro acesso e administração básica | longa |
-| 02 | Interfaces e serviços de rede | longa |
-| 03 | Firewall policies | longa |
-| 04 | Logs, sessões e verificação | média |
-| 05 | NAT | média |
-| 06 | Roteamento | longa |
-| 07 | Autenticação | longa |
-| 08 | FSSO e SSO | média |
-| 09 | Certificados e inspeção SSL/TLS | média |
-| 10 | Security Profiles: fundamentos, Web Filter e DNS Filter | longa |
-| 11 | Application Control, IPS e DoS | média |
-| 12 | Antivirus e inspeção de arquivos | média |
-| 13 | VPN IPsec | longa |
-| 14 | SD-WAN | longa |
-| 15 | Security Fabric | média |
-| 16 | Alta disponibilidade | longa |
-| 17 | Diagnóstico e projeto final | média |
-| A | Além do NSE 4: FortiSwitch e FortiAP | média |
-| B | Além do NSE 4: VDOMs | curta |
-| C | Além do NSE 4: ZTNA básico | curta |
+| # | Módulo |
+|---|---|
+| 01 | Primeiro acesso e administração básica |
+| 02 | Interfaces e serviços de rede |
+| 03 | Firewall policies |
+| 04 | Logs, sessões e verificação |
+| 05 | NAT |
+| 06 | Roteamento |
+| 07 | Autenticação |
+| 08 | FSSO e SSO |
+| 09 | Certificados e inspeção SSL/TLS |
+| 10 | Security Profiles: fundamentos, Web Filter e DNS Filter |
+| 11 | Application Control, IPS e DoS |
+| 12 | Antivirus e inspeção de arquivos |
+| 13 | VPN IPsec |
+| 14 | SD-WAN |
+| 15 | Security Fabric |
+| 16 | Alta disponibilidade |
+| 17 | Diagnóstico e projeto final |
+| A | Além do NSE 4: FortiSwitch e FortiAP |
+| B | Além do NSE 4: VDOMs |
+| C | Além do NSE 4: ZTNA básico |
 
 ---
 
@@ -152,14 +173,15 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** acessar um FortiGate novo, operar GUI e CLI, configurar identidade e acesso administrativo seguro, ativar licenças e FortiGuard e proteger a configuração com backup e firmware adequados.
 **Pré-requisitos:** nenhum.
 **No cenário:** o FGT-MTZ fica acessível, identificado, com hora correta, administradores definidos, FortiGuard ativo e um backup protegido.
-**Extensão:** longa.
 
 ### 01.1. O FortiGate e o FortiOS
 
-**Aprendizado:** reconhecer as funções do equipamento, a organização da interface e por que um recurso pode não aparecer em um modelo.
+**Aprendizado:** entender por que os firewalls evoluíram, o que diferencia o FortiGate, a organização da interface e por que um recurso pode não aparecer em um modelo.
 
-- **01.1.1. Funções do FortiGate e organização da GUI:** percorrer Dashboard, Network, Policy & Objects, Security Profiles, VPN, User & Authentication, Security Fabric, Log & Report e System. Relacionar cada menu à tarefa que ele resolve.
-- **01.1.2. Modelos, plataformas e recursos disponíveis:** comparar FortiGate físico e VM e consultar modelo, versão e build. Usar Feature Visibility para exibir recursos ocultos. Entender que memória, hardware e licença determinam o que está disponível.
+- **01.1.1. Por que os firewalls evoluíram:** limites dos firewalls tradicionais (só interno x externo, só portas e IPs, sem ameaças internas, antivírus só por assinatura, superfície de ataque maior, falsa sensação de segurança das PMEs) e o surgimento do NGFW.
+- **01.1.2. O que é o FortiGate e quais são seus diferenciais:** NGFW com recursos de infraestrutura e segurança; cenários (borda, segmentação, multi-cloud); formatos (appliance, VM, FGaaS); UTM; hardware dedicado (SPUs); integração com o ecossistema Fortinet e compatibilidade com outros fabricantes; funções do FortiGate.
+- **01.1.3. Como a GUI está organizada:** percorrer os menus e a barra superior, relacionando cada menu à tarefa que ele resolve.
+- **01.1.4. Modelos, plataformas e recursos disponíveis:** comparar famílias e VM, consultar modelo, versão e build no System Information e usar Feature Visibility. Entender que memória, hardware e licença determinam o que está disponível.
 
 **Erros comuns:** concluir que um recurso não existe porque o menu não aparece, quando ele só está oculto em Feature Visibility.
 
@@ -195,18 +217,18 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Aprendizado:** aplicar privilégio mínimo à administração.
 
 - **01.5.1. Contas e perfis administrativos:** criar administradores com o perfil super_admin e com perfis personalizados (leitura e leitura/escrita por área). Testar o novo acesso em uma segunda sessão antes de encerrar a primeira.
-- **01.5.2. Proteção das contas:** configurar política de senha, bloqueio por tentativas e timeout de sessão. A autenticação remota de administradores (LDAP/RADIUS) é feita no módulo 07.
+- **01.5.2. Proteção das contas:** configurar política de senha, bloqueio por tentativas e timeout de sessão. A autenticação remota de administradores (LDAP/RADIUS) fica para o módulo de autenticação.
 
 **Erros comuns:** usar a conta padrão `admin` para todos; criar um perfil restrito e testá-lo na mesma sessão do super_admin.
 
 ### 01.6. Licenciamento e FortiGuard
 
-**Aprendizado:** saber quais serviços estão ativos e se o equipamento consegue atualizar bases e consultar ratings.
+**Aprendizado:** entender como o FortiGate é licenciado, saber quais serviços estão ativos e se o equipamento consegue atualizar bases e consultar ratings.
 
-- **01.6.1. Registro, contratos e serviços FortiGuard:** consultar registro no FortiCare, licenças e validade. Relacionar cada perfil de segurança ao serviço de que depende: Web Filter, AV, IPS, Application Control e outros.
-- **01.6.2. Atualização de bases e consulta de rating:** configurar atualização automática e agendamento, verificar versões das bases e conectividade com os servidores FortiGuard. Diferenciar licença vencida, base desatualizada e falha de consulta de rating.
+- **01.6.1. Como o FortiGate é licenciado:** equipamento, suporte e serviços como camadas separadas. Níveis do FortiCare (Essentials, Premium, Elite). Bundles FortiGuard (ATP, UTP, Enterprise) e serviços à la carte. Relacionar cada perfil de segurança ao serviço de que depende. Registro. Ver na GUI um equipamento só com FortiCare, com UTP e com UTP vencido (widget Licenses e abas Licensed, Expired e Available for purchase).
+- **01.6.2. FortiGuard: de onde vem a proteção:** FortiGuard Labs, FDN, download de pacotes por TCP x consultas em tempo real por UDP ou HTTPS, anycast, verificação de certificado com OCSP stapling, DoT com o DNS do FortiGuard. Agendamento das atualizações, pré-requisitos e diferença entre licença vencida, base desatualizada e falha de rating.
 
-**Erros comuns:** supor que o perfil protege mesmo com a licença vencida ou sem comunicação com o FortiGuard.
+**Erros comuns:** supor que o perfil protege mesmo com a licença vencida ou sem comunicação com o FortiGuard; confundir o contrato FortiCare com o dos serviços de segurança.
 
 ### 01.7. Backup, restauração e firmware
 
@@ -231,7 +253,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** configurar interfaces, VLANs, agrupamentos e conexões WAN, criar a rota padrão e oferecer DHCP, DNS e NTP aos clientes.
 **Pré-requisitos:** 01.
 **No cenário:** o FGT-MTZ recebe WAN1 fixa, WAN2 por DHCP/PPPoE, as VLANs 10, 20 e 30, a DMZ e a rota padrão, e passa a atender os clientes com DHCP e DNS.
-**Extensão:** longa.
 
 ### 02.1. Interfaces físicas e conexões WAN
 
@@ -302,7 +323,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** construir firewall policies com objetos adequados, prever qual regra atende cada conexão e manter a base de regras organizada.
 **Pré-requisitos:** 02.
 **No cenário:** as VLANs e a DMZ passam a ter regras de acesso entre si (ainda sem acesso à Internet, que depende de NAT).
-**Extensão:** longa.
 
 ### 03.1. Como as policies funcionam
 
@@ -371,7 +391,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** produzir e consultar logs, ler a tabela de sessões, capturar pacotes e usar o debug flow para explicar por que uma conexão passou ou não. Essas ferramentas são usadas em todos os módulos seguintes.
 **Pré-requisitos:** 03.
 **No cenário:** os acessos criados no módulo 03 passam a ser comprovados por log, sessão, sniffer e debug flow. Os logs são enviados ao FortiAnalyzer/syslog da VLAN de servidores.
-**Extensão:** média.
 
 ### 04.1. O que é registrado
 
@@ -440,7 +459,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** permitir a saída à Internet com SNAT, publicar serviços com VIP e comprovar as traduções nas ferramentas do módulo 04.
 **Pré-requisitos:** 03, 04.
 **No cenário:** as VLANs internas acessam a Internet pela WAN1 e o servidor web da DMZ é publicado em 203.0.113.3.
-**Extensão:** média.
 
 ### 05.1. SNAT na firewall policy
 
@@ -498,7 +516,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** controlar a escolha de caminhos com rotas estáticas, contingência, roteamento por policy e ECMP e diagnosticar descartes por RPF e roteamento assimétrico.
 **Pré-requisitos:** 02, 04, 05.
 **No cenário:** a matriz passa a ter contingência entre WAN1 e WAN2 e um direcionamento específico de tráfego. O roteamento dinâmico está fora do escopo.
-**Extensão:** longa.
 
 ### 06.1. Tabelas de rotas
 
@@ -570,7 +587,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** identificar usuários com contas locais e servidores remotos, aplicar grupos às policies e controlar o estado da autenticação.
 **Pré-requisitos:** 03, 04.
 **No cenário:** a navegação da VLAN de usuários passa a exigir usuário do AD, e os convidados usam um portal.
-**Extensão:** longa.
 
 ### 07.1. Conceitos
 
@@ -646,7 +662,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** identificar usuários sem pedir login, usando os eventos de logon do AD (FSSO), e conhecer as alternativas RSSO e SAML.
 **Pré-requisitos:** 07.
 **No cenário:** os usuários do AD passam a ser reconhecidos automaticamente e a autenticação ativa fica apenas como fallback.
-**Extensão:** média.
 
 ### 08.1. Conceitos e modos do FSSO
 
@@ -713,7 +728,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** gerenciar certificados no FortiGate e escolher entre certificate inspection e deep inspection, com as exceções e a confiança necessárias.
 **Pré-requisitos:** 03, 04.
 **No cenário:** a GUI do FGT-MTZ passa a usar um certificado confiável, a navegação dos usuários recebe deep inspection com a CA distribuída e as exceções ficam definidas.
-**Extensão:** média.
 
 ### 09.1. Certificados no FortiGate
 
@@ -780,7 +794,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** entender como os perfis atuam sobre o tráfego permitido pela policy, escolher o modo de inspeção e controlar navegação e resolução de nomes.
 **Pré-requisitos:** 01.6, 03, 07, 09.
 **No cenário:** a navegação dos usuários e dos convidados recebe perfis Web Filter e DNS Filter diferentes, com exceções por grupo.
-**Extensão:** longa.
 
 ### 10.1. Fundamentos dos Security Profiles
 
@@ -851,7 +864,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** identificar e controlar aplicações independentemente da porta, proteger serviços com IPS e conter anomalias de tráfego com DoS policies.
 **Pré-requisitos:** 09, 10.
 **No cenário:** a Atlas bloqueia categorias de aplicações para convidados, protege a DMZ e os servidores com IPS e cria uma DoS policy para o serviço publicado.
-**Extensão:** média.
 
 ### 11.1. Application Control
 
@@ -918,7 +930,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** analisar arquivos em trânsito com Antivirus, entender os modos e limites de inspeção e complementar com File Filter e serviços externos.
 **Pré-requisitos:** 09, 10.
 **No cenário:** a navegação e os downloads dos usuários passam por AV, e tipos de arquivo de risco são bloqueados para convidados.
-**Extensão:** média.
 
 ### 12.1. Funcionamento do Antivirus
 
@@ -977,8 +988,7 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** interligar matriz e filial e dar acesso a usuários remotos com IPsec, comprovando negociação, rotas e policies e diagnosticando cada etapa.
 **Pré-requisitos:** 03, 05, 06, 07, 09.
 **No cenário:** FGT-MTZ e FGT-FIL são interligados por um túnel site-to-site e os usuários remotos acessam os servidores com FortiClient.
-**Extensão:** longa.
-**Atenção à versão:** o SSL VPN mudou bastante nas versões recentes do FortiOS: o tunnel mode foi descontinuado e o web mode se tornou Agentless VPN. Confira no release notes do patch 8.0.x e no blueprint 7.6 o que é cobrado e sinalize as diferenças com o quadro "Na prova (7.6)".
+**Atenção à versão:** o SSL VPN mudou bastante nas versões recentes do FortiOS: o tunnel mode foi descontinuado e o web mode se tornou Agentless VPN. Confira no blueprint 7.6 o que é cobrado.
 
 ### 13.1. Conceitos de IPsec
 
@@ -1047,7 +1057,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** usar vários links WAN com medição de qualidade, escolher o caminho por regras e estratégias e controlar o consumo com traffic shaping básico.
 **Pré-requisitos:** 05, 06, 11, 13.
 **No cenário:** WAN1 e WAN2 do FGT-MTZ passam a formar a SD-WAN, com regras para aplicações críticas e para a navegação. Os túneis com a filial entram como membros no aprofundamento.
-**Extensão:** longa.
 
 ### 14.1. Membros e zones
 
@@ -1122,7 +1131,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** integrar o FortiGate a outros produtos Fortinet, usar a topologia e o Security Rating e automatizar respostas a eventos.
 **Pré-requisitos:** 04, 07, 13.
 **No cenário:** FGT-MTZ (root), FGT-FIL (downstream) e FortiAnalyzer formam o Fabric da Atlas. Uma automação responde a um host comprometido.
-**Extensão:** média.
 
 ### 15.1. Conceitos
 
@@ -1181,7 +1189,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** formar um cluster FGCP, entender eleição, sincronização e failover e manter o cluster com segurança.
 **Pré-requisitos:** 02, 04, 13.
 **No cenário:** FGT-MTZ e FGT-MTZ-2 formam um cluster active-passive na matriz.
-**Extensão:** longa.
 
 ### 16.1. Conceitos do FGCP
 
@@ -1257,7 +1264,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** aplicar um método de diagnóstico, entender o consumo de recursos e a aceleração em hardware, coletar evidências para o suporte e integrar o curso em um projeto completo.
 **Pré-requisitos:** todos os módulos anteriores.
 **No cenário:** o ambiente da Atlas recebe falhas propositais para diagnóstico e uma lista de requisitos para o projeto final.
-**Extensão:** média.
 
 ### 17.1. Metodologia
 
@@ -1322,7 +1328,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Objetivo:** gerenciar switches e access points pelo FortiGate e aplicar segmentação e autenticação na LAN e no Wi-Fi.
 **Pré-requisitos:** 02, 03, 07.
-**Extensão:** média.
 
 ### A.1. FortiSwitch via FortiLink
 
@@ -1355,7 +1360,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 **Objetivo:** separar contextos de configuração e administração em um mesmo FortiGate.
 **Pré-requisitos:** 01, 03, 06, 16.
 **Atenção à versão:** confira no blueprint 7.6 se VDOMs são cobrados; versões anteriores da prova cobravam.
-**Extensão:** curta.
 
 ### B.1. Conceitos e configuração
 
@@ -1377,7 +1381,6 @@ Os endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51
 
 **Objetivo:** publicar uma aplicação por ZTNA, autorizando por usuário e postura do dispositivo, e compará-la com a VPN de acesso remoto.
 **Pré-requisitos:** 07, 09, 13, 15.3.1.
-**Extensão:** curta.
 
 ### C.1. Componentes e configuração
 

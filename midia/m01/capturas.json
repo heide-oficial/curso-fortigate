@@ -1,987 +1,1067 @@
 {
-  "roteiro": "m01",
-  "geradoEm": "2026-11-09T14:17:13.424Z",
+  "geradoEm": "2026-11-09T18:25:14.887Z",
   "arquivos": [
     {
+      "arquivo": "00-topologia-gerencia.png",
+      "largura": 2030,
+      "altura": 1338,
+      "descricao": "Topologia do módulo 01: ADMIN-PC na porta mgmt e NOTEBOOK-TI na porta de console do FortiGate"
+    },
+    {
       "arquivo": "01-1-fortigate-121g.png",
-      "tipo": "imagem",
-      "passo": 3,
-      "titulo": "FortiGate FGT-MTZ",
-      "descricao": "FortiGate 121G FGT-MTZ no diagrama 2D do laboratório",
       "largura": 1920,
-      "altura": 488
+      "altura": 411,
+      "descricao": "FortiGate 121G no diagrama do laboratório"
     },
     {
       "arquivo": "01-2-topologia-console.png",
-      "tipo": "imagem",
-      "passo": 8,
-      "titulo": "Cabo de console",
-      "descricao": "Diagrama com o cabo de console entre a porta CON do FGT-MTZ e o NOTEBOOK-TI em destaque",
-      "largura": 1920,
-      "altura": 1383
-    },
-    {
-      "arquivo": "00-topologia-gerencia.png",
-      "tipo": "imagem",
-      "passo": 9,
-      "titulo": "Topologia completa",
-      "descricao": "Topologia do módulo 01: ADMIN-PC na porta mgmt e NOTEBOOK-TI na porta de console do FGT-MTZ",
-      "largura": 1920,
-      "altura": 1383
+      "largura": 2030,
+      "altura": 1338,
+      "descricao": "Cabo de console entre a porta CON do FortiGate e o NOTEBOOK-TI"
     },
     {
       "arquivo": "01-2-notebook.png",
-      "tipo": "imagem",
-      "passo": 10,
-      "titulo": "Abrindo o notebook",
-      "descricao": "Área de trabalho do NOTEBOOK-TI com o botão Iniciar em destaque",
       "largura": 1920,
-      "altura": 1080
+      "altura": 1052,
+      "descricao": "Área de trabalho do NOTEBOOK-TI com o botão Iniciar"
     },
     {
       "arquivo": "01-2-menu-iniciar.png",
-      "tipo": "imagem",
-      "passo": 11,
-      "titulo": "Menu Iniciar",
-      "descricao": "Menu Iniciar do notebook com o PuTTY em destaque",
       "largura": 1920,
-      "altura": 1666
+      "altura": 1666,
+      "descricao": "Menu Iniciar com o PuTTY"
     },
     {
-      "arquivo": "01-2-putty-serial",
-      "tipo": "slides",
-      "passo": 12,
-      "titulo": "PuTTY: conexão serial",
-      "descricao": "Janela do PuTTY configurada para conexão serial na COM3 a 9600 bps",
-      "imagens": [
-        {
-          "arquivo": "01-2-putty-serial-1.png",
-          "largura": 1920,
-          "altura": 468,
-          "slide": {
-            "titulo": "Conexão serial",
-            "texto": "A console é uma conexão **serial**. Ela funciona mesmo sem nenhuma configuração de rede, por isso é o acesso de primeiro uso e de emergência."
-          }
-        },
-        {
-          "arquivo": "01-2-putty-serial-2.png",
-          "largura": 1920,
-          "altura": 468,
-          "slide": {
-            "titulo": "Serial line",
-            "texto": "A porta serial do computador. No Windows, o adaptador USB-serial aparece como uma porta **COM** (aqui, COM3)."
-          }
-        },
-        {
-          "arquivo": "01-2-putty-serial-3.png",
-          "largura": 1920,
-          "altura": 468,
-          "slide": {
-            "titulo": "Speed",
-            "texto": "A velocidade da console do FortiGate é **9600 bps**, com 8 bits de dados, sem paridade e 1 bit de parada: o famoso **9600 8N1**. Com outra velocidade, aparecem caracteres sem sentido."
-          }
-        },
-        {
-          "arquivo": "01-2-putty-serial-4.png",
-          "largura": 1920,
-          "altura": 468,
-          "slide": {
-            "titulo": "Connection type",
-            "texto": "Tipo **Serial**. O mesmo PuTTY também abre conexões SSH, que vamos usar quando o FortiGate tiver endereço de gerência."
-          }
-        }
-      ]
+      "arquivo": "01-2-putty-1.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "PuTTY: Connection type Serial"
+    },
+    {
+      "arquivo": "01-2-putty-2.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "PuTTY: Serial line COM3"
+    },
+    {
+      "arquivo": "01-2-putty-3.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "PuTTY: Speed 9600"
+    },
+    {
+      "arquivo": "01-2-putty-4.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "PuTTY: botão Open"
     },
     {
       "arquivo": "01-2-console-1.png",
-      "tipo": "imagem",
-      "passo": 13,
-      "titulo": "Prompt de login",
-      "descricao": "Console do FGT-MTZ no PuTTY com o prompt de login",
       "largura": 1920,
-      "altura": 1210
+      "altura": 1206,
+      "descricao": "Console no PuTTY com o prompt de login do FortiGate de fábrica"
     },
     {
       "arquivo": "01-2-console-2.png",
-      "tipo": "imagem",
-      "passo": 14,
-      "titulo": "Troca obrigatória de senha",
-      "descricao": "Login como admin com senha em branco e o pedido de troca obrigatória de senha",
       "largura": 1920,
-      "altura": 1210
+      "altura": 1206,
+      "descricao": "Login admin com senha em branco e a troca obrigatória de senha"
     },
     {
       "arquivo": "01-2-console-3.png",
-      "tipo": "imagem",
-      "passo": 15,
-      "titulo": "Senha definida",
-      "descricao": "Nova senha confirmada, mensagem Welcome! e o prompt FGT-MTZ #",
       "largura": 1920,
-      "altura": 1210
+      "altura": 1206,
+      "descricao": "Nova senha confirmada, Welcome! e o prompt"
     },
     {
-      "arquivo": "01-2-console-mgmt.png",
-      "tipo": "imagem",
-      "passo": 16,
-      "titulo": "Endereço de gerência pela CLI",
-      "descricao": "Configuração do endereço 10.10.99.1/24 na interface mgmt pela console",
+      "arquivo": "01-2-mgmt-1.png",
       "largura": 1920,
-      "altura": 1210
+      "altura": 1206,
+      "descricao": "Console: config system interface"
+    },
+    {
+      "arquivo": "01-2-mgmt-2.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "Console: edit mgmt"
+    },
+    {
+      "arquivo": "01-2-mgmt-3.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "Console: set mode static"
+    },
+    {
+      "arquivo": "01-2-mgmt-4.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "Console: set ip 10.10.99.1 255.255.255.0"
+    },
+    {
+      "arquivo": "01-2-mgmt-5.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "Console: set allowaccess ping https ssh"
+    },
+    {
+      "arquivo": "01-2-mgmt-6.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "Console: end"
+    },
+    {
+      "arquivo": "01-2-mgmt-show.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "show system interface mgmt na console"
     },
     {
       "arquivo": "01-2-topologia-mgmt.png",
-      "tipo": "imagem",
-      "passo": 18,
-      "titulo": "Caminho até a GUI",
-      "descricao": "Diagrama com o cabo de rede entre a porta mgmt do FGT-MTZ (10.10.99.1/24) e o ADMIN-PC (10.10.99.10/24) em destaque",
-      "largura": 1920,
-      "altura": 1383
+      "largura": 2030,
+      "altura": 1338,
+      "descricao": "Cabo de rede entre a porta mgmt (10.10.99.1/24) e o ADMIN-PC (10.10.99.10/24)"
     },
     {
       "arquivo": "01-2-admin-pc.png",
-      "tipo": "imagem",
-      "passo": 19,
-      "titulo": "Estação do administrador",
-      "descricao": "Área de trabalho do ADMIN-PC com o Microsoft Edge em destaque na barra de tarefas",
       "largura": 1920,
-      "altura": 1080
+      "altura": 1052,
+      "descricao": "Barra de tarefas do ADMIN-PC com o Microsoft Edge"
+    },
+    {
+      "arquivo": "01-2-edge-url.png",
+      "largura": 1920,
+      "altura": 1210,
+      "descricao": "Endereço https://10.10.99.1 digitado no Edge"
     },
     {
       "arquivo": "01-2-login-gui.png",
-      "tipo": "imagem",
-      "passo": 20,
-      "titulo": "Navegador do ADMIN-PC",
-      "descricao": "Página de login da GUI do FGT-MTZ aberta no navegador do ADMIN-PC",
       "largura": 1920,
-      "altura": 1215
+      "altura": 1210,
+      "descricao": "Página de login da GUI no Edge do ADMIN-PC"
+    },
+    {
+      "arquivo": "01-2-login-dados.png",
+      "largura": 1920,
+      "altura": 1210,
+      "descricao": "Usuário admin, senha e o botão Login"
     },
     {
       "arquivo": "01-2-assistente-1.png",
-      "tipo": "imagem",
-      "passo": 21,
-      "titulo": "Assistente de configuração",
-      "descricao": "Tela inicial do assistente FortiGate Setup com os três passos",
       "largura": 1920,
-      "altura": 836
+      "altura": 826,
+      "descricao": "Assistente FortiGate Setup com o botão Begin"
     },
     {
       "arquivo": "01-2-assistente-2.png",
-      "tipo": "imagem",
-      "passo": 22,
-      "titulo": "Atualização automática de patches",
-      "descricao": "Passo Automatic Patch Upgrades do assistente, com a opção ativada",
       "largura": 1920,
-      "altura": 836
+      "altura": 826,
+      "descricao": "Automatic Patch Upgrades desativado e o botão OK"
     },
     {
       "arquivo": "01-2-assistente-3.png",
-      "tipo": "imagem",
-      "passo": 23,
-      "titulo": "Policy inicial",
-      "descricao": "Passo Initial Policy Configuration do assistente, com Change Your Password concluído",
       "largura": 1920,
-      "altura": 836
+      "altura": 826,
+      "descricao": "Initial Policy Configuration: Do not create firewall policy now e Save"
     },
     {
-      "arquivo": "01-1-menu-gui",
-      "tipo": "slides",
-      "passo": 25,
-      "titulo": "GUI em tela cheia",
-      "descricao": "Menu lateral da GUI do FortiGate com os menus principais",
-      "imagens": [
-        {
-          "arquivo": "01-1-menu-gui-1.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "O menu lateral",
-            "texto": "Esta é a mesma GUI, agora em tela cheia. O **menu lateral** organiza o FortiGate por função. Vamos percorrer os menus principais."
-          }
-        },
-        {
-          "arquivo": "01-1-menu-gui-2.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Dashboard",
-            "texto": "Visão do estado do equipamento: CPU, memória, sessões, licenças e as visões do **FortiView**."
-          }
-        },
-        {
-          "arquivo": "01-1-menu-gui-3.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Network",
-            "texto": "Conectividade: **interfaces**, DNS, rotas estáticas, policy routes e SD-WAN."
-          }
-        },
-        {
-          "arquivo": "01-1-menu-gui-4.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Policy & Objects",
-            "texto": "Quem pode falar com quem: **firewall policies** e os objetos que elas usam (endereços, serviços, schedules, Virtual IPs, IP pools)."
-          }
-        },
-        {
-          "arquivo": "01-1-menu-gui-5.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Security Profiles",
-            "texto": "O que é inspecionado no tráfego **já permitido** pela policy: Antivirus, Web Filter, DNS Filter, Application Control, IPS e inspeção SSL. Um perfil nunca libera o que a policy bloqueou."
-          }
-        },
-        {
-          "arquivo": "01-1-menu-gui-6.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "VPN",
-            "texto": "**VPN**: túneis IPsec entre sites e acesso remoto de usuários."
-          }
-        },
-        {
-          "arquivo": "01-1-menu-gui-7.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "User & Authentication",
-            "texto": "**User & Authentication**: usuários, grupos, servidores LDAP e RADIUS, FortiTokens e contas de convidados."
-          }
-        },
-        {
-          "arquivo": "01-1-menu-gui-8.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "WiFi & Switch Controller",
-            "texto": "**WiFi & Switch Controller**: gerência de access points (FortiAP) e switches (FortiSwitch) pelo próprio FortiGate."
-          }
-        },
-        {
-          "arquivo": "01-1-menu-gui-9.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "System",
-            "texto": "O próprio equipamento: **administradores**, perfis administrativos, firmware, configurações gerais, HA, FortiGuard e Feature Visibility."
-          }
-        },
-        {
-          "arquivo": "01-1-menu-gui-10.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Security Fabric",
-            "texto": "**Security Fabric**: integração com outros produtos Fortinet (topologia, Security Rating, automação, conectores)."
-          }
-        },
-        {
-          "arquivo": "01-1-menu-gui-11.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Log & Report",
-            "texto": "**Log & Report**: os registros de tráfego, eventos e segurança, e a configuração dos destinos de log."
-          }
-        }
-      ]
+      "arquivo": "01-2-assistente-4.png",
+      "largura": 1920,
+      "altura": 1054,
+      "descricao": "Confirmação sem policy inicial: I acknowledge e OK"
     },
     {
-      "arquivo": "01-1-elementos-gui",
-      "tipo": "slides",
-      "passo": 26,
-      "titulo": "Barra superior",
-      "descricao": "Barra superior da GUI: busca, FortiAI, CLI, notificações e menu do administrador",
-      "imagens": [
-        {
-          "arquivo": "01-1-elementos-gui-1.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Barra superior",
-            "texto": "A barra superior traz ferramentas que estão disponíveis em qualquer página."
-          }
-        },
-        {
-          "arquivo": "01-1-elementos-gui-2.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Busca",
-            "texto": "Busca de páginas e de configuração. Digite parte do nome (\"dns\", \"admin\", \"firmware\") para ir direto à página: muito útil quando o menu muda entre versões."
-          }
-        },
-        {
-          "arquivo": "01-1-elementos-gui-3.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "FortiAI",
-            "texto": "Assistente de IA da Fortinet, que responde perguntas sobre a configuração. Depende de licença."
-          }
-        },
-        {
-          "arquivo": "01-1-elementos-gui-4.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "CLI",
-            "texto": "Abre a **CLI Console**: um terminal da CLI dentro do navegador, sem precisar de SSH. Vamos usá-la na seção 01.3."
-          }
-        },
-        {
-          "arquivo": "01-1-elementos-gui-5.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Notificações",
-            "texto": "Avisos do sistema: firmware novo, licenças a vencer, problemas de configuração."
-          }
-        },
-        {
-          "arquivo": "01-1-elementos-gui-6.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Menu do administrador",
-            "texto": "Menu do usuário logado: **Configuration** (backup, restauração e reset de fábrica), troca de senha e logout."
-          }
-        }
-      ]
+      "arquivo": "01-2-dashboard.png",
+      "largura": 1920,
+      "altura": 1210,
+      "descricao": "Dashboard da GUI no Edge do ADMIN-PC, depois do assistente"
+    },
+    {
+      "arquivo": "01-2-reset-0.png",
+      "largura": 1920,
+      "altura": 410,
+      "descricao": "Botão do administrador na barra superior"
+    },
+    {
+      "arquivo": "01-2-reset-1.png",
+      "largura": 1920,
+      "altura": 1425,
+      "descricao": "Menu do administrador com o item Configuration"
+    },
+    {
+      "arquivo": "01-2-reset-2.png",
+      "largura": 1920,
+      "altura": 1294,
+      "descricao": "Submenu Configuration com o item Reset to factory defaults"
+    },
+    {
+      "arquivo": "01-2-reset-3.png",
+      "largura": 1920,
+      "altura": 777,
+      "descricao": "Confirmação do reset de fábrica com o botão OK"
+    },
+    {
+      "arquivo": "01-1-menu-gui-1.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Menu lateral da GUI"
+    },
+    {
+      "arquivo": "01-1-menu-gui-2.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Menu Dashboard"
+    },
+    {
+      "arquivo": "01-1-menu-gui-3.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Menu Network"
+    },
+    {
+      "arquivo": "01-1-menu-gui-4.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Menu Policy & Objects"
+    },
+    {
+      "arquivo": "01-1-menu-gui-5.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Menu Security Profiles"
+    },
+    {
+      "arquivo": "01-1-menu-gui-6.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Menu VPN"
+    },
+    {
+      "arquivo": "01-1-menu-gui-7.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Menu User & Authentication"
+    },
+    {
+      "arquivo": "01-1-menu-gui-8.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Menu WiFi & Switch Controller"
+    },
+    {
+      "arquivo": "01-1-menu-gui-9.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Menu System"
+    },
+    {
+      "arquivo": "01-1-menu-gui-10.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Menu Security Fabric"
+    },
+    {
+      "arquivo": "01-1-menu-gui-11.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Menu Log & Report"
+    },
+    {
+      "arquivo": "01-1-elementos-gui-1.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Barra superior da GUI"
+    },
+    {
+      "arquivo": "01-1-elementos-gui-2.png",
+      "largura": 1920,
+      "altura": 1010,
+      "descricao": "Busca"
+    },
+    {
+      "arquivo": "01-1-elementos-gui-3.png",
+      "largura": 1920,
+      "altura": 1010,
+      "descricao": "FortiAI"
+    },
+    {
+      "arquivo": "01-1-elementos-gui-4.png",
+      "largura": 1920,
+      "altura": 1010,
+      "descricao": "CLI"
+    },
+    {
+      "arquivo": "01-1-elementos-gui-5.png",
+      "largura": 1920,
+      "altura": 1010,
+      "descricao": "Notificações"
+    },
+    {
+      "arquivo": "01-1-elementos-gui-6.png",
+      "largura": 1920,
+      "altura": 1010,
+      "descricao": "Menu do administrador"
+    },
+    {
+      "arquivo": "01-1-busca-0.png",
+      "largura": 1920,
+      "altura": 1040,
+      "descricao": "Menu da busca com Jump to page"
+    },
+    {
+      "arquivo": "01-1-busca.png",
+      "largura": 1920,
+      "altura": 377,
+      "descricao": "Busca da GUI com \"dns\" digitado e os resultados"
+    },
+    {
+      "arquivo": "01-1-add-widget-0.png",
+      "largura": 1920,
+      "altura": 1000,
+      "descricao": "Botão Add widget do dashboard"
+    },
+    {
+      "arquivo": "01-1-add-widget.png",
+      "largura": 1920,
+      "altura": 1714,
+      "descricao": "Lista de widgets para acrescentar ao dashboard"
+    },
+    {
+      "arquivo": "01-1-menu-fabric.png",
+      "largura": 1920,
+      "altura": 1125,
+      "descricao": "Menu Security Fabric > Fabric Connectors"
+    },
+    {
+      "arquivo": "01-1-fabric-connectors.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Security Fabric > Fabric Connectors"
+    },
+    {
+      "arquivo": "01-3-menu-settings.png",
+      "largura": 1920,
+      "altura": 1125,
+      "descricao": "Menu System > Settings"
+    },
+    {
+      "arquivo": "01-3-tema-0.png",
+      "largura": 1920,
+      "altura": 464,
+      "descricao": "Abas de System > Settings com Preference em destaque"
     },
     {
       "arquivo": "01-3-tema-1.png",
-      "tipo": "imagem",
-      "passo": 27,
-      "titulo": "Tema da GUI",
-      "descricao": "System > Settings, aba Preference, com a seção Theming em destaque",
       "largura": 1920,
-      "altura": 1080
+      "altura": 354,
+      "descricao": "Seção Theming"
     },
     {
       "arquivo": "01-3-tema-2.png",
-      "tipo": "imagem",
-      "passo": 28,
-      "titulo": "Temas disponíveis",
-      "descricao": "Lista de temas da GUI aberta, com o Jade selecionado",
       "largura": 1920,
-      "altura": 733
+      "altura": 733,
+      "descricao": "Lista de temas com o Jade"
+    },
+    {
+      "arquivo": "01-3-tema-apply.png",
+      "largura": 1920,
+      "altura": 540,
+      "descricao": "Botão Apply"
+    },
+    {
+      "arquivo": "01-3-tema-pers-0.png",
+      "largura": 1920,
+      "altura": 1425,
+      "descricao": "Menu do administrador com Personalize"
     },
     {
       "arquivo": "01-3-tema-3.png",
-      "tipo": "imagem",
-      "passo": 29,
-      "titulo": "Tema por administrador",
-      "descricao": "Painel Personalize com a opção de tema do administrador",
       "largura": 1920,
-      "altura": 1080
+      "altura": 188,
+      "descricao": "Painel Personalize"
     },
     {
-      "arquivo": "01-1-system-information",
-      "tipo": "slides",
-      "passo": 30,
-      "titulo": "System Information",
-      "descricao": "Widget System Information do dashboard Status do FGT-MTZ",
-      "imagens": [
-        {
-          "arquivo": "01-1-system-information-1.png",
-          "largura": 1920,
-          "altura": 1690,
-          "slide": {
-            "titulo": "System Information",
-            "texto": "O widget **System Information**, no dashboard Status, resume a identidade do equipamento."
-          }
-        },
-        {
-          "arquivo": "01-1-system-information-2.png",
-          "largura": 1920,
-          "altura": 1690,
-          "slide": {
-            "titulo": "Hostname",
-            "texto": "Nome do equipamento. Ele aparece no prompt da CLI, nos logs e no Security Fabric."
-          }
-        },
-        {
-          "arquivo": "01-1-system-information-3.png",
-          "largura": 1920,
-          "altura": 1690,
-          "slide": {
-            "titulo": "Serial number",
-            "texto": "Número de série, usado no **registro** no FortiCare e no suporte."
-          }
-        },
-        {
-          "arquivo": "01-1-system-information-4.png",
-          "largura": 1920,
-          "altura": 1690,
-          "slide": {
-            "titulo": "Firmware",
-            "texto": "Versão do FortiOS e **build**. O destaque em vermelho indica que há uma versão mais nova disponível (seção 01.7)."
-          }
-        },
-        {
-          "arquivo": "01-1-system-information-5.png",
-          "largura": 1920,
-          "altura": 1690,
-          "slide": {
-            "titulo": "Mode",
-            "texto": "**NAT** é o modo roteado, o padrão e o usado neste curso. O outro modo é o **Transparent**, em que o FortiGate funciona como uma ponte entre segmentos."
-          }
-        },
-        {
-          "arquivo": "01-1-system-information-6.png",
-          "largura": 1920,
-          "altura": 1690,
-          "slide": {
-            "titulo": "System time e Uptime",
-            "texto": "Hora do equipamento e há quanto tempo ele está ligado. Na seção 01.4 veremos por que a hora correta é tão importante."
-          }
-        }
-      ]
+      "arquivo": "01-1-system-information-1.png",
+      "largura": 1920,
+      "altura": 1690,
+      "descricao": "Widget System Information"
+    },
+    {
+      "arquivo": "01-1-system-information-2.png",
+      "largura": 1920,
+      "altura": 1690,
+      "descricao": "System Information: Hostname"
+    },
+    {
+      "arquivo": "01-1-system-information-3.png",
+      "largura": 1920,
+      "altura": 1690,
+      "descricao": "System Information: Serial number"
+    },
+    {
+      "arquivo": "01-1-system-information-4.png",
+      "largura": 1920,
+      "altura": 1690,
+      "descricao": "System Information: Firmware"
+    },
+    {
+      "arquivo": "01-1-system-information-5.png",
+      "largura": 1920,
+      "altura": 1690,
+      "descricao": "System Information: Mode"
+    },
+    {
+      "arquivo": "01-1-system-information-6.png",
+      "largura": 1920,
+      "altura": 1690,
+      "descricao": "System Information: System time"
+    },
+    {
+      "arquivo": "01-1-fv-menu.png",
+      "largura": 1920,
+      "altura": 1955,
+      "descricao": "Menu System > Feature Visibility"
     },
     {
       "arquivo": "01-1-feature-visibility-1.png",
-      "tipo": "imagem",
-      "passo": 31,
-      "titulo": "Feature Visibility",
-      "descricao": "Página System > Feature Visibility com a lista de recursos por grupo",
       "largura": 1920,
-      "altura": 1080
+      "altura": 1080,
+      "descricao": "System > Feature Visibility"
     },
     {
       "arquivo": "01-1-feature-visibility-2.png",
-      "tipo": "imagem",
-      "passo": 32,
-      "titulo": "Ativando DNS Database",
-      "descricao": "Chave DNS Database ativada em Feature Visibility",
       "largura": 1920,
-      "altura": 1080
+      "altura": 842,
+      "descricao": "DNS Database ativado"
+    },
+    {
+      "arquivo": "01-1-fv-apply.png",
+      "largura": 1920,
+      "altura": 540,
+      "descricao": "Botão Apply"
     },
     {
       "arquivo": "01-1-feature-visibility-3.png",
-      "tipo": "imagem",
-      "passo": 33,
-      "titulo": "Novo item no menu",
-      "descricao": "Menu Network mostrando o novo item DNS Servers",
       "largura": 1920,
-      "altura": 1080
+      "altura": 1060,
+      "descricao": "Menu Network com o item DNS Servers"
     },
     {
-      "arquivo": "01-3-lista-objetos",
-      "tipo": "slides",
-      "passo": 34,
-      "titulo": "Listas de objetos",
-      "descricao": "Lista Policy & Objects > Addresses com botões de ação, busca e coluna Ref.",
-      "imagens": [
-        {
-          "arquivo": "01-3-lista-objetos-1.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "O padrão das listas",
-            "texto": "Quase toda página de configuração da GUI segue o mesmo padrão: uma **lista** de objetos com botões de ação, busca e colunas que podem ser filtradas."
-          }
-        },
-        {
-          "arquivo": "01-3-lista-objetos-2.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Create new",
-            "texto": "Cria um objeto novo. Os botões **Edit**, **Clone** e **Delete** ficam ativos quando um item é selecionado."
-          }
-        },
-        {
-          "arquivo": "01-3-lista-objetos-3.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Busca",
-            "texto": "Filtra a lista pelo texto digitado em qualquer coluna."
-          }
-        },
-        {
-          "arquivo": "01-3-lista-objetos-4.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Ref.",
-            "texto": "A coluna **Ref.** mostra quantos objetos **usam** cada item. O FortiOS não deixa apagar um objeto em uso: clique no número para ver quem o referencia."
-          }
-        }
-      ]
+      "arquivo": "01-3-menu-addresses.png",
+      "largura": 1920,
+      "altura": 1125,
+      "descricao": "Menu Policy & Objects > Addresses"
+    },
+    {
+      "arquivo": "01-3-lista-objetos-1.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Policy & Objects > Addresses"
+    },
+    {
+      "arquivo": "01-3-lista-objetos-2.png",
+      "largura": 1920,
+      "altura": 189,
+      "descricao": "Botão Create new"
+    },
+    {
+      "arquivo": "01-3-lista-objetos-3.png",
+      "largura": 1920,
+      "altura": 189,
+      "descricao": "Campo de busca"
+    },
+    {
+      "arquivo": "01-3-lista-objetos-4.png",
+      "largura": 1920,
+      "altura": 511,
+      "descricao": "Coluna Ref."
+    },
+    {
+      "arquivo": "01-3-lista-objetos-5.png",
+      "largura": 1920,
+      "altura": 215,
+      "descricao": "gmail.com selecionado: os botões Edit e Clone aparecem, mas não Delete"
+    },
+    {
+      "arquivo": "01-3-lista-objetos-6.png",
+      "largura": 1920,
+      "altura": 480,
+      "descricao": "Referências do objeto gmail.com"
+    },
+    {
+      "arquivo": "01-3-lista-objetos-7.png",
+      "largura": 1920,
+      "altura": 215,
+      "descricao": "wildcard.dropbox.com, sem referências: o botão Delete aparece"
+    },
+    {
+      "arquivo": "01-3-ssh-1.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "PuTTY no ADMIN-PC: SSH para 10.10.99.1, porta 22"
+    },
+    {
+      "arquivo": "01-3-ssh-2.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "Sessão SSH no FortiGate a partir do ADMIN-PC"
+    },
+    {
+      "arquivo": "01-3-cli-menu.png",
+      "largura": 1920,
+      "altura": 565,
+      "descricao": "Botão da CLI e a opção CLI Console"
     },
     {
       "arquivo": "01-3-cli-console-gui.png",
-      "tipo": "imagem",
-      "passo": 35,
-      "titulo": "CLI Console",
-      "descricao": "CLI Console aberta na GUI com a saída de show system interface mgmt",
       "largura": 1920,
-      "altura": 1249
+      "altura": 1246,
+      "descricao": "CLI Console com show system interface mgmt"
     },
     {
       "arquivo": "01-3-show-full.png",
-      "tipo": "imagem",
-      "passo": 36,
-      "titulo": "show full-configuration",
-      "descricao": "Saída de show full-configuration system interface mgmt na CLI Console",
       "largura": 1920,
-      "altura": 1249
+      "altura": 1246,
+      "descricao": "show full-configuration system interface mgmt"
     },
     {
-      "arquivo": "01-4-system-settings",
-      "tipo": "slides",
-      "passo": 37,
-      "titulo": "System > Settings",
-      "descricao": "System > Settings, aba General: hostname, fuso horário e NTP",
-      "imagens": [
-        {
-          "arquivo": "01-4-system-settings-1.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "System Settings",
-            "texto": "Em **System > Settings** ficam a identidade do equipamento e as opções gerais, em quatro abas: **General**, **Access**, **Device** e **Preference**."
-          }
-        },
-        {
-          "arquivo": "01-4-system-settings-2.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Hostname",
-            "texto": "O **hostname** já é FGT-MTZ. Com vários FortiGates, um bom padrão de nomes evita alterar o equipamento errado."
-          }
-        },
-        {
-          "arquivo": "01-4-system-settings-3.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Time zone",
-            "texto": "O fuso horário da matriz: **America/Sao_Paulo**."
-          }
-        },
-        {
-          "arquivo": "01-4-system-settings-4.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Set time",
-            "texto": "A hora vem de **NTP**. Hora errada causa erros de certificado, recusa de tokens de MFA, falhas de FSSO e logs impossíveis de correlacionar."
-          }
-        },
-        {
-          "arquivo": "01-4-system-settings-5.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Select server",
-            "texto": "Na GUI, o servidor NTP é o do FortiGuard. **Servidores próprios só pela CLI**: um dos casos em que a CLI é necessária."
-          }
-        }
-      ]
+      "arquivo": "01-3-set-0.png",
+      "largura": 1920,
+      "altura": 1246,
+      "descricao": "port10 com allowaccess ping https ssh"
+    },
+    {
+      "arquivo": "01-3-set-1.png",
+      "largura": 1920,
+      "altura": 1246,
+      "descricao": "set allowaccess snmp substitui a lista"
+    },
+    {
+      "arquivo": "01-3-set-2.png",
+      "largura": 1920,
+      "altura": 1246,
+      "descricao": "append allowaccess snmp acrescenta"
+    },
+    {
+      "arquivo": "01-3-set-3.png",
+      "largura": 1920,
+      "altura": 1246,
+      "descricao": "unselect allowaccess ssh retira"
+    },
+    {
+      "arquivo": "01-3-ajuda.png",
+      "largura": 1920,
+      "altura": 1246,
+      "descricao": "O ? lista as opções de allowaccess"
+    },
+    {
+      "arquivo": "01-3-tab.png",
+      "largura": 1920,
+      "altura": 1246,
+      "descricao": "Tab completa o comando"
+    },
+    {
+      "arquivo": "01-4-menu-settings.png",
+      "largura": 1920,
+      "altura": 1125,
+      "descricao": "Menu System > Settings"
+    },
+    {
+      "arquivo": "01-4-system-settings-1.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "System > Settings, aba General"
+    },
+    {
+      "arquivo": "01-4-system-settings-2.png",
+      "largura": 1920,
+      "altura": 267,
+      "descricao": "Hostname FGT-MTZ"
+    },
+    {
+      "arquivo": "01-4-system-settings-3.png",
+      "largura": 1920,
+      "altura": 290,
+      "descricao": "Fuso horário America/Sao_Paulo"
+    },
+    {
+      "arquivo": "01-4-system-settings-4.png",
+      "largura": 1920,
+      "altura": 371,
+      "descricao": "Set time NTP, servidor e intervalo de sincronização"
+    },
+    {
+      "arquivo": "01-4-system-settings-apply.png",
+      "largura": 1920,
+      "altura": 540,
+      "descricao": "Botão Apply"
     },
     {
       "arquivo": "01-4-ntp-cli.png",
-      "tipo": "imagem",
-      "passo": 38,
-      "titulo": "NTP próprio pela CLI",
-      "descricao": "Configuração do servidor NTP a.ntp.br pela CLI Console",
       "largura": 1920,
-      "altura": 1249
+      "altura": 1246,
+      "descricao": "NTP a.ntp.br configurado pela CLI Console"
     },
     {
-      "arquivo": "01-4-dns",
-      "tipo": "slides",
-      "passo": 39,
-      "titulo": "DNS do sistema",
-      "descricao": "Network > DNS com os servidores FortiGuard e os protocolos de DNS",
-      "imagens": [
-        {
-          "arquivo": "01-4-dns-1.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "DNS do sistema",
-            "texto": "Este é o DNS usado pelo **próprio FortiGate**: FortiGuard, NTP por nome, objetos FQDN, alertas. Ele é diferente do serviço DNS que o FortiGate oferece aos clientes (módulo 02)."
-          }
-        },
-        {
-          "arquivo": "01-4-dns-2.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "DNS servers",
-            "texto": "**Use FortiGuard Servers** usa os servidores da Fortinet (96.45.45.45 e 96.45.46.46). **Specify** permite indicar servidores próprios, como o DNS do Active Directory."
-          }
-        },
-        {
-          "arquivo": "01-4-dns-3.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Protocolos",
-            "texto": "O FortiGate pode consultar o DNS com transporte cifrado: **DNS over TLS** (porta 853) ou **DNS over HTTPS**, quando o servidor suporta."
-          }
-        }
-      ]
+      "arquivo": "01-4-ntp-gui.png",
+      "largura": 1920,
+      "altura": 448,
+      "descricao": "System > Settings mostrando o servidor NTP Custom a.ntp.br"
     },
     {
-      "arquivo": "01-4-administration-settings",
-      "tipo": "slides",
-      "passo": 40,
-      "titulo": "Administration settings",
-      "descricao": "Aba Access de System > Settings com portas administrativas e Idle timeout",
-      "imagens": [
-        {
-          "arquivo": "01-4-administration-settings-1.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Administration settings",
-            "texto": "Na aba **Access** ficam as portas da GUI e do SSH e o tempo de inatividade da sessão administrativa."
-          }
-        },
-        {
-          "arquivo": "01-4-administration-settings-2.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Portas",
-            "texto": "Mudar a porta **não é** proteção real: um varredor encontra o serviço em qualquer porta. Muda-se para liberar a 443 para outro serviço, como um portal VPN."
-          }
-        },
-        {
-          "arquivo": "01-4-administration-settings-3.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Idle timeout",
-            "texto": "Mudamos o **Idle timeout** de 5 para **15 minutos**: depois disso, a sessão inativa é encerrada."
-          }
-        }
-      ]
+      "arquivo": "01-4-menu-dns.png",
+      "largura": 1920,
+      "altura": 795,
+      "descricao": "Menu Network > DNS"
+    },
+    {
+      "arquivo": "01-4-dns-1.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Network > DNS"
+    },
+    {
+      "arquivo": "01-4-dns-2.png",
+      "largura": 1920,
+      "altura": 371,
+      "descricao": "Servidores DNS do FortiGuard"
+    },
+    {
+      "arquivo": "01-4-dns-3.png",
+      "largura": 1920,
+      "altura": 661,
+      "descricao": "Protocolos de DNS"
+    },
+    {
+      "arquivo": "01-4-dns-specify.png",
+      "largura": 1920,
+      "altura": 448,
+      "descricao": "Opção Specify com os campos de servidor"
+    },
+    {
+      "arquivo": "01-4-sysinfo-depois.png",
+      "largura": 1920,
+      "altura": 1690,
+      "descricao": "System Information com o hostname FGT-MTZ e a hora"
+    },
+    {
+      "arquivo": "01-4-mgmt-0.png",
+      "largura": 1920,
+      "altura": 1349,
+      "descricao": "mgmt selecionada na lista e o botão Edit"
     },
     {
       "arquivo": "01-4-admin-access.png",
-      "tipo": "imagem",
-      "passo": 42,
-      "titulo": "Administrative Access",
-      "descricao": "Edição da interface mgmt com Administrative Access HTTPS, SSH e PING",
       "largura": 1920,
-      "altura": 1080
+      "altura": 435,
+      "descricao": "Administrative Access da mgmt: HTTPS, SSH e PING"
+    },
+    {
+      "arquivo": "01-4-mgmt-ok.png",
+      "largura": 1920,
+      "altura": 555,
+      "descricao": "Botão OK da edição da mgmt"
+    },
+    {
+      "arquivo": "01-4-administration-settings-0.png",
+      "largura": 1920,
+      "altura": 464,
+      "descricao": "Aba Access de System > Settings"
+    },
+    {
+      "arquivo": "01-4-administration-settings-1.png",
+      "largura": 1920,
+      "altura": 819,
+      "descricao": "Portas administrativas"
+    },
+    {
+      "arquivo": "01-4-administration-settings-2.png",
+      "largura": 1920,
+      "altura": 819,
+      "descricao": "Idle timeout de 15 minutos"
+    },
+    {
+      "arquivo": "01-4-administration-settings-3.png",
+      "largura": 1920,
+      "altura": 819,
+      "descricao": "Certificado da GUI e sessões simultâneas"
+    },
+    {
+      "arquivo": "01-4-administration-apply.png",
+      "largura": 1920,
+      "altura": 540,
+      "descricao": "Botão Apply"
+    },
+    {
+      "arquivo": "01-7-revisao.png",
+      "largura": 1920,
+      "altura": 341,
+      "descricao": "Create a configuration revision on logout"
+    },
+    {
+      "arquivo": "01-4-menu-eventos.png",
+      "largura": 1920,
+      "altura": 1125,
+      "descricao": "Menu Log & Report > System Events"
+    },
+    {
+      "arquivo": "01-4-log-resumo.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "System Events, aba Summary"
+    },
+    {
+      "arquivo": "01-4-log-aba.png",
+      "largura": 1920,
+      "altura": 500,
+      "descricao": "Aba Logs"
     },
     {
       "arquivo": "01-4-log-login.png",
-      "tipo": "imagem",
-      "passo": 43,
-      "titulo": "Eventos de login",
-      "descricao": "Log & Report > System Events com os eventos administrativos",
       "largura": 1920,
-      "altura": 1080
+      "altura": 1080,
+      "descricao": "Logs de eventos com os logins administrativos"
+    },
+    {
+      "arquivo": "01-4-log-detalhe.png",
+      "largura": 1920,
+      "altura": 3438,
+      "descricao": "Detalhes do evento de login"
+    },
+    {
+      "arquivo": "01-5-menu-perfis.png",
+      "largura": 1920,
+      "altura": 795,
+      "descricao": "Menu System > Admin Profiles"
     },
     {
       "arquivo": "01-5-admin-profiles.png",
-      "tipo": "imagem",
-      "passo": 44,
-      "titulo": "Admin Profiles",
-      "descricao": "Lista de perfis administrativos padrão: super_admin e prof_admin",
       "largura": 1920,
-      "altura": 1080
+      "altura": 267,
+      "descricao": "Perfis super_admin e prof_admin"
     },
     {
-      "arquivo": "01-5-admin-profile",
-      "tipo": "slides",
-      "passo": 45,
-      "titulo": "Perfil somente leitura",
-      "descricao": "Novo perfil administrativo Atlas-Leitura com Read em todas as áreas",
-      "imagens": [
-        {
-          "arquivo": "01-5-admin-profile-1.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Permissões por área",
-            "texto": "O perfil define, por **área** da GUI, o nível de acesso: **None** (a área nem aparece), **Read** ou **Read/Write**. Algumas áreas aceitam **Custom**, com permissões mais finas."
-          }
-        },
-        {
-          "arquivo": "01-5-admin-profile-2.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Atlas-Leitura",
-            "texto": "Com o atalho **Set All > Read**, criamos o perfil **Atlas-Leitura**, somente leitura em todas as áreas, para a equipe de suporte."
-          }
-        }
-      ]
+      "arquivo": "01-5-admin-profile-0.png",
+      "largura": 1920,
+      "altura": 189,
+      "descricao": "Botão Create new"
     },
     {
-      "arquivo": "01-5-admin-conta",
-      "tipo": "slides",
-      "passo": 46,
-      "titulo": "Novo administrador",
-      "descricao": "Criação do administrador carla.suporte com perfil e trusted hosts",
-      "imagens": [
-        {
-          "arquivo": "01-5-admin-conta-1.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Conta nominal",
-            "texto": "Uma conta **por pessoa**: assim os logs mostram quem fez cada alteração. A conta `admin` não deve ser usada no dia a dia."
-          }
-        },
-        {
-          "arquivo": "01-5-admin-conta-2.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Perfil",
-            "texto": "A conta usa o perfil **Atlas-Leitura**. Um administrador **não pode conceder mais privilégios do que tem**."
-          }
-        },
-        {
-          "arquivo": "01-5-admin-conta-3.png",
-          "largura": 1920,
-          "altura": 1080,
-          "slide": {
-            "titulo": "Trusted hosts",
-            "texto": "Restringe as origens de login desta conta. Atenção: para o FortiGate deixar de responder à página de login fora dessas redes, **todas** as contas precisam de trusted hosts."
-          }
-        }
-      ]
+      "arquivo": "01-5-admin-profile-1.png",
+      "largura": 1920,
+      "altura": 1579,
+      "descricao": "Novo perfil Atlas-Leitura, ainda com as permissões padrão"
+    },
+    {
+      "arquivo": "01-5-admin-profile-2.png",
+      "largura": 1920,
+      "altura": 1579,
+      "descricao": "Set All > Read: leitura em todas as áreas"
+    },
+    {
+      "arquivo": "01-5-admin-profile-3.png",
+      "largura": 1920,
+      "altura": 452,
+      "descricao": "Outras opções do perfil"
+    },
+    {
+      "arquivo": "01-5-admin-profile-ok.png",
+      "largura": 1920,
+      "altura": 555,
+      "descricao": "Botão OK do perfil"
+    },
+    {
+      "arquivo": "01-5-admin-profile-lista.png",
+      "largura": 1920,
+      "altura": 296,
+      "descricao": "Perfil Atlas-Leitura na lista"
+    },
+    {
+      "arquivo": "01-5-menu-admins.png",
+      "largura": 1920,
+      "altura": 630,
+      "descricao": "Menu System > Administrators"
+    },
+    {
+      "arquivo": "01-5-admin-conta-0.png",
+      "largura": 1920,
+      "altura": 1075,
+      "descricao": "Create new > Administrator"
+    },
+    {
+      "arquivo": "01-5-admin-conta-1.png",
+      "largura": 1920,
+      "altura": 670,
+      "descricao": "Username, Type, Password e Confirm Password"
+    },
+    {
+      "arquivo": "01-5-admin-conta-2.png",
+      "largura": 1920,
+      "altura": 337,
+      "descricao": "Perfil Atlas-Leitura"
+    },
+    {
+      "arquivo": "01-5-admin-conta-3.png",
+      "largura": 1920,
+      "altura": 386,
+      "descricao": "Trusted hosts: 10.10.99.0/24"
+    },
+    {
+      "arquivo": "01-5-admin-conta-4.png",
+      "largura": 1920,
+      "altura": 333,
+      "descricao": "Two-factor Authentication"
+    },
+    {
+      "arquivo": "01-5-admin-conta-ok.png",
+      "largura": 1920,
+      "altura": 555,
+      "descricao": "Botão OK da conta"
+    },
+    {
+      "arquivo": "01-5-admin-conta-senha.png",
+      "largura": 1920,
+      "altura": 755,
+      "descricao": "Confirmação com a senha do administrador logado"
+    },
+    {
+      "arquivo": "01-5-admin-conta-lista.png",
+      "largura": 1920,
+      "altura": 286,
+      "descricao": "Conta carla.suporte na lista"
     },
     {
       "arquivo": "01-5-password-policy.png",
-      "tipo": "imagem",
-      "passo": 48,
-      "titulo": "Política de senha",
-      "descricao": "Política de senha dos administradores na aba Access",
       "largura": 1920,
-      "altura": 1080
+      "altura": 902,
+      "descricao": "Política de senha dos administradores"
     },
     {
-      "arquivo": "01-6-updates.png",
-      "tipo": "imagem",
-      "passo": 50,
-      "titulo": "Atualizações",
-      "descricao": "Aba FortiGuard settings com o agendamento das atualizações",
+      "arquivo": "01-5-logout.png",
       "largura": 1920,
-      "altura": 1080
+      "altura": 1425,
+      "descricao": "Menu do administrador com Logout"
     },
     {
-      "arquivo": "01-6-licencas-widget.png",
-      "tipo": "imagem",
-      "passo": 51,
-      "titulo": "Widget Licenses",
-      "descricao": "Widget Licenses de um FortiGate só com FortiCare: Support e Updates licenciados, serviços de segurança em cinza",
+      "arquivo": "01-5-login-carla.png",
       "largura": 1920,
-      "altura": 1730
+      "altura": 1186,
+      "descricao": "Login como carla.suporte"
+    },
+    {
+      "arquivo": "01-5-carla-leitura.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "GUI como carla.suporte: somente leitura"
+    },
+    {
+      "arquivo": "01-5-log-alteracoes.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Eventos de logins dos administradores"
+    },
+    {
+      "arquivo": "01-6-menu-fortiguard.png",
+      "largura": 1920,
+      "altura": 1790,
+      "descricao": "Menu System > FortiGuard"
     },
     {
       "arquivo": "01-6-fortiguard.png",
-      "tipo": "imagem",
-      "passo": 52,
-      "titulo": "System > FortiGuard",
-      "descricao": "System > FortiGuard, aba Licensed, com as assinaturas da base FortiCare",
       "largura": 1920,
-      "altura": 1080
+      "altura": 1080,
+      "descricao": "System > FortiGuard, Subscriptions"
+    },
+    {
+      "arquivo": "01-6-fortiguard-aba.png",
+      "largura": 1920,
+      "altura": 500,
+      "descricao": "Aba FortiGuard settings"
+    },
+    {
+      "arquivo": "01-6-updates.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "FortiGuard settings"
+    },
+    {
+      "arquivo": "01-6-licencas-widget.png",
+      "largura": 1920,
+      "altura": 1730,
+      "descricao": "Widget Licenses só com FortiCare"
+    },
+    {
+      "arquivo": "01-6-fortiguard-disponiveis-0.png",
+      "largura": 1920,
+      "altura": 360,
+      "descricao": "Aba Available for purchase"
     },
     {
       "arquivo": "01-6-fortiguard-disponiveis.png",
-      "tipo": "imagem",
-      "passo": 53,
-      "titulo": "Available for purchase",
-      "descricao": "System > FortiGuard, aba Available for purchase, com os serviços não contratados",
       "largura": 1920,
-      "altura": 1080
+      "altura": 1080,
+      "descricao": "Serviços disponíveis para compra"
     },
     {
       "arquivo": "01-6-licencas-utp.png",
-      "tipo": "imagem",
-      "passo": 54,
-      "titulo": "Bundle UTP",
-      "descricao": "Widget Licenses com o bundle UTP: Support, Updates, IPS, AntiVirus e Web Filter licenciados",
       "largura": 1920,
-      "altura": 1730
+      "altura": 1730,
+      "descricao": "Widget Licenses com o bundle UTP"
     },
     {
       "arquivo": "01-6-licencas-expiradas.png",
-      "tipo": "imagem",
-      "passo": 55,
-      "titulo": "Contrato vencido",
-      "descricao": "Widget Licenses com IPS, AntiVirus e Web Filter expirados em vermelho",
       "largura": 1920,
-      "altura": 1730
+      "altura": 1730,
+      "descricao": "Widget Licenses com o UTP vencido"
     },
     {
       "arquivo": "01-6-fortiguard-expiradas.png",
-      "tipo": "imagem",
-      "passo": 56,
-      "titulo": "Assinaturas expiradas",
-      "descricao": "System > FortiGuard, aba Expired, com as assinaturas do bundle UTP vencidas",
       "largura": 1920,
-      "altura": 1080
+      "altura": 1080,
+      "descricao": "Aba Expired"
     },
     {
-      "arquivo": "01-7-backup-passo-1.png",
-      "tipo": "imagem",
-      "passo": 57,
-      "titulo": "Menu do administrador",
-      "descricao": "Menu do administrador aberto, com o item Configuration",
+      "arquivo": "01-7-menu-firmware.png",
       "largura": 1920,
-      "altura": 1425
+      "altura": 960,
+      "descricao": "Menu System > Firmware & Registration"
     },
     {
-      "arquivo": "01-7-backup-passo-2.png",
-      "tipo": "imagem",
-      "passo": 58,
-      "titulo": "Menu Configuration",
-      "descricao": "Submenu Configuration com Backup, Restore e Reset to factory defaults",
+      "arquivo": "01-6-registro.png",
       "largura": 1920,
-      "altura": 1294
-    },
-    {
-      "arquivo": "01-7-backup",
-      "tipo": "slides",
-      "passo": 59,
-      "titulo": "Backup criptografado",
-      "descricao": "Tela Backup System Configuration com destino Local PC e criptografia ativada",
-      "imagens": [
-        {
-          "arquivo": "01-7-backup-1.png",
-          "largura": 1920,
-          "altura": 996,
-          "slide": {
-            "titulo": "Backup",
-            "texto": "O backup é a cópia do arquivo de configuração. A primeira linha identifica **modelo**, **versão** e **build**, o que importa na hora de restaurar: o FortiGate recusa backups de outro modelo."
-          }
-        },
-        {
-          "arquivo": "01-7-backup-2.png",
-          "largura": 1920,
-          "altura": 996,
-          "slide": {
-            "titulo": "Backup to",
-            "texto": "O destino: o computador do administrador (**Local PC**) ou um pendrive ligado ao FortiGate (**USB Disk**)."
-          }
-        },
-        {
-          "arquivo": "01-7-backup-3.png",
-          "largura": 1920,
-          "altura": 996,
-          "slide": {
-            "titulo": "Encryption",
-            "texto": "O arquivo tem hashes de senhas, segredos de VPN e chaves privadas. Com **Encryption**, o arquivo inteiro é cifrado com uma senha: sem ela, o backup não pode ser restaurado."
-          }
-        },
-        {
-          "arquivo": "01-7-backup-4.png",
-          "largura": 1920,
-          "altura": 996,
-          "slide": {
-            "titulo": "A senha do backup",
-            "texto": "Guarde a senha **separada** do arquivo. E mantenha cópias **fora do equipamento**, feitas antes de toda mudança relevante."
-          }
-        }
-      ]
-    },
-    {
-      "arquivo": "01-7-restore-passo-1.png",
-      "tipo": "imagem",
-      "passo": 60,
-      "titulo": "Menu Restore",
-      "descricao": "Submenu Configuration com o item Restore em destaque",
-      "largura": 1920,
-      "altura": 1294
-    },
-    {
-      "arquivo": "01-7-restore.png",
-      "tipo": "imagem",
-      "passo": 61,
-      "titulo": "Restauração",
-      "descricao": "Tela de restauração da configuração com o envio do arquivo e a senha",
-      "largura": 1920,
-      "altura": 963
-    },
-    {
-      "arquivo": "01-2-reset-passo-1.png",
-      "tipo": "imagem",
-      "passo": 62,
-      "titulo": "Reset de fábrica",
-      "descricao": "Submenu Configuration com o item Reset to factory defaults em destaque",
-      "largura": 1920,
-      "altura": 1294
-    },
-    {
-      "arquivo": "01-2-reset-passo-2.png",
-      "tipo": "imagem",
-      "passo": 63,
-      "titulo": "Confirmação do reset",
-      "descricao": "Confirmação do reset de fábrica",
-      "largura": 1920,
-      "altura": 777
+      "altura": 306,
+      "descricao": "Botão Register do FGT-MTZ"
     },
     {
       "arquivo": "01-7-firmware.png",
-      "tipo": "imagem",
-      "passo": 64,
-      "titulo": "Firmware & Registration",
-      "descricao": "System > Firmware & Registration com a versão do FGT-MTZ",
       "largura": 1920,
-      "altura": 1080
+      "altura": 1080,
+      "descricao": "System > Firmware & Registration"
+    },
+    {
+      "arquivo": "01-7-backup-passo-0.png",
+      "largura": 1920,
+      "altura": 410,
+      "descricao": "Botão do administrador na barra superior"
+    },
+    {
+      "arquivo": "01-7-backup-passo-1.png",
+      "largura": 1920,
+      "altura": 1425,
+      "descricao": "Menu do administrador com o item Configuration"
+    },
+    {
+      "arquivo": "01-7-backup-passo-2.png",
+      "largura": 1920,
+      "altura": 1294,
+      "descricao": "Submenu Configuration com o item Backup"
+    },
+    {
+      "arquivo": "01-7-backup-1.png",
+      "largura": 1920,
+      "altura": 741,
+      "descricao": "Backup to: Local PC"
+    },
+    {
+      "arquivo": "01-7-backup-2.png",
+      "largura": 1920,
+      "altura": 989,
+      "descricao": "Encryption ligada"
+    },
+    {
+      "arquivo": "01-7-backup-3.png",
+      "largura": 1920,
+      "altura": 989,
+      "descricao": "Senha do backup"
+    },
+    {
+      "arquivo": "01-7-backup-4.png",
+      "largura": 1920,
+      "altura": 989,
+      "descricao": "Botão OK para baixar o backup"
+    },
+    {
+      "arquivo": "01-7-restore-passo-1.png",
+      "largura": 1920,
+      "altura": 1294,
+      "descricao": "Submenu Configuration com o item Restore"
+    },
+    {
+      "arquivo": "01-7-restore.png",
+      "largura": 1920,
+      "altura": 957,
+      "descricao": "Restore: botão Upload"
+    },
+    {
+      "arquivo": "01-7-restore-2.png",
+      "largura": 1920,
+      "altura": 1038,
+      "descricao": "Arquivo escolhido, senha e OK"
     },
     {
       "arquivo": "01-7-upgrade-1.png",
-      "tipo": "imagem",
-      "passo": 65,
-      "titulo": "Selecionando o equipamento",
-      "descricao": "FGT-MTZ selecionado na lista de Firmware & Registration, com o botão Upgrade",
       "largura": 1920,
-      "altura": 1080
+      "altura": 306,
+      "descricao": "FGT-MTZ selecionado e o botão Upgrade"
     },
     {
       "arquivo": "01-7-upgrade-2.png",
-      "tipo": "imagem",
-      "passo": 66,
-      "titulo": "Tipo de upgrade",
-      "descricao": "Primeiro passo do assistente FortiGate Upgrade: tipo de upgrade",
       "largura": 1920,
-      "altura": 2116
+      "altura": 839,
+      "descricao": "Tipo de upgrade"
+    },
+    {
+      "arquivo": "01-7-upgrade-next.png",
+      "largura": 1920,
+      "altura": 655,
+      "descricao": "Botão Next do assistente"
     },
     {
       "arquivo": "01-7-upgrade-3.png",
-      "tipo": "imagem",
-      "passo": 67,
-      "titulo": "Versão de destino",
-      "descricao": "Passo Select Firmware com as versões recomendadas e o link do release notes",
       "largura": 1920,
-      "altura": 2116
+      "altura": 873,
+      "descricao": "Versão de destino e o botão Next"
     },
     {
       "arquivo": "01-7-upgrade-4.png",
-      "tipo": "imagem",
-      "passo": 68,
-      "titulo": "Agendamento e backup",
-      "descricao": "Passo de agendamento do upgrade e backup da configuração com senha",
       "largura": 1920,
-      "altura": 2116
+      "altura": 1301,
+      "descricao": "Agendamento e backup antes do upgrade"
     },
     {
       "arquivo": "01-7-upgrade-5.png",
-      "tipo": "imagem",
-      "passo": 69,
-      "titulo": "Revisão",
-      "descricao": "Passo Review do assistente de upgrade com a versão atual e a de destino",
       "largura": 1920,
-      "altura": 2116
+      "altura": 952,
+      "descricao": "Revisão do upgrade"
+    },
+    {
+      "arquivo": "01-7-upgrade-confirm.png",
+      "largura": 1920,
+      "altura": 643,
+      "descricao": "Botão Confirm and Backup Config"
+    },
+    {
+      "arquivo": "01-2-maintainer-1.png",
+      "largura": 2030,
+      "altura": 1338,
+      "descricao": "FortiGate desligado da energia, com o notebook na console"
+    },
+    {
+      "arquivo": "01-2-maintainer-2.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "Boot do FortiGate na console depois de ligado"
+    },
+    {
+      "arquivo": "01-2-maintainer-3.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "Login como maintainer com bcpb + número de série"
+    },
+    {
+      "arquivo": "01-2-maintainer-4.png",
+      "largura": 1920,
+      "altura": 1206,
+      "descricao": "Senha do admin redefinida"
     }
   ]
 }

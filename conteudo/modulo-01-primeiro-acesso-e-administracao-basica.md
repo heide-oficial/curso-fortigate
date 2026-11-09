@@ -177,8 +177,8 @@ CPU5 states: 1% user 1% system 0% nice 98% idle 0% iowait 0% irq 0% softirq
 CPU6 states: 2% user 1% system 0% nice 97% idle 0% iowait 0% irq 0% softirq
 CPU7 states: 0% user 0% system 0% nice 100% idle 0% iowait 0% irq 0% softirq
 Memory: 8085452k total, 2263927k used (28.0%), 5821525k free (72.0%), 0k freeable (0.0%)
-Average network usage: 402 / 4 kbps in 1 minute, 96 / 1 kbps in 10 minutes, 32 / 0 kbps in 30 minutes
-Maximal network usage: 402 / 4 kbps in 1 minute, 96 / 1 kbps in 10 minutes, 32 / 0 kbps in 30 minutes
+Average network usage: 962 / 8 kbps in 1 minute, 96 / 1 kbps in 10 minutes, 32 / 0 kbps in 30 minutes
+Maximal network usage: 962 / 8 kbps in 1 minute, 96 / 1 kbps in 10 minutes, 32 / 0 kbps in 30 minutes
 Average sessions: 0 sessions in 1 minute, 0 sessions in 10 minutes, 0 sessions in 30 minutes
 Maximal sessions: 0 sessions in 1 minute, 0 sessions in 10 minutes, 0 sessions in 30 minutes
 Average session setup rate: 0 sessions per second in last 1 minute, 0 sessions per second in last 10 minutes, 0 sessions per second in last 30 minutes
@@ -187,7 +187,7 @@ Average NPU sessions: 0 sessions in last 1 minute, 0 sessions in last 10 minutes
 Maximal NPU sessions: 0 sessions in last 1 minute, 0 sessions in last 10 minutes, 0 sessions in last 30 minutes
 Virus caught: 0 total in 1 minute
 IPS attacks blocked: 0 total in 1 minute
-Uptime: 0 days,  0 hours,  3 minutes
+Uptime: 0 days,  0 hours,  1 minutes
 ```
 
 Como ler:
@@ -776,13 +776,13 @@ Version: FGT121G v8.0.1,build0215,260305 (GA.F)
 First GA patch build date: 260115
 Security Level: 2
 Firmware Signature: certified
-Virus-DB: 1.00000(2026-11-09 18:21)
-Extended DB: 1.00000(2026-11-09 18:21)
-AV AI/ML Model: 0.00000(2026-11-09 18:21)
-IPS-DB: 6.00741(2026-11-08 18:21)
-IPS-ETDB: 6.00741(2026-11-08 18:21)
-APP-DB: 32.00821(2026-11-08 18:21)
-ISDB-DB: 0.00000(2026-11-06 18:21)
+Virus-DB: 1.00000(2026-11-09 19:42)
+Extended DB: 1.00000(2026-11-09 19:42)
+AV AI/ML Model: 0.00000(2026-11-09 19:42)
+IPS-DB: 6.00741(2026-11-08 19:42)
+IPS-ETDB: 6.00741(2026-11-08 19:42)
+APP-DB: 32.00821(2026-11-08 19:42)
+ISDB-DB: 0.00000(2026-11-06 19:42)
 Serial-Number: FG121GTK25000101
 BIOS version: 06000102
 System Part-Number: P29447-02
@@ -799,7 +799,7 @@ Current HA mode: standalone
 Branch point: 0215
 Release Version Information: GA
 FortiGuard contract: FortiCare
-System time: Mon Nov  9 15:21:20 2026
+System time: Mon Nov  9 16:42:02 2026
 Last reboot reason: warm reboot
 ```
 
@@ -1141,7 +1141,7 @@ diagnose sys ntp status
 FGT-MTZ # diagnose sys ntp status
 synchronized: no, ntpsync: enabled, server-mode: disabled
  
-ipv4 server(a.ntp.br) 0.0.0.0 -- unreachable(0x0) S:1 T:43 selected
+ipv4 server(a.ntp.br) 0.0.0.0 -- unreachable(0x0) S:1 T:23 selected
 server-version=4, stratum=2
 ```
 
@@ -1268,7 +1268,22 @@ config system admin
 end
 ```
 
-Para conferir os trusted hosts de todas as contas de uma vez, use `show system admin | grep -f trusthost`: o `grep -f` mostra o bloco de cada conta que tem a linha `trusthost`.
+Para conferir os trusted hosts de todas as contas de uma vez, use `show system admin | grep -f trusthost`. O `grep` filtra as linhas da saída, e o `-f` mostra o bloco inteiro de cada conta que tem a linha procurada, para você saber a qual conta cada trusted host pertence. No laboratório, só a conta `carla.suporte` tem trusted host; o `admin` ainda não tem, por isso não aparece:
+
+```
+show system admin | grep -f trusthost
+```
+
+```saida
+FGT-MTZ # show system admin | grep -f trusthost
+config system admin
+    edit "carla.suporte"
+        set trusthost1 10.10.99.0 255.255.255.0
+    next
+end
+```
+
+Uma conta que não aparece nessa saída não tem nenhum trusted host e aceita login de qualquer origem que alcance uma interface com acesso administrativo liberado.
 
 ### Banner de login
 
@@ -1439,9 +1454,14 @@ Cada área da GUI tem um atributo na CLI:
 | WAN Opt & Cache | `wanoptgrp` |
 | WiFi & Switch | `wifi` |
 
-Os valores são `none`, `read`, `read-write` e, em algumas áreas, `custom`. O perfil somente leitura fica assim:
+Os valores são `none`, `read`, `read-write` e, em algumas áreas, `custom`. O perfil somente leitura criado pela GUI aparece assim na CLI:
 
 ```
+show system accprofile Atlas-Leitura
+```
+
+```saida
+FGT-MTZ # show system accprofile Atlas-Leitura
 config system accprofile
     edit "Atlas-Leitura"
         set secfabgrp read
@@ -1459,6 +1479,8 @@ config system accprofile
 end
 ```
 
+Como o `show` só lista o que é diferente do padrão, e o padrão de cada área é `none`, uma área que não aparece na saída está sem acesso. O `super_admin` não aparece no `show system accprofile`: é um perfil fixo do FortiOS, que não pode ser editado nem apagado. Um perfil em uso por alguma conta também não pode ser apagado.
+
 
 ### Conta de administrador
 
@@ -1472,7 +1494,39 @@ config system admin
 end
 ```
 
-No `show system admin`, a senha aparece cifrada (`ENC ...`), nunca em texto aberto.
+No `show system admin`, a senha aparece cifrada (`ENC ...`), nunca em texto aberto. A conta criada pela GUI, conferida na CLI:
+
+```
+show system admin carla.suporte
+```
+
+```saida
+FGT-MTZ # show system admin carla.suporte
+config system admin
+    edit "carla.suporte"
+        set accprofile "Atlas-Leitura"
+        set password ENC 1cxogem1d7o23l1cdp90o1cnoupn1e1mv6i1ebmgvh1dhnnsk1drn9hj==
+        set trusthost1 10.10.99.0 255.255.255.0
+    next
+end
+```
+
+### Quem está conectado
+
+```
+get system admin list
+```
+
+```saida
+FGT-MTZ # get system admin list
+username       local        device       remote                 started
+admin          console      n/a          n/a                    2026-11-09 16:41:03
+admin          https        mgmt         10.10.99.10:45762      2026-11-09 16:41:14
+admin          ssh          mgmt         10.10.99.10:56039      2026-11-09 16:41:44
+admin          jsconsole    n/a          n/a                    2026-11-09 16:41:47
+```
+
+Cada linha é uma sessão aberta: o usuário, o método de acesso (`https` para a GUI, `ssh`, `console` ou `jsconsole`, que é o CLI Console aberto dentro da GUI), a interface por onde a sessão chegou, o endereço de origem com a porta e o horário em que começou. É o primeiro comando a rodar quando você suspeita de um acesso indevido: uma sessão de origem desconhecida aparece aqui na hora.
 
 
 
@@ -1678,40 +1732,40 @@ AV Engine
 ---------
 Version: 7.00041
 Contract Expiry Date: 2027/06/30
-Last Updated using scheduled update on Mon Nov  9 14:24:41 2026
-Last Update Attempt: Mon Nov  9 15:14:41 2026
+Last Updated using scheduled update on Mon Nov  9 15:43:16 2026
+Last Update Attempt: Mon Nov  9 16:33:16 2026
 Result: No Updates
  
 Virus Definitions
 ---------
 Version: 94.09321
 Contract Expiry Date: 2027/06/30
-Last Updated using scheduled update on Mon Nov  9 14:24:41 2026
-Last Update Attempt: Mon Nov  9 15:14:41 2026
+Last Updated using scheduled update on Mon Nov  9 15:43:16 2026
+Last Update Attempt: Mon Nov  9 16:33:16 2026
 Result: No Updates
  
 Extended set
 ---------
 Version: 94.09321
 Contract Expiry Date: 2027/06/30
-Last Updated using scheduled update on Mon Nov  9 14:24:41 2026
-Last Update Attempt: Mon Nov  9 15:14:41 2026
+Last Updated using scheduled update on Mon Nov  9 15:43:16 2026
+Last Update Attempt: Mon Nov  9 16:33:16 2026
 Result: No Updates
  
 Mobile Malware Definitions
 ---------
 Version: 94.09321
 Contract Expiry Date: 2027/06/30
-Last Updated using scheduled update on Mon Nov  9 14:24:41 2026
-Last Update Attempt: Mon Nov  9 15:14:41 2026
+Last Updated using scheduled update on Mon Nov  9 15:43:16 2026
+Last Update Attempt: Mon Nov  9 16:33:16 2026
 Result: No Updates
  
 AI/Machine Learning Malware Model
 ---------
 Version: 4.00124
 Contract Expiry Date: 2027/06/30
-Last Updated using scheduled update on Mon Nov  9 14:24:41 2026
-Last Update Attempt: Mon Nov  9 15:14:41 2026
+Last Updated using scheduled update on Mon Nov  9 15:43:16 2026
+Last Update Attempt: Mon Nov  9 16:33:16 2026
 Result: No Updates
  
 Botnet Domain Database
@@ -1850,13 +1904,23 @@ diagnose debug reset
 
 Toda a configuração do FortiGate (interfaces, policies, objetos, VPNs, usuários, certificados) fica em **um único arquivo de texto**, com os mesmos comandos que você digita na CLI. O backup é a cópia desse arquivo.
 
-A primeira linha do arquivo identifica de onde ele veio. Por exemplo:
+O arquivo começa com um cabeçalho de linhas iniciadas por `#`, que identificam de onde ele veio. Este é o cabeçalho do backup do FGT-MTZ feito pela GUI do laboratório:
 
-```
+```saida
 #config-version=FGT121G-8.00-FW-build0215-260305:opmode=0:vdom=0:user=admin
+#conf_file_ver=25000101
+#buildno=0215
+#global_vdom=1
 ```
 
-Ela informa o **modelo**, a **versão e o build** do FortiOS, o modo de operação, se há VDOMs e quem gerou o backup. Na restauração, o FortiGate lê essa linha para decidir se aceita o arquivo.
+| Linha | O que informa |
+|---|---|
+| `#config-version` | O **modelo** (`FGT121G`), a **versão** do FortiOS (`8.00`), o **build** (`build0215`) e a data do build; depois, o modo de operação (`opmode=0` é NAT, `1` seria transparente), se há VDOMs (`vdom=0`: não há) e o **administrador** que gerou o backup (`user=admin`). |
+| `#conf_file_ver` | Um número de controle da versão do arquivo de configuração. |
+| `#buildno` | O build do firmware, repetido sozinho. |
+| `#global_vdom` | Indica que o arquivo começa pela configuração global do equipamento. |
+
+Depois do cabeçalho vêm os blocos `config ... end`, na mesma forma do `show` da CLI. Na restauração, o FortiGate lê o cabeçalho para decidir se aceita o arquivo: um backup de outro modelo é recusado, e um backup de outra versão do FortiOS passa por conversão, com risco de perder ou alterar trechos da configuração.
 
 #### Backup comum e backup criptografado
 
@@ -1885,6 +1949,18 @@ midia/m01/01-7-backup-2.png "Opção Encryption ativada em destaque" | **Encrypt
 midia/m01/01-7-backup-3.png "Campos de senha do backup em destaque" | **Password** e **Confirm password:** a senha do backup. Guarde-a **separada** do arquivo, num cofre de senhas.
 midia/m01/01-7-backup-4.png "Botão OK para baixar o backup" | Clique em **OK**: o navegador baixa o arquivo `.conf`.
 :::
+
+O nome do arquivo baixado segue o padrão `<hostname>_<versão>_<build>_<data>_<hora>.conf`, neste caso `FGT-MTZ_8-0-1_0215_20261109_1643.conf`. Com **Encryption** ligada, só o cabeçalho continua legível; o resto vira um bloco cifrado, que só a senha do backup abre:
+
+```saida
+#config-version=FGT121G-8.00-FW-build0215-260305:opmode=0:vdom=0:user=admin
+#conf_file_ver=25000101
+#buildno=0215
+#global_vdom=1
+IREzUGCMuev1CCNDK4WX3PwGOlFF6v6FqQdxBwaDpcf84UkVRXKUv57hZWE9OMfh
+090fNQ1w1+z+6AQjVDODpvPnsiNaNxryvtLnb3R9aJu42/xIF1l9h7CXrCokSnGU
+...
+```
 
 > **Na prática:** mantenha cópias **fora do equipamento**, feitas antes de toda mudança relevante e, idealmente, automatizadas (por exemplo, pelo FortiManager ou por um script que use a API). Um backup que só existe no notebook do administrador some com o notebook.
 

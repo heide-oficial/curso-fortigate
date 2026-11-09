@@ -1,0 +1,287 @@
+{
+  "geradoEm": "2026-11-09T15:45:10.203Z",
+  "arquivos": [
+    {
+      "arquivo": "02-0-topologia-fisica.png",
+      "largura": 1920,
+      "altura": 1701,
+      "descricao": "Rede da matriz da Atlas com os cabos ligados e as interfaces ainda sem configuração"
+    },
+    {
+      "arquivo": "02-1-interfaces-1.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Network > Interfaces com o painel de portas e a lista de interfaces"
+    },
+    {
+      "arquivo": "02-1-interfaces-2.png",
+      "largura": 1920,
+      "altura": 279,
+      "descricao": "Painel de portas do FortiGate 121G com as portas conectadas"
+    },
+    {
+      "arquivo": "02-1-wan1-1.png",
+      "largura": 1920,
+      "altura": 559,
+      "descricao": "Edição da port1: nome e tipo da interface"
+    },
+    {
+      "arquivo": "02-1-wan1-2.png",
+      "largura": 1920,
+      "altura": 559,
+      "descricao": "Alias WAN1 e role WAN na port1"
+    },
+    {
+      "arquivo": "02-1-wan1-3.png",
+      "largura": 1920,
+      "altura": 324,
+      "descricao": "Endereço fixo 203.0.113.2/29 na WAN1"
+    },
+    {
+      "arquivo": "02-1-wan1-4.png",
+      "largura": 1920,
+      "altura": 418,
+      "descricao": "Administrative Access da WAN1 só com PING"
+    },
+    {
+      "arquivo": "02-1-wan1-5.png",
+      "largura": 1920,
+      "altura": 373,
+      "descricao": "Status administrativo da interface"
+    },
+    {
+      "arquivo": "02-1-wan1-6.png",
+      "largura": 1920,
+      "altura": 1694,
+      "descricao": "Painel lateral com o estado do enlace, o MAC e os contadores de tráfego da port1"
+    },
+    {
+      "arquivo": "02-1-wan1-7.png",
+      "largura": 1920,
+      "altura": 656,
+      "descricao": "A port1 na lista, com o alias WAN1 e o endereço 203.0.113.2"
+    },
+    {
+      "arquivo": "02-1-wan2-1.png",
+      "largura": 1920,
+      "altura": 572,
+      "descricao": "WAN2 como cliente DHCP: endereço recebido, rota padrão e distância 5"
+    },
+    {
+      "arquivo": "02-1-pppoe.png",
+      "largura": 1920,
+      "altura": 900,
+      "descricao": "Tela do modo PPPoE com usuário e senha do provedor"
+    },
+    {
+      "arquivo": "02-1-rota-dhcp.png",
+      "largura": 1920,
+      "altura": 296,
+      "descricao": "Network Monitor > Routing com a rota padrão aprendida pela WAN2 por DHCP"
+    },
+    {
+      "arquivo": "02-1-ddns-1.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Network > DNS com a seção Dynamic DNS"
+    },
+    {
+      "arquivo": "02-1-ddns-2.png",
+      "largura": 1920,
+      "altura": 806,
+      "descricao": "Novo registro DDNS FortiGuard para a WAN2 com o nome atlas-mtz.fortiddns.com"
+    },
+    {
+      "arquivo": "02-1-ddns-3.png",
+      "largura": 1920,
+      "altura": 393,
+      "descricao": "Registro DDNS atlas-mtz.fortiddns.com na lista, com a interface e o IP público"
+    },
+    {
+      "arquivo": "02-2-vlan-1.png",
+      "largura": 1920,
+      "altura": 1230,
+      "descricao": "Menu Create new com a opção Interface"
+    },
+    {
+      "arquivo": "02-2-vlan-2.png",
+      "largura": 1920,
+      "altura": 649,
+      "descricao": "Nova interface vlan10: tipo VLAN, interface pai port5 e VLAN ID 10"
+    },
+    {
+      "arquivo": "02-2-vlan-3.png",
+      "largura": 1920,
+      "altura": 1007,
+      "descricao": "Endereço 10.10.10.1/24 e Administrative Access PING na vlan10"
+    },
+    {
+      "arquivo": "02-2-vlan-4.png",
+      "largura": 1920,
+      "altura": 398,
+      "descricao": "As VLANs 10, 20 e 30 abaixo da interface pai port5 (INTERNA)"
+    },
+    {
+      "arquivo": "02-2-topologia.png",
+      "largura": 1920,
+      "altura": 1879,
+      "descricao": "Cabo entre a port5 e o SW-CORE, que leva as três VLANs, e os computadores de cada VLAN"
+    },
+    {
+      "arquivo": "02-3-zone-1.png",
+      "largura": 1920,
+      "altura": 533,
+      "descricao": "Nova zone INTERNAS com as interfaces vlan10 e vlan20"
+    },
+    {
+      "arquivo": "02-3-zone-2.png",
+      "largura": 1920,
+      "altura": 751,
+      "descricao": "A zone INTERNAS na lista, com as VLANs 10 e 20 como membros"
+    },
+    {
+      "arquivo": "02-3-software-switch.png",
+      "largura": 1920,
+      "altura": 619,
+      "descricao": "Formulário de software switch com as portas port10 e port11"
+    },
+    {
+      "arquivo": "02-3-aggregate.png",
+      "largura": 1920,
+      "altura": 619,
+      "descricao": "Formulário de agregação 802.3ad com as portas port15 e port16"
+    },
+    {
+      "arquivo": "02-3-redundante.png",
+      "largura": 1920,
+      "altura": 619,
+      "descricao": "Formulário de interface redundante com as portas port15 e port16"
+    },
+    {
+      "arquivo": "02-3-loopback.png",
+      "largura": 1920,
+      "altura": 1438,
+      "descricao": "Nova interface loopback loop-ger com o endereço 10.10.255.1/32"
+    },
+    {
+      "arquivo": "02-3-secundario.png",
+      "largura": 1920,
+      "altura": 734,
+      "descricao": "Endereço secundário 172.16.11.1/24 na interface DMZ (port3)"
+    },
+    {
+      "arquivo": "02-4-rota-1.png",
+      "largura": 1920,
+      "altura": 640,
+      "descricao": "Nova rota estática 0.0.0.0/0 pela WAN1 (port1) com gateway 203.0.113.1 e distância 10"
+    },
+    {
+      "arquivo": "02-4-rota-2.png",
+      "largura": 1920,
+      "altura": 214,
+      "descricao": "A rota padrão pela WAN1 na lista de rotas estáticas"
+    },
+    {
+      "arquivo": "02-4-rotas-antes.png",
+      "largura": 1920,
+      "altura": 521,
+      "descricao": "Tabela de rotas: a rota padrão ativa ainda é a da WAN2, aprendida por DHCP com distância 5"
+    },
+    {
+      "arquivo": "02-4-wan2-distancia.png",
+      "largura": 1920,
+      "altura": 572,
+      "descricao": "Distância da rota recebida por DHCP na WAN2 alterada para 20"
+    },
+    {
+      "arquivo": "02-4-rotas-depois.png",
+      "largura": 1920,
+      "altura": 521,
+      "descricao": "Tabela de rotas: agora a rota padrão ativa é a da WAN1, com distância 10"
+    },
+    {
+      "arquivo": "02-4-ping.png",
+      "largura": 1920,
+      "altura": 1246,
+      "descricao": "Ping e traceroute a partir do FortiGate na CLI Console"
+    },
+    {
+      "arquivo": "02-5-dhcp-1.png",
+      "largura": 1920,
+      "altura": 789,
+      "descricao": "DHCP Server da vlan10: faixa 10.10.10.100 a 10.10.10.200, gateway e DNS iguais ao endereço da interface"
+    },
+    {
+      "arquivo": "02-5-dhcp-2.png",
+      "largura": 1920,
+      "altura": 939,
+      "descricao": "Opções avançadas do DHCP Server: modo Server ou Relay e as regras de atribuição de endereço"
+    },
+    {
+      "arquivo": "02-5-relay.png",
+      "largura": 1920,
+      "altura": 290,
+      "descricao": "DHCP no modo Relay, encaminhando os pedidos ao servidor 10.10.20.10"
+    },
+    {
+      "arquivo": "02-5-pc-ipconfig.png",
+      "largura": 1920,
+      "altura": 1196,
+      "descricao": "ipconfig /all no PC-USUARIO: endereço 10.10.10.100, gateway e DNS 10.10.10.1 recebidos por DHCP"
+    },
+    {
+      "arquivo": "02-4-pc-ping.png",
+      "largura": 1920,
+      "altura": 1196,
+      "descricao": "Ping do PC-USUARIO: responde o gateway 10.10.10.1, mas não a Internet, porque ainda não há firewall policy"
+    },
+    {
+      "arquivo": "02-5-leases.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Dashboard > Asset and Identities, aba DHCP, com o lease do PC-USUARIO"
+    },
+    {
+      "arquivo": "02-6-dns-servico.png",
+      "largura": 1920,
+      "altura": 403,
+      "descricao": "Serviço DNS na vlan10 no modo Recursive"
+    },
+    {
+      "arquivo": "02-6-dns-registro.png",
+      "largura": 1920,
+      "altura": 1009,
+      "descricao": "Registro A srv-ad.atlas.local apontando para 10.10.20.10"
+    },
+    {
+      "arquivo": "02-6-dns-zona.png",
+      "largura": 1920,
+      "altura": 1310,
+      "descricao": "Zona atlas.local do tipo Primary, visão Shadow, com os registros srv-ad e intranet"
+    },
+    {
+      "arquivo": "02-6-dns-servers.png",
+      "largura": 1920,
+      "altura": 1080,
+      "descricao": "Network > DNS Servers com o serviço DNS da vlan10 e a zona atlas.local"
+    },
+    {
+      "arquivo": "02-6-pc-nslookup.png",
+      "largura": 1920,
+      "altura": 1196,
+      "descricao": "nslookup no PC-USUARIO respondido pelo FortiGate (10.10.10.1): o nome interno e um nome da Internet"
+    },
+    {
+      "arquivo": "02-6-ntp.png",
+      "largura": 1920,
+      "altura": 602,
+      "descricao": "System > Settings: o FGT-MTZ como servidor NTP nas interfaces vlan10 e vlan20"
+    },
+    {
+      "arquivo": "02-0-topologia.png",
+      "largura": 1920,
+      "altura": 1701,
+      "descricao": "Topologia do módulo 02: WAN1 e WAN2, DMZ, VLANs 10, 20 e 30 no SW-CORE e a gerência"
+    }
+  ]
+}

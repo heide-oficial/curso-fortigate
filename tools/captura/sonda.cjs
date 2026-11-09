@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+/* Sonda de DOM do laboratório (uso interno): monta um FortiGate, abre a GUI e imprime trechos do HTML. */
+const lab = require('./lab.cjs');
+const S = process.argv[2] || '/tmp';
+(async () => {
+  const s = await lab.iniciar({ saida: S, so: 'nada' });
+  const p = s.page;
+  await s.novo({ id: 'sonda', nome: 'Sonda', site: { id: 'site-s', nome: 'S', pais: 'BR', cidade: 'São Paulo', lat: -23.5, lon: -46.6 } });
+  await s.adicionar({ id: 'fgt', tipo: 'fortigate', nome: 'FGT', x: 0, y: 0, serial: 'FG121GTK25000199' });
+  await s.adicionar({ id: 'pc', tipo: 'pc-windows', nome: 'PC', x: 0, y: 300 });
+  await s.conectar(['fgt', 'port5'], ['pc', 'eth0'], 'c1');
+  await s.energia(['fgt', 'pc']);
+  await s.setConfig('fgt', 'sys_adminPassword', 'Atlas#2026');
+  await s.setConfig('fgt', 'setup_wizard', { finished: true, step: 'begin', done: ['patch', 'password', 'policy'] });
+  await s.gui('fgt', 'Atlas#2026', '/network/interfaces');
+  await s.limpo(true);
+  const out = (t, x) => console.log(`\n===== ${t}\n${x}`);
+  out('nav', (await p.locator('.nav-item:visible').evaluateAll((els) => els.slice(0, 60).map((e) => `${e.className} | ${e.textContent.trim().slice(0, 40)} | ${e.parentElement.className}`).join('\n'))));
+  out('toolbar', await p.locator('.content-scroll button:visible').evaluateAll((els) => els.slice(0, 20).map((e) => `${e.className} | ${e.textContent.trim()} | disabled=${e.disabled}`).join('\n')));
+  const row = p.locator('tr:visible', { hasText: 'port5' }).first();
+  await row.click();
+  await s.espera(300);
+  out('row selected', await row.evaluate((e) => e.className + ' :: ' + e.outerHTML.slice(0, 300)));
+  out('toolbar after', await p.locator('.content-scroll button:visible').evaluateAll((els) => els.slice(0, 12).map((e) => `${e.className} | ${e.textContent.trim()} | disabled=${e.disabled}`).join('\n')));
+  await s.rota('/dashboard/network-monitor');
+  out('netmon tabs', await p.locator('.content-scroll').first().evaluate((e) => e.innerHTML.slice(0, 1500)));
+  await s.rota('/dashboard/assets');
+  out('assets', await p.locator('.content-scroll').first().evaluate((e) => e.innerHTML.slice(0, 1500)));
+  await s.rota('/network/dns-servers');
+  out('dns-servers', await p.locator('.content-scroll').first().evaluate((e) => e.innerText.slice(0, 800)));
+  out('banner', await p.locator('header.banner').first().evaluate((e) => [...e.querySelectorAll('button')].map((b) => `${b.title} | ${b.className}`).join('\n')));
+  await s.voltar();
+  await s.abrir('pc');
+  out('desktop', await p.locator('body').evaluate(() => [...document.querySelectorAll('[class*="dk-"]')].slice(0, 60).map((e) => `${e.tagName}.${e.className} | ${(e.getAttribute('title') || e.getAttribute('aria-label') || '')} | ${e.textContent.trim().slice(0, 30)}`).join('\n')));
+  await p.screenshot({ path: `${S}/sonda-desktop.png` });
+  await s.voltar();
+  out('diagram node', await p.locator('.react-flow__node').first().evaluate((e) => e.outerHTML.slice(0, 600)));
+  out('cards', await p.locator('.ld-card').evaluateAll((els) => els.map((e) => `${e.getAttribute('data-card')} ${e.getAttribute('data-node') || ''} | ${e.className} | ${e.textContent.trim().slice(0, 60)} | parent ${e.parentElement.className}`).join('\n')));
+  await s.fim();
+})().catch((e) => { console.error(e); process.exit(1); });

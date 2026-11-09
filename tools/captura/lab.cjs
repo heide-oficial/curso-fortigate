@@ -22,6 +22,9 @@ const path = require('node:path');
 
 const W = 1920;
 const H = 1080;
+/** Tamanho atual da janela do navegador (o diagrama pode usar uma janela maior). */
+let VW = W;
+let VH = H;
 const ESCALA_MAX = 5;
 
 /* Roda no navegador: expõe as operações do laboratório usando os próprios módulos do app. */
@@ -60,6 +63,7 @@ window.__cap = {
   rede(id, rede) { const n = lab().nodes.find((x) => x.id === id); S().commit((l) => patchDevice(l, id, { net: { ...n.net, ...rede } })); },
   no(id) { return lab().nodes.find((x) => x.id === id); },
   link(id) { return lab().links.find((x) => x.id === id); },
+  nos() { return lab().nodes.map((n) => ({ id: n.id, kind: n.kind, name: n.name, x: n.x, y: n.y })); },
   config(id) { return lab().configs[id]; },
   setConfig(id, chave, valor) { const c = lab().configs[id] || {}; S().setDeviceConfig(id, { ...c, [chave]: valor }); },
   abrirDispositivo(id, rota) { S().openDevice(id, rota); },
@@ -103,9 +107,15 @@ async function iniciar({ saida, lab = process.env.LAB || 'http://127.0.0.1:5173'
       if (!(await b.evaluate((e) => e.classList.contains('on')))) await b.click();
       await espera(400);
     },
-    async enquadrar() {
+    async enquadrar({ folga = 0 } = {}) {
       for (let i = 0; i < 2; i++) { const b = page.locator('.react-flow__controls-fitview'); if (await b.count()) await b.click(); await espera(900); }
+      for (let i = 0; i < folga; i++) { const b = page.locator('.react-flow__controls-zoomout'); if (await b.count()) await b.click(); await espera(500); }
     },
+    nos: () => cap('nos'),
+    /** Muda o tamanho da janela (sem argumentos, volta a 1920x1080). */
+    async tela(w = W, h = H) { VW = w; VH = h; await page.setViewportSize({ width: w, height: h }); await espera(600); },
+    /** Todos os elementos visíveis de um seletor, um locator para cada (para recortes e destaques). */
+    async todos(sel) { return page.locator(sel).filter({ visible: true }).all(); },
     async voltar() { await cap('voltar'); await espera(600); },
     async abrir(id, rota) { await cap('abrirDispositivo', id, rota); await espera(900); },
     /** Abre a GUI de um FortiGate em tela cheia, faz login e fecha o aviso de novidades. */
@@ -201,29 +211,29 @@ async function iniciar({ saida, lab = process.env.LAB || 'http://127.0.0.1:5173'
         if (!area) return null;
         const m = o.margem ?? 16;
         const x = Math.max(0, area.x - m), y = Math.max(0, area.y - m);
-        let w = Math.min(W, area.x + area.w + m) - x;
+        let w = Math.min(VW, area.x + area.w + m) - x;
         if (o.largura) w = Math.min(w, o.largura);
-        return { x, y, w, h: Math.min(H, area.y + area.h + m) - y };
+        return { x, y, w, h: Math.min(VH, area.y + area.h + m) - y };
       };
       const recorte = await medir();
       let tam;
       if (!recorte) {
         await page.screenshot({ path: destino });
-        tam = { w: W, h: H };
+        tam = { w: VW, h: VH };
       } else {
         const ajustar = ({ x, y, w, h }) => {
-          if (w * ESCALA_MAX < W) { const novo = Math.ceil(W / ESCALA_MAX); x = Math.max(0, Math.min(W - novo, Math.round(x - (novo - w) / 2))); w = novo; }
+          if (w * ESCALA_MAX < W) { const novo = Math.ceil(W / ESCALA_MAX); x = Math.max(0, Math.min(VW - novo, Math.round(x - (novo - w) / 2))); w = novo; }
           return { x, y, w, h };
         };
         const antes = ajustar(recorte);
         const escala = Math.max(1, W / antes.w);
         const cdp = await page.context().newCDPSession(page);
-        await cdp.send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: escala, mobile: false });
+        await cdp.send('Emulation.setDeviceMetricsOverride', { width: VW, height: VH, deviceScaleFactor: escala, mobile: false });
         await espera(500);
         const depois = await medir();
         const { x, y, h } = depois ? ajustar(depois) : antes;
         const { data } = await cdp.send('Page.captureScreenshot', { format: 'png', clip: { x, y, width: antes.w, height: h, scale: 1 } });
-        await cdp.send('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 1, mobile: false });
+        await cdp.send('Emulation.setDeviceMetricsOverride', { width: VW, height: VH, deviceScaleFactor: 1, mobile: false });
         await cdp.detach();
         fs.writeFileSync(destino, Buffer.from(data, 'base64'));
         tam = { w: Math.round(antes.w * escala), h: Math.round(h * escala) };

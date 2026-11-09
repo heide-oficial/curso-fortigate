@@ -28,6 +28,18 @@ Este documento é de produção e **não é entregue aos alunos**. Os alunos rec
 - Não escreva quadros "Na prova (7.6)" nem compare versões do FortiOS no texto. Exemplos de versão usam 7.6.x.
 - Linguagem fácil e didática, com termos técnicos quando necessários e explicados na primeira vez.
 
+### Profundidade das explicações
+
+Didático não é superficial. Nenhum assunto é apresentado só com uma definição de uma linha ("rota estática: criada por você em tal menu"). Todo assunto novo responde, com o detalhe que ele pede:
+
+1. **O que é**, em palavras simples, com um exemplo concreto.
+2. **Como funciona por dentro:** o mecanismo, a sequência de eventos, o que o FortiGate faz com o pacote ou com a configuração (por exemplo, como a tabela de rotas é consultada, as quatro mensagens do DHCP, o que muda no quadro com a tag 802.1Q).
+3. **Por que importa:** o problema que resolve, o que acontece sem ele, as consequências de configurar errado.
+4. **Quando usar e casos reais:** situações de empresas (filial, link de backup, rede de visitantes, migração) e quando escolher uma opção em vez de outra.
+5. **Limites e detalhes cobrados:** comportamentos que confundem, valores padrão, exceções.
+
+Use tabelas, comparações e as imagens do lab para apoiar a explicação, não para substituí-la. Um parágrafo explicando o mecanismo vale mais que uma lista de nomes de campos.
+
 ### Foco na GUI e regra de uso da CLI
 
 O curso ensina principalmente pela GUI. No texto principal, a CLI só aparece em três casos:
@@ -61,7 +73,8 @@ Use títulos `####` numerados (como "1. ...") só quando não puderem ser confun
 - **Ordem dos assuntos:** apresente um conceito antes de usá-lo (por exemplo, o FortiGuard antes dos serviços FortiGuard que são licenciados).
 - Todas as mídias saem do laboratório (`fortigate-clone`), pelo roteiro do modo aula, com `node tools/captura/capturar.cjs --roteiro mNN --saida midia/mNN`. O passo do roteiro define o arquivo, o tipo (`imagem` ou `slides`), o recorte (`recorte`) e o destaque (`destaque`). Para estados que o laboratório precisa simular (licença vencida, por exemplo), use a `LabApi` do roteiro.
 - Imagens no mínimo 1920x1080, ou 1920 px de largura quando recortadas.
-- **Todo passo descrito tem imagem**, inclusive a navegação até a tela (menu → submenu → diálogo) e as etapas de assistentes. As imagens também servem de apoio visual para explicar conceitos.
+- **Todo passo descrito tem imagem**, inclusive a navegação até a tela (menu → submenu → diálogo) e as etapas de assistentes. As imagens também servem de apoio visual para explicar conceitos. Se o texto diz "dê um duplo clique", "selecione e clique em Edit", "clique em Create new", "abra o Terminal", existe uma imagem mostrando exatamente esse clique, com o elemento em destaque. Isso vale também para configurações repetidas ("faça o mesmo na VLAN 20"): mostre cada uma.
+- **Topologia com tudo o que o texto cita em destaque:** se o texto fala das VLANs de um cabo ou de uma porta, os cards de VLAN dos dois lados do cabo (FortiGate e switch) e os cards dos dispositivos aparecem em destaque, não escurecidos.
 - **Tema da GUI:** Jade em todo o curso.
 
 ### PDF dos módulos

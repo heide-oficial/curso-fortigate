@@ -597,6 +597,13 @@ const LISTA = 1250;
     await tentar('conta-2fa', async () => { const f = linha('Two-factor Authentication'); await rolarAte(f); await s.foto('01-5-admin-conta-4', { largura: FORM, recorte: [f], margem: 60, destaque: [f], descricao: 'Two-factor Authentication' }); });
     await fotoOk('01-5-admin-conta-ok', 'Botão OK da conta');
     await botaoVis('OK', painel()).click();
+    await s.espera(600);
+    // Criar um administrador pede a senha de quem está logado.
+    const conf = p.locator('.dialog:visible').filter({ hasText: /administrative password/i }).last();
+    await conf.waitFor({ timeout: 5000 });
+    await conf.locator('input').first().fill(SENHA);
+    await s.foto('01-5-admin-conta-senha', { recorte: [conf], margem: 16, destaque: [conf.locator('input').first(), botaoVis('OK', conf)], descricao: 'Confirmação com a senha do administrador logado' });
+    await botaoVis('OK', conf).click();
     await s.espera(800);
     await s.rota('/system/admins');
     const lc = conteudo().locator('tr', { hasText: 'carla.suporte' }).first();

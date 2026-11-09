@@ -262,16 +262,16 @@ const LISTA = 1250;
   });
   await tentar('barra', async () => {
     const banner = p.locator('header.banner:visible').first();
-    await s.foto('01-1-elementos-gui-1', { recorte: [banner], margem: 6, destaque: [banner], descricao: 'Barra superior da GUI' });
+    await s.foto('01-1-elementos-gui-1', { destaque: [banner], descricao: 'Barra superior da GUI' });
     const itens = [['2', 'header.banner:visible button[title=\"Search\"]', 'Busca'], ['3', 'header.banner:visible button[title=\"FortiAI\"]', 'FortiAI'], ['4', 'header.banner:visible button[title=\"CLI\"]', 'CLI'], ['5', 'header.banner:visible button[title=\"Notifications\"]', 'Notificações']];
-    for (const [n, sel, d] of itens) await s.foto(`01-1-elementos-gui-${n}`, { recorte: [banner], margem: 6, destaque: [p.locator(sel).first()], descricao: d });
-    await s.foto('01-1-elementos-gui-6', { recorte: [banner], margem: 6, destaque: [botaoAdmin()], descricao: 'Menu do administrador' });
+    for (const [n, sel, d] of itens) await s.foto(`01-1-elementos-gui-${n}`, { recorte: [p.locator(sel).first()], margem: 160, destaque: [p.locator(sel).first()], descricao: d });
+    await s.foto('01-1-elementos-gui-6', { recorte: [botaoAdmin()], margem: 160, destaque: [botaoAdmin()], descricao: 'Menu do administrador' });
   });
   await tentar('busca', async () => {
     const lupa = p.locator('header.banner:visible button[title=\"Search\"]').first();
     await lupa.click();
     await s.espera(400);
-    const pular = itemMenu('Jump to page');
+    const pular = p.locator('.menu-item:visible', { hasText: 'Jump to page' }).first();
     await s.foto('01-1-busca-0', { recorte: [lupa, menusAbertos().last()], margem: 30, destaque: [lupa, pular], descricao: 'Menu da busca com Jump to page' });
     await pular.click();
     await s.espera(400);

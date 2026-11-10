@@ -776,13 +776,13 @@ Version: FGT121G v8.0.1,build0215,260305 (GA.F)
 First GA patch build date: 260115
 Security Level: 2
 Firmware Signature: certified
-Virus-DB: 1.00000(2026-11-09 19:42)
-Extended DB: 1.00000(2026-11-09 19:42)
-AV AI/ML Model: 0.00000(2026-11-09 19:42)
-IPS-DB: 6.00741(2026-11-08 19:42)
-IPS-ETDB: 6.00741(2026-11-08 19:42)
-APP-DB: 32.00821(2026-11-08 19:42)
-ISDB-DB: 0.00000(2026-11-06 19:42)
+Virus-DB: 1.00000(2026-11-09 16:42)
+Extended DB: 1.00000(2026-11-09 16:42)
+AV AI/ML Model: 0.00000(2026-11-09 16:42)
+IPS-DB: 6.00741(2026-11-08 16:42)
+IPS-ETDB: 6.00741(2026-11-08 16:42)
+APP-DB: 32.00821(2026-11-08 16:42)
+ISDB-DB: 0.00000(2026-11-06 16:42)
 Serial-Number: FG121GTK25000101
 BIOS version: 06000102
 System Part-Number: P29447-02
@@ -817,6 +817,7 @@ Last reboot reason: warm reboot
 | `Virtual domain configuration` | Se o equipamento usa VDOMs. |
 | `Current HA mode` | `standalone` (sozinho) ou o modo do cluster. |
 | `FortiGuard contract` | O pacote de serviços FortiGuard e se ele está válido. |
+| `System time` | A data e a hora do equipamento, no fuso horário configurado. As datas das bases (`Virus-DB`, `IPS-DB` etc.) usam o mesmo fuso: se estiverem muito antigas em relação ao `System time`, as atualizações do FortiGuard não estão chegando. |
 | `Last reboot reason` | Por que o equipamento reiniciou pela última vez. |
 
 > **Dica para a prova:** `get system status` reúne versão, número de série, modo de operação, estado de VDOM e de HA em uma única saída.

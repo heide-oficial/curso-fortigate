@@ -10,7 +10,7 @@ Você vai produzir material do **Curso FortiGate 7.6**, um curso em português p
 
 Produzir o **[MÓDULO, por exemplo "Módulo 03 – Firewall policies"]** completo, do conteúdo ao PDF final.
 
-- **Slides de referência:** `[CAMINHO DOS SLIDES]`
+- **Material de referência (slides e material da Fortinet):** `[CAMINHO DO MATERIAL]`
 - **Laboratório FortiGate (roda localmente):** `[CAMINHO DO LABORATÓRIO]`
 - **Repositório do curso (texto, mídias, ferramentas de captura e de PDF):** `[CAMINHO DO REPOSITÓRIO DO CURSO]`
 
@@ -18,7 +18,12 @@ Tudo o que você precisa está nessas pastas. **Não busque nada no GitHub nem e
 
 ## 1. O conteúdo vem dos slides
 
-Os slides são a fonte do conteúdo. Leia todos antes de escrever, inclusive as notas do apresentador, se houver. O arquivo pode estar em PPTX, PDF ou imagens.
+O material de referência é a grade do curso:
+- os módulos, os assuntos de cada um, a ordem e o escopo saem dele;
+- não existe outro documento de grade;
+- se o repositório tiver um `grade.md`, ignore-o.
+
+Leia todos os slides do módulo antes de escrever, inclusive as notas do apresentador, se houver. Os arquivos podem estar em PPTX, PDF ou imagens.
 
 - **Siga o conteúdo dos slides:** os mesmos assuntos, na mesma ordem, com o mesmo foco. Cada assunto dos slides vira texto no material, e nenhum fica de fora.
 - **Acrescente só quando for importante**, e só em dois casos:
@@ -40,7 +45,7 @@ Espere minha aprovação e depois siga até o fim sem parar, a não ser que algo
 
 ## 3. Regras de escrita
 
-Leia `grade.md` no repositório do curso: a seção "Regras de produção do conteúdo" vale para todos os módulos. Use o **módulo 01** (`conteudo/modulo-01-primeiro-acesso-e-administracao-basica.md` e `pdf/modulo-01.pdf`) como referência de como o resultado deve ficar. Em resumo:
+Estas regras valem para todos os módulos. O **módulo 01** que já está no repositório (`conteudo/modulo-01-primeiro-acesso-e-administracao-basica.md` e `pdf/modulo-01.pdf`) mostra como o resultado deve ficar. Use-o como referência de **formato e estilo**, não de conteúdo.
 
 **Linguagem**
 - Escreva para o aluno, em português, com linguagem fácil e termos técnicos explicados na primeira vez.
@@ -74,7 +79,7 @@ O resto vai para o **Guia de comandos CLI** no fim de cada capítulo (bloco `:::
 - `> **Atenção:**`
 - `> **Dica para a prova:**`
 
-**Cenário:** use a empresa e os endereços dos slides. Se os slides não tiverem cenário, use a Atlas Logística, descrita na seção "Cenário do curso" de `grade.md`.
+**Cenário:** use a topologia, os nomes e os endereços do material da Fortinet. Se o material não definir um cenário para o assunto, proponha um no roteiro (seção 2) e mantenha-o igual nos módulos seguintes. Endereços públicos usam as faixas de documentação 203.0.113.0/24 e 198.51.100.0/24.
 
 ## 4. Imagens: o laboratório sendo montado, passo a passo
 
@@ -97,20 +102,42 @@ O material mostra o laboratório sendo montado e configurado, e o texto explica 
 - **Monte um laboratório próprio para o módulo.** Nunca use os modelos prontos do laboratório.
 - **Confira cada imagem** antes de usar (por exemplo, numa folha de miniaturas): enquadramento, destaque certo, nada cortado, texto legível.
 
-Sintaxe dos blocos, descrita em `grade.md`, seção "Blocos especiais":
+### Sintaxe dos blocos
+
+A ferramenta de PDF e o visualizador reconhecem estes blocos no `.md`. As imagens ficam em `midia/mNN/`, com nomes no formato `<seção>-<assunto>.png`.
+
+**Figura** (uma imagem, com legenda abaixo):
 
 ```
 :::figura midia/mNN/NN-N-assunto.png "Texto alternativo"
-Legenda.
+Legenda em markdown.
 :::
+```
 
+**Carrossel** (uma imagem por linha; o texto depois de `|` é o texto daquele passo):
+
+```
 :::slides
 midia/mNN/NN-N-passo-1.png "Texto alternativo" | Texto do passo 1.
 midia/mNN/NN-N-passo-2.png "Texto alternativo" | Texto do passo 2.
 :::
 ```
 
-As imagens ficam em `midia/mNN/`.
+**Guia de comandos CLI** (no fim de cada capítulo, em markdown; a saída de um comando vai num bloco `saida` logo depois dele):
+
+````
+:::cli Título do capítulo
+### Assunto
+```
+get system status
+```
+```saida
+FGT # get system status
+Version: ...
+```
+Explicação do que a saída mostra.
+:::
+````
 
 ## 5. O laboratório local
 

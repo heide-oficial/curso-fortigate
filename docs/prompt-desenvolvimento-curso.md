@@ -27,6 +27,32 @@ A pasta do material tem duas fontes, com papéis diferentes. Juntas, elas são a
 
 Antes de escrever, leia todos os slides do módulo, inclusive as notas do apresentador, se houver. Leia também os capítulos do Study Guide que tratam dos mesmos assuntos. Os arquivos podem estar em PPTX, PDF ou imagens. O Study Guide é longo: localize os capítulos certos pelo sumário e leia esses trechos por inteiro.
 
+### Leia as páginas como imagem, não só o texto
+
+As duas fontes têm conteúdo visual:
+- o Study Guide alterna texto corrido com **imagens de slides**;
+- os meus slides também são visuais.
+
+Esses slides podem ter texto, mas muitos explicam **só com formas**: diagramas de topologia, fluxos com setas, caixas numeradas, tabelas desenhadas, telas anotadas, cores que agrupam itens. **Esse conteúdo visual faz parte do conteúdo** e precisa estar no material com o mesmo peso do texto. A extração de texto não captura nada disso (texto dentro de imagens, a ordem de um fluxo, o que uma seta liga a quê), então ler só o texto não basta.
+
+- **Veja cada página e cada slide como imagem.** Converta as páginas do Study Guide que vai usar em PNG (por exemplo, `pdftoppm -r 110 -f <pág> -l <pág> -png`) e olhe cada uma.
+  - Nos meus slides em PPTX, converta para PDF (por exemplo, `libreoffice --headless --convert-to pdf`) e depois para imagens.
+  - Leia o texto e as notas do apresentador do PPTX à parte (por exemplo, com `python-pptx`).
+  - Se não conseguir renderizar algum arquivo, me avise em vez de seguir só com o texto.
+- **Use a extração de texto só para localizar** capítulos e páginas (por exemplo, `pdftotext`), nunca como única leitura.
+- **Interprete cada figura:**
+  - o que ela mostra;
+  - em que ordem as coisas acontecem;
+  - o que cada forma, seta, cor ou número representa;
+  - qual a conclusão que ela quer passar.
+- **Leve essa informação para o material:**
+  - uma sequência desenhada vira passos numerados no texto;
+  - uma comparação em caixas vira tabela;
+  - um diagrama de topologia vira a topologia do laboratório, montada e fotografada (seção 4);
+  - uma tela anotada vira o passo a passo com imagens do laboratório.
+
+  O conteúdo da figura entra; a figura em si não é copiada (veja "Escreva com suas palavras" abaixo).
+
 ### Como usar cada fonte
 
 - **Os slides mandam no roteiro.** O material trata os mesmos assuntos dos slides, na mesma ordem e com o mesmo foco. Cada assunto dos slides vira texto, e nenhum fica de fora.
@@ -40,14 +66,14 @@ Antes de escrever, leia todos os slides do módulo, inclusive as notas do aprese
 - **Divergências:** se os slides e o Study Guide divergirem, ou se algo parecer desatualizado em relação ao FortiOS 7.6, siga o Study Guide no texto e me avise no relatório final, com o slide, a página do Study Guide e o motivo.
 - **Escreva com suas palavras.**
   - Não copie trechos do Study Guide nem traduza parágrafos inteiros: explique em português, de forma didática, na sequência do curso.
-  - Não reproduza figuras, diagramas nem telas do Study Guide. As imagens do material saem todas do laboratório (seção 4).
+  - Não reproduza figuras, diagramas nem telas do Study Guide ou dos slides. As imagens do material saem todas do laboratório (seção 4). A informação que essas figuras transmitem entra no material, explicada no texto, em tabelas, em passos numerados ou nas imagens do laboratório.
 
 ## 2. Primeiro passo: roteiro para eu aprovar
 
 Antes de capturar imagens ou escrever o texto final, me mostre um roteiro curto:
 
 - os tópicos dos slides, na ordem, e em qual capítulo e seção do módulo cada um vai entrar;
-- para cada tópico, os capítulos e as páginas do Study Guide que vai usar como base;
+- para cada tópico, os capítulos e as páginas do Study Guide que vai usar como base, indicando as figuras e os slides cujo conteúdo visual vai aproveitar e como (passos, tabela, topologia no laboratório);
 - o que você pretende acrescentar além dos slides, e por quê (contexto ou informação importante), com a página do Study Guide de onde vem;
 - a topologia do laboratório que vai montar e a lista de passos que vai fotografar.
 

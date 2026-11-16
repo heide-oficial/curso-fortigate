@@ -10,35 +10,45 @@ Você vai produzir material do **Curso FortiGate 7.6**, um curso em português p
 
 Produzir o **[MÓDULO, por exemplo "Módulo 03 – Firewall policies"]** completo, do conteúdo ao PDF final.
 
-- **Material de referência (slides e material da Fortinet):** `[CAMINHO DO MATERIAL]`
+- **Material de referência:** `[CAMINHO DO MATERIAL]`. Nesta pasta estão os meus slides resumidos e o PDF oficial do Study Guide da Fortinet (NSE 4 – FortiOS Administrator).
 - **Laboratório FortiGate (roda localmente):** `[CAMINHO DO LABORATÓRIO]`
 - **Repositório do curso (texto, mídias, ferramentas de captura e de PDF):** `[CAMINHO DO REPOSITÓRIO DO CURSO]`
 
 Tudo o que você precisa está nessas pastas. **Não busque nada no GitHub nem em outros repositórios remotos**, e não clone nada.
 
-## 1. O conteúdo vem dos slides
+## 1. O conteúdo: meus slides e o Study Guide da Fortinet
 
-O material de referência é a grade do curso:
-- os módulos, os assuntos de cada um, a ordem e o escopo saem dele;
-- não existe outro documento de grade;
-- se o repositório tiver um `grade.md`, ignore-o.
+A pasta do material tem duas fontes, com papéis diferentes. Juntas, elas são a grade do curso: não existe outro documento de grade, e se o repositório tiver um `grade.md`, ignore-o.
 
-Leia todos os slides do módulo antes de escrever, inclusive as notas do apresentador, se houver. Os arquivos podem estar em PPTX, PDF ou imagens.
+| Fonte | Papel |
+|---|---|
+| **Meus slides resumidos** | Definem **o quê**: os módulos, os assuntos de cada um, a ordem e o foco. |
+| **Study Guide oficial da Fortinet (PDF)** | É a **base técnica**: explica cada assunto com o detalhe, o mecanismo e a precisão que os slides não têm. |
 
-- **Siga o conteúdo dos slides:** os mesmos assuntos, na mesma ordem, com o mesmo foco. Cada assunto dos slides vira texto no material, e nenhum fica de fora.
-- **Acrescente só quando for importante**, e só em dois casos:
+Antes de escrever, leia todos os slides do módulo, inclusive as notas do apresentador, se houver. Leia também os capítulos do Study Guide que tratam dos mesmos assuntos. Os arquivos podem estar em PPTX, PDF ou imagens. O Study Guide é longo: localize os capítulos certos pelo sumário e leia esses trechos por inteiro.
+
+### Como usar cada fonte
+
+- **Os slides mandam no roteiro.** O material trata os mesmos assuntos dos slides, na mesma ordem e com o mesmo foco. Cada assunto dos slides vira texto, e nenhum fica de fora.
+- **O Study Guide dá a profundidade.** Para cada tópico dos slides, use o Study Guide para explicar como funciona, os detalhes, os valores padrão e os comportamentos. Os slides são resumidos e o material não pode ser: cada tópico vira uma explicação completa, nas regras da seção 3.
+- **Acrescente além dos slides só quando for importante**, e só em dois casos:
   1. **para contextualizar**, quando o slide pressupõe algo que o aluno precisa saber para entender o assunto (um conceito anterior, o porquê de uma configuração, o que acontece por dentro do FortiGate);
   2. **para trazer uma informação importante sobre o assunto em discussão**, como um comportamento que confunde, um valor padrão, uma consequência de configurar errado, um caso real ou um ponto cobrado no NSE 4.
-- **Não amplie o escopo.** Não abra assuntos novos que os slides não tratam, nem "aproveite" para ensinar temas vizinhos. Uma explicação maior do que o slide é bem-vinda quando aprofunda o mesmo assunto.
-- **Erros nos slides:** se algo parecer incorreto ou desatualizado em relação ao FortiOS 7.6, não corrija em silêncio. Escreva o correto e me avise no relatório final, com o slide e o motivo.
-- **Explicação didática:** os slides são resumidos e o material não pode ser. Cada tópico do slide vira uma explicação completa, nas regras da seção 3.
+
+  Tire esses acréscimos do Study Guide sempre que ele tratar do ponto.
+- **Não amplie o escopo.** O Study Guide cobre muito mais do que os slides. Um assunto que está no Study Guide e não está nos slides só entra se for indispensável para entender um assunto dos slides, e mesmo assim só o necessário. Não "aproveite" para ensinar temas vizinhos.
+- **Divergências:** se os slides e o Study Guide divergirem, ou se algo parecer desatualizado em relação ao FortiOS 7.6, siga o Study Guide no texto e me avise no relatório final, com o slide, a página do Study Guide e o motivo.
+- **Escreva com suas palavras.**
+  - Não copie trechos do Study Guide nem traduza parágrafos inteiros: explique em português, de forma didática, na sequência do curso.
+  - Não reproduza figuras, diagramas nem telas do Study Guide. As imagens do material saem todas do laboratório (seção 4).
 
 ## 2. Primeiro passo: roteiro para eu aprovar
 
 Antes de capturar imagens ou escrever o texto final, me mostre um roteiro curto:
 
 - os tópicos dos slides, na ordem, e em qual capítulo e seção do módulo cada um vai entrar;
-- o que você pretende acrescentar além dos slides, e por quê (contexto ou informação importante);
+- para cada tópico, os capítulos e as páginas do Study Guide que vai usar como base;
+- o que você pretende acrescentar além dos slides, e por quê (contexto ou informação importante), com a página do Study Guide de onde vem;
 - a topologia do laboratório que vai montar e a lista de passos que vai fotografar.
 
 Espere minha aprovação e depois siga até o fim sem parar, a não ser que algo bloqueie o trabalho.
@@ -186,8 +196,8 @@ O resultado final é o **PDF do módulo**, com uma explicação didática do com
 
 Ao terminar, me envie o PDF e um resumo com:
 
-- o que foi acrescentado além dos slides, item por item, com o motivo (contexto ou informação importante);
-- possíveis erros encontrados nos slides;
+- o que foi acrescentado além dos slides, item por item, com o motivo (contexto ou informação importante) e a página do Study Guide;
+- divergências entre os slides e o Study Guide, e possíveis erros nos slides;
 - recursos que faltaram no laboratório ou que se comportaram diferente de um FortiGate real;
 - o número de páginas e de imagens do módulo.
 
